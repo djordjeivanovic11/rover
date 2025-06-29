@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>slam_launch</name>
+  <version>0.1.0</version>
+
+  <description>
+    Top-level launch wrapper that boots the entire perception chain:
+      • zed2i_launch  – ZED 2i camera / depth / IMU driver
+      • loc_fusion    – dual EKF + GPS → map ↦ odom TF
+      • RTAB-Map      – RGB-D SLAM → global 3-D cloud and /map occupancy grid
+  </description>
+
+  <maintainer email="dorde_ivanovic@college.harvard.edu"">Dorde Ivanovic</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>zed2i_launch</exec_depend>
+  <exec_depend>loc_fusion</exec_depend>
+  <exec_depend>rtabmap_launch</exec_depend>
+  <exec_depend>rtabmap_ros</exec_depend>
+</package>

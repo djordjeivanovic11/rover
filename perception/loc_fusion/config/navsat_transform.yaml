@@ -1,0 +1,9 @@
+navsat_transform:
+  frequency:                   10.0
+  delay:                        2.0
+  magnetic_declination_radians: 0.0
+  yaw_offset:                   0.0
+  zero_altitude:               true
+  use_odometry_yaw:            true
+  broadcast_utm_transform:    false
+  publish_filtered_gps:        true

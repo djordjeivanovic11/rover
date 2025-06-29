@@ -1,0 +1,13 @@
+gap_guidance:
+  ros__parameters:
+    forward_dist:      3.0
+    lateral_half:      1.0
+    min_clear_z:       0.10
+    n_stripes:         21
+    density_thresh:    5
+    steer_gain:        1.0
+    alpha:             0.3
+
+    pointcloud_topic:  '/pointcloud_in'
+    cmd_topic:         '/gap_cmd'
+    diag_topic:        '/gap_diag'

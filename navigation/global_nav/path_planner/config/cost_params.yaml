@@ -1,0 +1,5 @@
+planner:
+  connectivity: '8N'
+  obstacle_threshold: 50
+  view_range: 3
+  penalize_diagonals: true

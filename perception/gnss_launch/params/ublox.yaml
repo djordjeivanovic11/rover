@@ -1,0 +1,11 @@
+ublox_camera:
+  device:             /dev/ttyACM0
+  frame_id:           gps_link
+  rate:               8
+  nav_rate:           1
+  enable_ppp:         false
+  fix_mode:           auto
+  dynamic_model:      portable
+  publish:
+    utc:              false
+    imu:              false      # we have ZED IMU
