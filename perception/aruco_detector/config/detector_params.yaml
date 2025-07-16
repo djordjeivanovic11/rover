@@ -1,0 +1,3 @@
+marker_size: 0.20 # edge length in metres
+rgb_topic:   "/zed2i/left/image_rect_color"
+cam_info_topic: "/zed2i/left/camera_info"
