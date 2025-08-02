@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- =============================================================================
+       WRENCH TOOL TEMPLATE
+       =============================================================================
+       Parameterized wrench tool for URC Equipment Servicing Mission.
+       Used for operating switches, buttons, and connectors.
+       ============================================================================= -->
+
+  <xacro:macro name="wrench_tool" params="parent name tool_params">
+    
+    <!-- Extract tool parameters -->
+    <xacro:property name="tool_mass" value="${tool_params['mass']}" />
+    <xacro:property name="tool_size" value="${tool_params['size']}" />
+    <xacro:property name="mount_offset" value="${tool_params['mount_offset']}" />
+
+    <!-- Material definition -->
+    <material name="tool_steel">
+      <color rgba="0.7 0.7 0.8 1.0"/>
+    </material>
+
+    <!-- =============================================================================
+         WRENCH BODY
+         ============================================================================= -->
+    <link name="${name}_body">
+      <visual>
+        <origin xyz="0 0 ${tool_size[2]/2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${tool_size[0]/2}" length="${tool_size[2]}"/>
+        </geometry>
+        <material name="tool_steel"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${tool_size[2]/2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${tool_size[0]/2}" length="${tool_size[2]}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 ${tool_size[2]/2}" rpy="0 0 0"/>
+        <mass value="${tool_mass}"/>
+        <inertia ixx="${tool_mass * (3*tool_size[0]*tool_size[0] + tool_size[2]*tool_size[2])/12}" 
+                 ixy="0.0" ixz="0.0"
+                 iyy="${tool_mass * (3*tool_size[0]*tool_size[0] + tool_size[2]*tool_size[2])/12}" 
+                 iyz="0.0" 
+                 izz="${tool_mass * tool_size[0]*tool_size[0]/2}"/>
+      </inertial>
+    </link>
+
+    <!-- Mount joint -->
+    <joint name="${name}_mount" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_body"/>
+      <origin xyz="${mount_offset[0]} ${mount_offset[1]} ${mount_offset[2]}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- =============================================================================
+         WRENCH HEAD (Working surface)
+         ============================================================================= -->
+    <link name="${name}_head">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${tool_size[0]*1.5} ${tool_size[1]*0.8} ${tool_size[2]*0.2}"/>
+        </geometry>
+        <material name="tool_steel"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${tool_size[0]*1.5} ${tool_size[1]*0.8} ${tool_size[2]*0.2}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${tool_mass*0.3}"/>
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                 iyy="0.001" iyz="0.0" izz="0.001"/>
+      </inertial>
+    </link>
+
+    <!-- Wrench head joint -->
+    <joint name="${name}_head_joint" type="fixed">
+      <parent link="${name}_body"/>
+      <child link="${name}_head"/>
+      <origin xyz="0 0 ${tool_size[2]}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- =============================================================================
+         CONTACT SENSOR (For force feedback)
+         ============================================================================= -->
+    <link name="${name}_contact_sensor">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.005"/>
+        </geometry>
+        <material name="tool_steel"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.005"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.001"/>
+        <inertia ixx="0.00001" ixy="0.0" ixz="0.0"
+                 iyy="0.00001" iyz="0.0" izz="0.00001"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_sensor_joint" type="fixed">
+      <parent link="${name}_head"/>
+      <child link="${name}_contact_sensor"/>
+      <origin xyz="0 0 ${tool_size[2]*0.1}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- =============================================================================
+         GAZEBO PLUGINS
+         ============================================================================= -->
+    
+    <!-- Contact sensor plugin -->
+    <gazebo reference="${name}_contact_sensor">
+      <sensor name="${name}_contact_sensor" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100.0</update_rate>
+        <contact>
+          <collision>${name}_contact_sensor_collision</collision>
+        </contact>
+        <plugin name="${name}_contact_plugin" filename="libgazebo_ros_bumper.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>bumper_states:=${name}/contact_states</remapping>
+          </ros>
+          <frame_name>${name}_contact_sensor</frame_name>
+        </plugin>
+      </sensor>
+      <material>Gazebo/Grey</material>
+      <mu1>1.5</mu1>
+      <mu2>1.5</mu2>
+    </gazebo>
+
+    <!-- Tool body materials -->
+    <gazebo reference="${name}_body">
+      <material>Gazebo/Grey</material>
+      <mu1>0.8</mu1>
+      <mu2>0.8</mu2>
+    </gazebo>
+    
+    <gazebo reference="${name}_head">
+      <material>Gazebo/Grey</material>
+      <mu1>1.2</mu1>
+      <mu2>1.2</mu2>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot> 

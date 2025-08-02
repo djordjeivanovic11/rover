@@ -1,0 +1,163 @@
+# =============================================================================
+# ROVER CONTROL ROS 2 CONTROL CONFIGURATION
+# =============================================================================
+# Configuration for ROS 2 Control hardware interface and controllers.
+# Supports both mock mode for testing and real hardware operation.
+# =============================================================================
+
+# =============================================================================
+# CONTROLLER MANAGER CONFIGURATION
+# =============================================================================
+
+controller_manager:
+  ros__parameters:
+    # Update rate for controller manager
+    update_rate: 50  # Hz - matches drive_params control_frequency
+    
+    # Hardware interface
+    robot_description: robot_description
+    robot_description_semantic: robot_description_semantic
+    
+    # Available controllers
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+      
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+# =============================================================================
+# DIFFERENTIAL DRIVE CONTROLLER CONFIGURATION
+# =============================================================================
+
+diff_drive_controller:
+  ros__parameters:
+    # Wheel configuration
+    left_wheel_names: ["left_front_wheel", "left_rear_wheel"]
+    right_wheel_names: ["right_front_wheel", "right_rear_wheel"]
+    
+    # Physical parameters (from drive_params.yaml)
+    wheel_separation: 0.48      # track_width from drive_params
+    wheel_radius: 0.125         # wheel_radius from drive_params
+    
+    # Topic configuration
+    command_interface: "velocity"
+    state_interface: "position"
+    cmd_vel_topic: "/cmd_vel"
+    odom_topic: "/odom"
+    
+    # Frame configuration
+    base_frame_id: "base_link"
+    odom_frame_id: "odom"
+    
+    # Odometry configuration
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    
+    # Enable odometry
+    enable_odom_tf: true
+    
+    # Velocity and acceleration limits
+    linear:
+      x:
+        has_velocity_limits: true
+        has_acceleration_limits: true
+        has_jerk_limits: false
+        max_velocity: 2.5          # m/s - from safety_params
+        min_velocity: -2.5         # m/s
+        max_acceleration: 2.0      # m/s² - from safety_params
+        min_acceleration: -2.0     # m/s²
+        
+    angular:
+      z:
+        has_velocity_limits: true
+        has_acceleration_limits: true
+        has_jerk_limits: false
+        max_velocity: 1.2          # rad/s - from safety_params
+        min_velocity: -1.2         # rad/s
+        max_acceleration: 1.5      # rad/s² - from safety_params
+        min_acceleration: -1.5     # rad/s²
+
+# =============================================================================
+# JOINT STATE BROADCASTER CONFIGURATION
+# =============================================================================
+
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - left_front_wheel
+      - left_rear_wheel
+      - right_front_wheel
+      - right_rear_wheel
+    interfaces:
+      - position
+      - velocity
+
+# =============================================================================
+# HARDWARE INTERFACE CONFIGURATION
+# =============================================================================
+
+hardware_interface:
+  ros__parameters:
+    # Hardware interface plugin
+    plugin: "rover_control/RoverHardwareInterface"
+    
+    # Update rate
+    update_rate: 50.0  # Hz
+    
+    # Hardware configuration
+    mock_hardware: true  # Start in mock mode for safety
+    
+    # Wheel joint names
+    joints:
+      - left_front_wheel
+      - left_rear_wheel
+      - right_front_wheel
+      - right_rear_wheel
+      
+    # Command and state interfaces
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+      
+    # Physical parameters
+    wheel_radius: 0.125          # meters
+    wheel_separation: 0.48       # meters
+    gear_ratio: 20.0             # motor:wheel ratio
+    
+    # Mock hardware parameters
+    mock_sensor_commands: false
+    state_following_offset: 0.0
+    
+    # Real hardware parameters (used when mock_hardware: false)
+    can_interface: "can0"        # CAN interface for motor controllers
+    motor_ids: [1, 2, 3, 4]      # CAN IDs for wheel motors (LF, LR, RF, RR)
+    encoder_resolution: 2048     # Encoder counts per revolution
+    
+    # Safety limits
+    max_velocity: 2.5            # m/s
+    max_acceleration: 2.0        # m/s²
+    
+    # Diagnostic configuration
+    diagnostic_updater_rate: 10.0  # Hz
+    publish_joint_states: true
+    publish_wheel_tf: false      # Don't publish wheel TF (handled by URDF)
+
+# =============================================================================
+# ROBOT DESCRIPTION (URDF) CONFIGURATION
+# =============================================================================
+
+robot_description_loader:
+  ros__parameters:
+    # Robot description parameters
+    robot_description_file: "rover_description.urdf.xacro"
+    
+    # Xacro arguments
+    use_mock_hardware: true
+    mock_sensor_commands: false
+    
+    # Physical parameters
+    wheelbase: 0.52              # meters
+    track_width: 0.48            # meters
+    wheel_radius: 0.125          # meters 

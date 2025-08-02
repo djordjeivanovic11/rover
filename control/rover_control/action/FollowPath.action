@@ -1,0 +1,46 @@
+# =============================================================================
+# FOLLOW PATH ACTION
+# =============================================================================
+# Action for following a predefined path with waypoints. Includes progress
+# tracking, stuck detection, and mission-specific optimizations.
+# =============================================================================
+
+# GOAL
+nav_msgs/Path path                         # Path to follow with waypoints
+float32 max_velocity 1.0                  # Maximum velocity during execution (m/s)
+float32 waypoint_tolerance 0.2            # Tolerance for reaching waypoints (meters)
+bool reverse_allowed false                # Allow reverse driving if needed
+float32 timeout 300.0                     # Total execution timeout (seconds)
+string mission_mode "exploration"         # Mission mode for parameter selection
+bool skip_unreachable false               # Skip waypoints that are unreachable
+float32 lookahead_distance 1.0            # Pure pursuit lookahead distance (meters)
+bool use_obstacle_avoidance true          # Enable dynamic obstacle avoidance
+
+---
+
+# RESULT
+bool success                               # True if path completed successfully
+int32 result_code                         # Structured result code (0=SUCCESS, 1=CANCELLED, etc.)
+string error_message                      # Human-readable error description
+int32 waypoints_completed                 # Number of waypoints successfully reached
+int32 total_waypoints                     # Total number of waypoints in path
+float32 total_distance                    # Total distance traveled (meters)
+float32 execution_time                    # Total execution time (seconds)
+nav_msgs/Path executed_path               # Actual path executed
+geometry_msgs/PoseStamped final_pose      # Final pose achieved
+float32 average_velocity                  # Average velocity during execution (m/s)
+
+---
+
+# FEEDBACK
+string current_state                      # Current execution state (FOLLOWING, APPROACHING_WAYPOINT, etc.)
+float32 progress_percentage               # Execution progress [0.0-100.0]
+int32 current_waypoint                    # Index of current target waypoint
+geometry_msgs/PoseStamped current_pose    # Current rover pose
+float32 estimated_time_remaining          # Estimated time to completion (seconds)
+float32 distance_remaining                # Distance remaining on path (meters)
+float32 current_velocity                  # Current rover velocity (m/s)
+string status_message                     # Human-readable status update
+bool stuck_detected                       # True if stuck condition detected
+float32 autonomy_time_remaining           # Remaining autonomy timer (seconds)
+geometry_msgs/PoseStamped target_waypoint # Current target waypoint 

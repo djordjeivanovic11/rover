@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>rover_control</name>
+  <version>1.0.0</version>
+  <description>
+    URC Rover Control System with ROS 2 Control, safety monitoring, and competition-specific features.
+    Provides differential drive control, path following, and mission-optimized behaviors.
+  </description>
+
+  <maintainer email="team@urc.edu">URC Team</maintainer>
+  <license>MIT</license>
+
+  <url type="website">https://github.com/urc-team/rover</url>
+  <url type="bugtracker">https://github.com/urc-team/rover/issues</url>
+  <url type="repository">https://github.com/urc-team/rover</url>
+
+  <author>URC Team</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <!-- Core ROS 2 dependencies -->
+  <depend>rclpy</depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+
+  <!-- ROS 2 Control dependencies -->
+  <depend>controller_interface</depend>
+  <depend>controller_manager</depend>
+  <depend>hardware_interface</depend>
+  <depend>diff_drive_controller</depend>
+  <depend>joint_state_broadcaster</depend>
+
+  <!-- Action and service dependencies -->
+  <depend>rclcpp_action</depend>
+  <depend>action_msgs</depend>
+  <depend>lifecycle_msgs</depend>
+  <depend>diagnostic_msgs</depend>
+
+  <!-- Navigation dependencies -->
+  <depend>nav2_msgs</depend>
+  <depend>nav2_common</depend>
+
+  <!-- Custom interfaces -->
+  <depend>urc_interfaces</depend>
+  <depend>urc_msgs</depend>
+
+  <!-- Build dependencies -->
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <!-- Testing dependencies -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package> 

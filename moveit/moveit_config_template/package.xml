@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypename="package_format3"?>
+<package format="3">
+  <name>moveit_config_template</name>
+  <version>1.0.0</version>
+  <description>Auto-generated MoveIt configuration for URC rover arm template</description>
+  
+  <maintainer email="urc@rover.com">URC Rover Team</maintainer>
+  <license>MIT</license>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <!-- MoveIt dependencies -->
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_ros_planning_interface</exec_depend>
+  <exec_depend>moveit_planners_ompl</exec_depend>
+  <exec_depend>moveit_simple_controller_manager</exec_depend>
+  <exec_depend>moveit_configs_utils</exec_depend>
+  
+  <!-- RViz -->
+  <exec_depend>moveit_ros_visualization</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>rviz_common</exec_depend>
+  <exec_depend>rviz_default_plugins</exec_depend>
+  
+  <!-- Robot description -->
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  
+  <!-- Controllers -->
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>position_controllers</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  
+  <!-- Arm template dependency -->
+  <exec_depend>arm_template</exec_depend>
+  
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package> 
