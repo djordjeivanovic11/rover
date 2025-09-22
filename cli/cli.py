@@ -23,6 +23,8 @@ def client_thread(client, address):
     print(f"Connection from {address} has been closed.")
 
 if __name__ == "__main__":
+    print("Server started.")
     while True:
+        print("Waiting for connection...")
         client, address = sock.accept()
         threading.Thread(target=client_thread, args=(client, address)).start()
