@@ -1,5 +1,6 @@
 import socket
 import threading
+import subprocess
 from shlex import split
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -13,12 +14,24 @@ def client_thread(client, address):
     client.send(open("splash").read().encode())
     while True:
         data = client.recv(1024)
-        tokens = split(data.decode().strip())
-        print(f"Tokens: {tokens}")
         if not data:
             break
-        print(f"Received from {address}: {data.decode()}")
-        client.send(data)  # Echo back the received data
+        
+        command, *args = split(data.decode().strip())
+        if command == "network":
+            if args and args[0] == "status":
+                response = subprocess.check_output(["sshpass",
+                                                    "-p", 
+                                                    open(".router_pwd").read().strip(), 
+                                                    "ssh", 
+                                                    "-o", 
+                                                    "HostKeyAlgorithms=+ssh-dss", 
+                                                    "hurc@192.168.0.253", 
+                                                    "cat", 
+                                                    "/proc/net/wireless"])
+                client.send(response)
+        else:
+            client.send(b"Command not recognized.")  # Echo back the received data
     client.close()
     print(f"Connection from {address} has been closed.")
 
