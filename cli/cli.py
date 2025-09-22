@@ -1,5 +1,6 @@
 import socket
 import threading
+from shlex import split
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind(('192.168.0.10', 3000))
@@ -11,6 +12,8 @@ def client_thread(client, address):
     client.send(open("splash").read().encode())
     while True:
         data = client.recv(1024)
+        tokens = split(data.decode().strip())
+        print(f"Tokens: {tokens}")
         if not data:
             break
         print(f"Received from {address}: {data.decode()}")
