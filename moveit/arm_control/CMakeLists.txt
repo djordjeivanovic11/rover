@@ -35,19 +35,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   control_msgs
 )
 
-# Install Python modules
-ament_python_install_package(${PROJECT_NAME})
-
-# Install Python executables
-install(PROGRAMS
-  arm_control/hardware_interface.py
-  arm_control/trajectory_executor.py
-  arm_control/safety_monitor.py
-  arm_control/gripper_controller.py
-  arm_control/tool_manager.py
-  arm_control/action_servers.py
-  DESTINATION lib/${PROJECT_NAME}
-)
+# Python modules and executables are handled by setup.py
+# The setup.py file manages Python package installation and entry points
 
 # Install launch files
 install(DIRECTORY launch/

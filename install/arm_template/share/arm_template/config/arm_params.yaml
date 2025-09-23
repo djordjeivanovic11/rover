@@ -1,0 +1,337 @@
+# =============================================================================
+# URC ROVER ARM TEMPLATE PARAMETERS
+# =============================================================================
+# This file defines ALL arm specifications. Edit this to adapt to any 6-DOF arm.
+# The system will auto-generate URDF, SRDF, and MoveIt config from these params.
+# =============================================================================
+
+arm:
+  # =============================================================================
+  # BASIC ARM SPECIFICATIONS
+  # =============================================================================
+  name: "urc_arm"
+  description: "6-DOF robotic arm for URC rover missions"
+  dof: 6
+  base_frame: "base_link"
+  end_effector_frame: "tool_flange"
+  
+  # Joint names (modify these for your specific arm)
+  joints:
+    - "base_rotate"
+    - "shoulder_pitch" 
+    - "shoulder_roll"
+    - "elbow_pitch"
+    - "wrist_pitch"
+    - "wrist_roll"
+  
+  # Link names (auto-generated but can be customized)
+  links:
+    - "base_link"
+    - "shoulder_link"
+    - "upper_arm_link"
+    - "forearm_link"
+    - "wrist_link"
+    - "tool_flange"
+
+  # =============================================================================
+  # KINEMATIC PARAMETERS (MODIFY FOR YOUR ARM)
+  # =============================================================================
+  # All dimensions in meters
+  kinematics:
+    # Link lengths - adjust these for your specific arm
+    base_height: 0.1           # Base link height
+    shoulder_offset: 0.05      # Shoulder joint offset
+    upper_arm_length: 0.30     # Shoulder to elbow
+    forearm_length: 0.25       # Elbow to wrist
+    wrist_offset: 0.08         # Wrist joint offset
+    tool_flange_length: 0.05   # Wrist to tool flange
+    
+    # Joint orientations (DH parameters style)
+    joint_axes:
+      base_rotate: [0, 0, 1]     # Z-axis rotation
+      shoulder_pitch: [0, 1, 0]  # Y-axis rotation
+      shoulder_roll: [1, 0, 0]   # X-axis rotation
+      elbow_pitch: [0, 1, 0]     # Y-axis rotation
+      wrist_pitch: [0, 1, 0]     # Y-axis rotation
+      wrist_roll: [1, 0, 0]      # X-axis rotation
+
+  # =============================================================================
+  # JOINT LIMITS (RADIANS)
+  # =============================================================================
+  joint_limits:
+    # Position limits [min, max] in radians
+    position:
+      base_rotate: [-3.14159, 3.14159]      # ±180°
+      shoulder_pitch: [-1.5708, 1.5708]     # ±90°
+      shoulder_roll: [-3.14159, 3.14159]    # ±180°
+      elbow_pitch: [-2.6180, 2.6180]        # ±150°
+      wrist_pitch: [-3.14159, 3.14159]      # ±180°
+      wrist_roll: [-3.14159, 3.14159]       # ±180°
+    
+    # Velocity limits (rad/s)
+    velocity:
+      base_rotate: 1.0
+      shoulder_pitch: 1.0
+      shoulder_roll: 1.0
+      elbow_pitch: 1.0
+      wrist_pitch: 1.5
+      wrist_roll: 2.0
+    
+    # Acceleration limits (rad/s²)
+    acceleration:
+      base_rotate: 2.0
+      shoulder_pitch: 2.0
+      shoulder_roll: 2.0
+      elbow_pitch: 2.0
+      wrist_pitch: 3.0
+      wrist_roll: 4.0
+    
+    # Effort limits (N⋅m)
+    effort:
+      base_rotate: 50.0
+      shoulder_pitch: 40.0
+      shoulder_roll: 30.0
+      elbow_pitch: 25.0
+      wrist_pitch: 15.0
+      wrist_roll: 10.0
+
+  # =============================================================================
+  # PHYSICAL PROPERTIES
+  # =============================================================================
+  # Masses in kg
+  link_masses:
+    base_link: 2.0
+    shoulder_link: 1.5
+    upper_arm_link: 1.2
+    forearm_link: 0.8
+    wrist_link: 0.4
+    tool_flange: 0.2
+  
+  # Inertia tensors (kg⋅m²) - simplified box approximations
+  link_inertias:
+    base_link: [0.01, 0.01, 0.01, 0.0, 0.0, 0.0]
+    shoulder_link: [0.008, 0.008, 0.008, 0.0, 0.0, 0.0]
+    upper_arm_link: [0.006, 0.006, 0.006, 0.0, 0.0, 0.0]
+    forearm_link: [0.004, 0.004, 0.004, 0.0, 0.0, 0.0]
+    wrist_link: [0.002, 0.002, 0.002, 0.0, 0.0, 0.0]
+    tool_flange: [0.001, 0.001, 0.001, 0.0, 0.0, 0.0]
+  
+  # Visual and collision geometry sizes (meters)
+  link_geometries:
+    base_link: [0.15, 0.15, 0.10]       # [x, y, z] box dimensions
+    shoulder_link: [0.12, 0.12, 0.08]
+    upper_arm_link: [0.08, 0.08, 0.30]
+    forearm_link: [0.06, 0.06, 0.25]
+    wrist_link: [0.06, 0.06, 0.08]
+    tool_flange: [0.08, 0.08, 0.03]
+
+  # =============================================================================
+  # TOOL FLANGE SPECIFICATIONS
+  # =============================================================================
+  tool_flange:
+    name: "tool_flange"
+    position: [0.0, 0.0, 0.05]  # Position relative to wrist
+    orientation: [0.0, 0.0, 0.0]  # RPY orientation
+    mounting_pattern: "M6"       # Standard mounting pattern
+    diameter: 0.08              # Flange diameter
+    thickness: 0.02             # Flange thickness
+
+  # =============================================================================
+  # MOVEIT CONFIGURATION PARAMETERS
+  # =============================================================================
+  moveit:
+    # Planning groups
+    planning_groups:
+      - name: "arm"
+        joints: ["base_rotate", "shoulder_pitch", "shoulder_roll", "elbow_pitch", "wrist_pitch", "wrist_roll"]
+        end_effector: "tool_flange"
+        base_link: "base_link"
+    
+    # Kinematics solver configuration
+    kinematics_solver:
+      solver: "kdl_kinematics_plugin/KDLKinematicsPlugin"
+      search_resolution: 0.005
+      timeout: 0.005
+      attempts: 3
+      max_iterations: 500
+    
+    # Planning configuration
+    planning:
+      planner: "RRTConnect"
+      planning_time: 5.0
+      planning_attempts: 10
+      max_velocity_scaling_factor: 0.1
+      max_acceleration_scaling_factor: 0.1
+
+  # =============================================================================
+  # CONTROLLER CONFIGURATION
+  # =============================================================================
+  controllers:
+    # Joint trajectory controller
+    joint_trajectory_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+      joints: ["base_rotate", "shoulder_pitch", "shoulder_roll", "elbow_pitch", "wrist_pitch", "wrist_roll"]
+      interface_name: "position"
+      command_interfaces: ["position"]
+      state_interfaces: ["position", "velocity"]
+      
+      # PID gains [P, I, D]
+      gains:
+        base_rotate: [100.0, 1.0, 10.0]
+        shoulder_pitch: [100.0, 1.0, 10.0]
+        shoulder_roll: [100.0, 1.0, 10.0]
+        elbow_pitch: [100.0, 1.0, 10.0]
+        wrist_pitch: [100.0, 1.0, 10.0]
+        wrist_roll: [100.0, 1.0, 10.0]
+      
+      # Trajectory constraints
+      constraints:
+        goal_time: 0.6
+        stopped_velocity_tolerance: 0.05
+        base_rotate: [0.05, 0.1]  # [position_tolerance, velocity_tolerance]
+        shoulder_pitch: [0.05, 0.1]
+        shoulder_roll: [0.05, 0.1]
+        elbow_pitch: [0.05, 0.1]
+        wrist_pitch: [0.05, 0.1]
+        wrist_roll: [0.05, 0.1]
+
+  # =============================================================================
+  # SAFETY PARAMETERS
+  # =============================================================================
+  safety:
+    # Motion limits
+    max_linear_velocity: 0.5    # m/s
+    max_angular_velocity: 1.0   # rad/s
+    max_linear_acceleration: 1.0  # m/s²
+    max_angular_acceleration: 2.0  # rad/s²
+    
+    # Collision detection
+    collision_margin: 0.05      # meters
+    self_collision_check: true
+    environment_collision_check: true
+    
+    # Force/torque limits
+    max_force: 50.0            # N
+    max_torque: 10.0           # N⋅m
+    force_torque_timeout: 1.0  # seconds
+    
+    # Emergency stop
+    estop_deceleration: 5.0    # rad/s² emergency deceleration
+
+  # =============================================================================
+  # URC MISSION-SPECIFIC CONFIGURATIONS
+  # =============================================================================
+  mission_poses:
+    # Named poses for URC missions (joint angles in radians)
+    
+    # Equipment Servicing Mission poses
+    es_ready: [0.0, -1.5708, 0.0, -1.5708, 0.0, 0.0]          # Ready position
+    es_panel_approach: [0.0, -1.0, 0.0, -1.0, 0.0, 0.0]       # Approach panel
+    es_fine_position: [0.0, -0.8, 0.0, -0.8, 0.0, 0.0]        # Fine positioning
+    es_switch_toggle: [0.0, -0.6, 0.0, -0.6, 0.0, 0.0]        # Switch operation
+    es_button_press: [0.0, -0.7, 0.0, -0.7, 0.0, 0.0]         # Button operation
+    es_connector_insert: [0.0, -0.9, 0.0, -0.9, 0.0, 0.0]     # Connector tasks
+    
+    # Science Mission poses
+    sc_ready: [0.0, -1.5708, 0.0, -1.5708, 0.0, 0.0]          # Science ready
+    sc_ground_survey: [0.0, -1.2, 0.0, -1.2, 0.0, 0.0]        # Ground survey
+    sc_dig_position: [0.0, -1.0, 0.0, -1.0, 0.0, 0.0]         # Digging position
+    sc_sample_collect: [0.0, -0.8, 0.0, -0.8, 0.0, 0.0]       # Sample collection
+    sc_cache_deposit: [0.0, -1.1, 0.0, -1.1, 0.0, 0.0]        # Cache deposit
+    
+    # Delivery Mission poses
+    dm_ready: [0.0, -1.5708, 0.0, -1.5708, 0.0, 0.0]          # Delivery ready
+    dm_pickup_approach: [0.0, -1.3, 0.0, -1.3, 0.0, 0.0]      # Approach object
+    dm_pickup_grasp: [0.0, -1.0, 0.0, -1.0, 0.0, 0.0]         # Grasp object
+    dm_transport: [0.0, -1.4, 0.0, -1.4, 0.0, 0.0]            # Transport position
+    dm_dropoff: [0.0, -1.1, 0.0, -1.1, 0.0, 0.0]              # Drop off
+    
+    # Tool change poses
+    tool_change_ready: [0.0, -1.5708, 0.0, -1.5708, 0.0, 0.0] # Tool change ready
+    tool_change_dock: [0.0, -1.2, 0.0, -1.2, 0.0, 0.0]        # Dock position
+    tool_change_release: [0.0, -1.0, 0.0, -1.0, 0.0, 0.0]     # Release tool
+    tool_change_acquire: [0.0, -1.0, 0.0, -1.0, 0.0, 0.0]     # Acquire new tool
+    
+    # Navigation poses
+    stow: [0.0, -1.5708, 0.0, -1.5708, 0.0, 0.0]              # Stowed for travel
+    home: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]                      # Home position
+
+  # =============================================================================
+  # WORKSPACE CONSTRAINTS
+  # =============================================================================
+  workspace:
+    # Reachable workspace (meters from base)
+    max_reach: 0.6              # Maximum reach radius
+    min_reach: 0.1              # Minimum reach radius
+    max_height: 0.5             # Maximum height above base
+    min_height: -0.3            # Minimum height below base
+    
+    # Forbidden zones (to avoid collisions with rover body)
+    forbidden_zones:
+      - name: "rover_body"
+        type: "box"
+        center: [-0.2, 0.0, -0.1]
+        size: [0.4, 0.6, 0.2]
+      - name: "mast"
+        type: "cylinder"
+        center: [0.3, 0.0, 0.5]
+        radius: 0.1
+        height: 1.0
+
+  # =============================================================================
+  # GRIPPER CONFIGURATION
+  # =============================================================================
+  gripper:
+    name: "urc_gripper"
+    type: "parallel_gripper"
+    max_opening: 0.12           # meters
+    min_opening: 0.0            # meters
+    max_force: 100.0            # N
+    controller_name: "gripper_controller"
+    
+    # Gripper geometry
+    finger_length: 0.08         # meters
+    finger_width: 0.02          # meters
+    palm_size: [0.06, 0.08, 0.02]  # [x, y, z] meters
+
+# =============================================================================
+# TOOL CONFIGURATIONS
+# =============================================================================
+tools:
+  # Wrench tool for Equipment Servicing
+  wrench:
+    name: "wrench_tool"
+    mass: 0.3
+    size: [0.02, 0.02, 0.15]
+    mount_offset: [0.0, 0.0, 0.075]
+    
+  # Probe tool for Science Mission
+  probe:
+    name: "science_probe"
+    mass: 0.2
+    size: [0.015, 0.015, 0.12]
+    mount_offset: [0.0, 0.0, 0.06]
+    
+  # Scoop tool for sample collection
+  scoop:
+    name: "sample_scoop"
+    mass: 0.4
+    size: [0.08, 0.06, 0.1]
+    mount_offset: [0.0, 0.0, 0.05]
+
+# =============================================================================
+# VALIDATION PARAMETERS
+# =============================================================================
+validation:
+  # Parameter ranges for validation
+  joint_limit_margins: 0.05     # Safety margin for joint limits (radians)
+  velocity_limit_factor: 0.8    # Max velocity as fraction of hardware limit
+  acceleration_limit_factor: 0.8 # Max acceleration as fraction of hardware limit
+  
+  # Required parameters (will cause validation to fail if missing)
+  required_params:
+    - "arm.name"
+    - "arm.joints"
+    - "arm.joint_limits.position"
+    - "arm.kinematics"
+    - "arm.link_masses" 

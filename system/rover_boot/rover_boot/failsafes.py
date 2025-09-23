@@ -130,4 +130,4 @@ class Failsafes:
         if self.last_battery is not None and self.last_battery < 0.3:
             score -= 0.3
         self.health_pub.publish(Float32(data=max(0.0, score)))
-        self.node.get_logger().debug(f'Health score: {score:.2f}'}
+        self.node.get_logger().debug(f'Health score: {score:.2f}')

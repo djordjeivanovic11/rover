@@ -1,0 +1,32 @@
+[4.955s] Invoking command in '/home/rover/workspaces/rover-real/src/mission_bt': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/mission_bt/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/mission_bt/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mission_bt build --build-base /home/rover/workspaces/rover-real/src/build/mission_bt/build install --record /home/rover/workspaces/rover-real/src/build/mission_bt/install.log --single-version-externally-managed install_data
+[6.590s] Traceback (most recent call last):
+[6.593s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2851, in get_entry_map
+[6.821s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2813, in __getattr__
+[6.865s]     raise AttributeError(attr)
+[6.865s] AttributeError: _ep_map. Did you mean: '_dep_map'?
+[6.865s] 
+[6.865s] During handling of the above exception, another exception occurred:
+[6.865s] 
+[6.866s] Traceback (most recent call last):
+[6.866s]   File "/home/rover/workspaces/rover-real/src/mission_bt/setup.py", line 7, in <module>
+[6.866s]     setup(
+[6.866s]   File "/home/rover/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 152, in setup
+[6.894s]     _install_setup_requires(attrs)
+[6.894s]   File "/home/rover/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 142, in _install_setup_requires
+[6.894s]     dist = MinimalDistribution(attrs)
+[6.895s]   File "/home/rover/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 134, in __init__
+[6.895s]     distutils.core.Distribution.__init__(self, filtered)
+[6.895s]   File "/home/rover/.local/lib/python3.10/site-packages/setuptools/dist.py", line 451, in __init__
+[6.973s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 641, in <genexpr>
+[6.974s]     for entry in dist.get_entry_map(group).values()
+[6.974s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2853, in get_entry_map
+[6.974s]     ep_map = self._ep_map = EntryPoint.parse_map(
+[6.974s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2542, in parse_map
+[6.975s]     maps[group] = cls.parse_group(group, lines, dist)
+[6.976s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2520, in parse_group
+[6.976s]     ep = cls.parse(line, dist)
+[6.976s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2500, in parse
+[6.982s]     extras = cls._parse_extras(res['extras'])
+[6.982s]   File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2504, in _parse_extras
+[6.982s]     @classmethod
+[6.982s] KeyboardInterrupt

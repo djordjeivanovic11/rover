@@ -1,0 +1,4 @@
+bt_navigator:
+  ros__parameters:
+    expected_planner_frequency: 20.0
+    bt_xml_filename: "behavior_tree.xml"

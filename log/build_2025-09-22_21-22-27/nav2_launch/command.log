@@ -1,0 +1,6 @@
+Invoking command in '/home/rover/workspaces/rover-real/src/build/nav2_launch': /usr/bin/cmake /home/rover/workspaces/rover-real/src/navigation/global_nav/nav2_launch -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/nav2_launch
+Invoked command in '/home/rover/workspaces/rover-real/src/build/nav2_launch' returned '0': /usr/bin/cmake /home/rover/workspaces/rover-real/src/navigation/global_nav/nav2_launch -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/nav2_launch
+Invoking command in '/home/rover/workspaces/rover-real/src/build/nav2_launch': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/nav2_launch -- -j6 -l6
+Invoked command in '/home/rover/workspaces/rover-real/src/build/nav2_launch' returned '0': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/nav2_launch -- -j6 -l6
+Invoking command in '/home/rover/workspaces/rover-real/src/build/nav2_launch': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/nav2_launch
+Invoked command in '/home/rover/workspaces/rover-real/src/build/nav2_launch' returned '0': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/nav2_launch

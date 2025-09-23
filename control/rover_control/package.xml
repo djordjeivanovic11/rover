@@ -49,7 +49,7 @@
   <depend>nav2_common</depend>
 
   <!-- Custom interfaces -->
-  <depend>urc_interfaces</depend>
+  <!-- <depend>urc_interfaces</depend> --> <!-- Commented out - not actually used in code -->
   <depend>urc_msgs</depend>
 
   <!-- Build dependencies -->

@@ -5,12 +5,12 @@
 
   <description>
     Top-level launch wrapper that boots the entire perception chain:
-      • zed2i_launch  – ZED 2i camera / depth / IMU driver
-      • loc_fusion    – dual EKF + GPS → map ↦ odom TF
-      • RTAB-Map      – RGB-D SLAM → global 3-D cloud and /map occupancy grid
+      - zed2i_launch  - ZED 2i camera / depth / IMU driver
+      - loc_fusion    - dual EKF + GPS to map and odom TF
+      - RTAB-Map      - RGB-D SLAM to global 3-D cloud and /map occupancy grid
   </description>
 
-  <maintainer email="dorde_ivanovic@college.harvard.edu"">Dorde Ivanovic</maintainer>
+  <maintainer email="dorde_ivanovic@college.harvard.edu">Dorde Ivanovic</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

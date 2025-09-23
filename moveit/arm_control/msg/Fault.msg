@@ -50,7 +50,7 @@ float32 action_progress    # Action progress when fault occurred [0.0-100.0]
 # Additional context
 string[] related_faults    # IDs of related/cascading faults
 uint32 occurrence_count    # Number of times this fault has occurred
-duration time_since_last   # Time since last occurrence of this fault type
+builtin_interfaces/Duration time_since_last   # Time since last occurrence of this fault type
 
 # Operator guidance
 string recommended_action  # Recommended operator action

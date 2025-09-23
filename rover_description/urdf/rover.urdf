@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="rover">
+  <link
+    name="Chassis">
+    <inertial>
+      <origin
+        xyz="-0.00363780367627307 -0.0938505715166438 -0.00835323019769225"
+        rpy="0 0 0" />
+      <mass
+        value="5.95999041975075" />
+      <inertia
+        ixx="0.108696406873663"
+        ixy="1.6936194575718E-08"
+        ixz="-1.30652595303856E-07"
+        iyy="0.150183778674505"
+        iyz="0.000910088774977656"
+        izz="0.0546889988259976" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Chassis.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.866666666666667 0.909803921568627 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Chassis.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Susp-Rocker-Right">
+    <inertial>
+      <origin
+        xyz="-0.137685673990851 -0.376196349080459 0.0233247419968799"
+        rpy="0 0 0" />
+      <mass
+        value="30.1779067107773" />
+      <inertia
+        ixx="0.098812152289062"
+        ixy="5.47118526868559E-07"
+        ixz="5.35291588377025E-06"
+        iyy="0.0695414832222364"
+        iyz="0.00175807538367744"
+        izz="0.0656893281518705" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Rocker-Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Rocker-Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RR-Rev"
+    type="continuous">
+    <origin
+      xyz="-0.22229 0 0.0380999999999983"
+      rpy="1.49865675355737 0 0" />
+    <parent
+      link="Chassis" />
+    <child
+      link="Susp-Rocker-Right" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Susp-Bogie-Right">
+    <inertial>
+      <origin
+        xyz="-0.0827733283423123 -0.14619555415644 2.78045536472316E-05"
+        rpy="0 0 0" />
+      <mass
+        value="3.35306088197599" />
+      <inertia
+        ixx="0.00367824655462834"
+        ixy="4.43774652083774E-07"
+        ixz="-5.594662353226E-09"
+        iyy="0.00328488482747525"
+        iyz="6.64814949372784E-07"
+        izz="0.00306810965289324" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Bogie-Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Bogie-Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BR-Rev"
+    type="continuous">
+    <origin
+      xyz="0 -0.222249999999999 -0.22225"
+      rpy="0.0721395732375216 0 0" />
+    <parent
+      link="Susp-Rocker-Right" />
+    <child
+      link="Susp-Bogie-Right" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Susp-Wheel-Rear-Right">
+    <inertial>
+      <origin
+        xyz="2.73364038072543E-08 8.47909200907271E-07 -0.0396354906894654"
+        rpy="0 0 0" />
+      <mass
+        value="0.623450621492983" />
+      <inertia
+        ixx="0.00215710127742167"
+        ixy="5.68831021348359E-10"
+        ixz="1.38030802895631E-10"
+        iyy="0.00215712586274843"
+        iyz="1.18182764618871E-08"
+        izz="0.00380148787067858" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Rear-Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Rear-Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WRR-Rev"
+    type="continuous">
+    <origin
+      xyz="-0.116804076851647 -0.217582432475082 -0.22225"
+      rpy="-1.5707963267949 0.665032514504481 -1.5707963267949" />
+    <parent
+      link="Susp-Bogie-Right" />
+    <child
+      link="Susp-Wheel-Rear-Right" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Susp-Wheel-Mid-Right">
+    <inertial>
+      <origin
+        xyz="2.7263361790375E-08 8.47851925833698E-07 -0.0396354907161451"
+        rpy="0 0 0" />
+      <mass
+        value="0.623450624231822" />
+      <inertia
+        ixx="0.00215710127595725"
+        ixy="5.69081458063996E-10"
+        ixz="1.37804648746411E-10"
+        iyy="0.00215712586249695"
+        iyz="1.18180166017144E-08"
+        izz="0.00380148786989169" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Mid-Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Mid-Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WMR-Rev"
+    type="continuous">
+    <origin
+      xyz="-0.116804076851647 -0.217582432475082 0.222250000000001"
+      rpy="-1.5707963267949 0.537353739155199 -1.5707963267949" />
+    <parent
+      link="Susp-Bogie-Right" />
+    <child
+      link="Susp-Wheel-Mid-Right" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Susp-Wheel-Front-Right">
+    <inertial>
+      <origin
+        xyz="2.72312243587702E-08 8.47881192367339E-07 -0.0396354905789434"
+        rpy="0 0 0" />
+      <mass
+        value="0.623450617829915" />
+      <inertia
+        ixx="0.0021571012749482"
+        ixy="5.68137333782203E-10"
+        ixz="1.37829856648174E-10"
+        iyy="0.00215712586036392"
+        iyz="1.18180448752349E-08"
+        izz="0.00380148786708666" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Front-Right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Front-Right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WFR-Rev"
+    type="continuous">
+    <origin
+      xyz="-0.121638218522912 -0.439832432475081 0.4445"
+      rpy="-1.5707963267949 0.450268620730527 -1.5707963267949" />
+    <parent
+      link="Susp-Rocker-Right" />
+    <child
+      link="Susp-Wheel-Front-Right" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Susp-Rocker-Left">
+    <inertial>
+      <origin
+        xyz="0.0799316779373496 -0.376992124258713 0.0417334189775944"
+        rpy="0 0 0" />
+      <mass
+        value="31.5574980561834" />
+      <inertia
+        ixx="0.100302549489973"
+        ixy="3.25252028352998E-07"
+        ixz="4.66557971142636E-06"
+        iyy="0.0710078169863188"
+        iyz="0.00175774293980436"
+        izz="0.0671791499449851" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Rocker-Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Rocker-Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="RL-Rev"
+    type="continuous">
+    <origin
+      xyz="0.222289999999999 0 0.0380999999999982"
+      rpy="1.64292278947683 0 0" />
+    <parent
+      link="Chassis" />
+    <child
+      link="Susp-Rocker-Left" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Susp-Bogie-Left">
+    <inertial>
+      <origin
+        xyz="-0.0886074699289413 -0.146195555012425 2.78045386405967E-05"
+        rpy="0 0 0" />
+      <mass
+        value="3.35306090558786" />
+      <inertia
+        ixx="0.00367824659681212"
+        ixy="4.43775271838633E-07"
+        ixz="-5.59433045299563E-09"
+        iyy="0.00328488482711463"
+        iyz="6.64809175273382E-07"
+        izz="0.00306810969685857" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Bogie-Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Bogie-Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="BL-Rev"
+    type="continuous">
+    <origin
+      xyz="0 -0.22225 -0.22225"
+      rpy="-2.95746867352226 0 3.14159265358979" />
+    <parent
+      link="Susp-Rocker-Left" />
+    <child
+      link="Susp-Bogie-Left" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Susp-Wheel-Rear-Left">
+    <inertial>
+      <origin
+        xyz="2.7314571604542E-08 8.47912846047016E-07 -0.0396354906043356"
+        rpy="0 0 0" />
+      <mass
+        value="0.623450618365388" />
+      <inertia
+        ixx="0.00215710127675677"
+        ixy="5.69629366028654E-10"
+        ixz="1.38270728074827E-10"
+        iyy="0.00215712585942718"
+        iyz="1.18184284212145E-08"
+        izz="0.00380148786757621" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Rear-Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Rear-Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WRL-Rev"
+    type="continuous">
+    <origin
+      xyz="-0.122638218522912 -0.217582432475082 0.222250000000001"
+      rpy="-1.5707963267949 -0.781066021089185 -1.5707963267949" />
+    <parent
+      link="Susp-Bogie-Left" />
+    <child
+      link="Susp-Wheel-Rear-Left" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Susp-Wheel-Mid-Left">
+    <inertial>
+      <origin
+        xyz="2.7253018342055E-08 8.47790587427122E-07 -0.0396354907385755"
+        rpy="0 0 0" />
+      <mass
+        value="0.62345062470696" />
+      <inertia
+        ixx="0.00215710127639442"
+        ixy="5.68700476738949E-10"
+        ixz="1.3772308422533E-10"
+        iyy="0.00215712586176053"
+        iyz="1.1817583271894E-08"
+        izz="0.00380148786935385" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Mid-Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Mid-Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WML-Rev"
+    type="continuous">
+    <origin
+      xyz="-0.122638218522912 -0.217582432475081 -0.22225"
+      rpy="-1.5707963267949 -0.606533095889752 -1.5707963267949" />
+    <parent
+      link="Susp-Bogie-Left" />
+    <child
+      link="Susp-Wheel-Mid-Left" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Susp-Wheel-Front-Left">
+    <inertial>
+      <origin
+        xyz="2.73389469951368E-08 8.47938214532107E-07 -0.0396354906612612"
+        rpy="0 0 0" />
+      <mass
+        value="0.623450620080179" />
+      <inertia
+        ixx="0.0021571012743737"
+        ixy="5.68342329958487E-10"
+        ixz="1.3815498424648E-10"
+        iyy="0.00215712586282446"
+        iyz="1.18185454001943E-08"
+        izz="0.003801487868182" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Front-Left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Susp-Wheel-Front-Left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="WFL-Rev"
+    type="continuous">
+    <origin
+      xyz="0.122638218522912 -0.439832432475081 0.444499999999999"
+      rpy="1.5707963267949 0.247876190622784 -1.5707963267949" />
+    <parent
+      link="Susp-Rocker-Left" />
+    <child
+      link="Susp-Wheel-Front-Left" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="Arm-Base">
+    <inertial>
+      <origin
+        xyz="0.00269121782025528 -0.0736193849501603 2.99403082272554E-06"
+        rpy="0 0 0" />
+      <mass
+        value="1.21984121425323" />
+      <inertia
+        ixx="0.00289430802459876"
+        ixy="1.06958713466775E-19"
+        ixz="1.30104260698261E-18"
+        iyy="0.00362400719320402"
+        iyz="-1.63416065266398E-08"
+        izz="0.00142025470103719" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="AB-Rev"
+    type="continuous">
+    <origin
+      xyz="0 -0.425450000000004 0"
+      rpy="1.5707963267949 0 -1.85545129341016" />
+    <parent
+      link="Chassis" />
+    <child
+      link="Arm-Base" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="Arm-Stage1">
+    <inertial>
+      <origin
+        xyz="-0.00020628223126179 0.227191684872917 -9.31851003443951E-08"
+        rpy="0 0 0" />
+      <mass
+        value="2.05584940619067" />
+      <inertia
+        ixx="0.00413647412293572"
+        ixy="1.79213187222989E-07"
+        ixz="2.52864476861688E-10"
+        iyy="0.00189852055804283"
+        iyz="3.98678971652827E-07"
+        izz="0.00426572376138632" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Stage1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Stage1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="AS1-Rev"
+    type="continuous">
+    <origin
+      xyz="0 -0.032925 0"
+      rpy="-3.1243 0 -3.1416" />
+    <parent
+      link="Arm-Base" />
+    <child
+      link="Arm-Stage1" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Arm-Stage2">
+    <inertial>
+      <origin
+        xyz="0.000764848055373635 0.108004021660145 -7.41021655881191E-06"
+        rpy="0 0 0" />
+      <mass
+        value="1.10641868195103" />
+      <inertia
+        ixx="0.00203036588347499"
+        ixy="1.2016455250978E-07"
+        ixz="8.93638502070084E-09"
+        iyy="0.000724056837132394"
+        iyz="-2.59723147049563E-07"
+        izz="0.00167896852167445" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Stage2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Stage2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="AS2-Rev"
+    type="continuous">
+    <origin
+      xyz="0 0.44841 0"
+      rpy="0.69182 0 0" />
+    <parent
+      link="Arm-Stage1" />
+    <child
+      link="Arm-Stage2" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link
+    name="Arm-Wrist">
+    <inertial>
+      <origin
+        xyz="4.19332298329245E-08 0.112707914183881 9.17438099549139E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.497824704654945" />
+      <inertia
+        ixx="0.000376169945859592"
+        ixy="-1.04842601478727E-12"
+        ixz="-9.09912679193181E-11"
+        iyy="0.000316899458887731"
+        iyz="1.8032974829919E-07"
+        izz="0.000376086003282618" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Wrist.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Wrist.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="AW-Rev"
+    type="continuous">
+    <origin
+      xyz="0 0.24374 0"
+      rpy="3.1416 -0.95883 3.1416" />
+    <parent
+      link="Arm-Stage2" />
+    <child
+      link="Arm-Wrist" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="Arm-Manip">
+    <inertial>
+      <origin
+        xyz="-0.000898036264171731 0.064805984623544 -6.62278032415031E-08"
+        rpy="0 0 0" />
+      <mass
+        value="0.463838309678963" />
+      <inertia
+        ixx="0.000241695544012855"
+        ixy="3.64942774249902E-08"
+        ixz="-3.03541463488142E-09"
+        iyy="0.000262320130752642"
+        iyz="1.01793631610372E-09"
+        izz="0.000181604991372017" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Manip.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://rover_description/meshes/Arm-Manip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="AM-Rev"
+    type="continuous">
+    <origin
+      xyz="0 0.15939 0"
+      rpy="3.1416 0 2.6752" />
+    <parent
+      link="Arm-Wrist" />
+    <child
+      link="Arm-Manip" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+
+  <!-- Gazebo Materials -->
+  <gazebo reference="Chassis">
+    <material>Gazebo/Blue</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Susp-Rocker-Left">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Susp-Rocker-Right">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Susp-Bogie-Left">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Susp-Bogie-Right">
+    <material>Gazebo/Grey</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <!-- Wheel Materials with High Friction -->
+  <gazebo reference="Susp-Wheel-Front-Left">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <gazebo reference="Susp-Wheel-Front-Right">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <gazebo reference="Susp-Wheel-Mid-Left">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <gazebo reference="Susp-Wheel-Mid-Right">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <gazebo reference="Susp-Wheel-Rear-Left">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <gazebo reference="Susp-Wheel-Rear-Right">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <!-- Arm Materials -->
+  <gazebo reference="Arm-Base">
+    <material>Gazebo/Orange</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm-Stage1">
+    <material>Gazebo/Orange</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm-Stage2">
+    <material>Gazebo/Orange</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm-Wrist">
+    <material>Gazebo/Orange</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm-Manip">
+    <material>Gazebo/Red</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <!-- Gazebo Plugin for Joint State Control -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/rover</robotNamespace>
+    </plugin>
+  </gazebo>
+
+</robot>

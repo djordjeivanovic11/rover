@@ -1,0 +1,14 @@
+mission_bt:
+  ros__parameters:
+    # Behavior tree configuration
+    default_bt_xml_filename: "sample_mission.xml"
+    
+    # Mission parameters
+    mission_timeout: 300.0  # seconds
+    retry_attempts: 3
+    
+    # Navigation parameters
+    goal_tolerance: 0.5  # meters
+    
+    # Arm parameters
+    arm_timeout: 30.0  # seconds
