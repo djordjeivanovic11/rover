@@ -8,26 +8,18 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 
-# Install launch files
-install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
-
-# Install URDF files
-install(DIRECTORY urdf DESTINATION share/${PROJECT_NAME}/)
-
-# Install mesh files
-install(DIRECTORY meshes DESTINATION share/${PROJECT_NAME}/)
-
-# Install RViz config files
-install(DIRECTORY rviz DESTINATION share/${PROJECT_NAME}/)
-
-# Install config files (if they exist)
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config)
-  install(DIRECTORY config DESTINATION share/${PROJECT_NAME}/)
-endif()
-
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+# Install directories
+install(DIRECTORY
+  config
+  launch
+  meshes
+  urdf
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 ament_package()
