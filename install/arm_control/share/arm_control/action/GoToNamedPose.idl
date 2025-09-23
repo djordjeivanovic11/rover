@@ -1,0 +1,126 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from arm_control/action/GoToNamedPose.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "sensor_msgs/msg/JointState.idl"
+
+module arm_control {
+  module action {
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "GO TO NAMED POSE ACTION" "\n"
+      "=============================================================================" "\n"
+      "Action for moving to pre-defined named poses from arm_params.yaml" "\n"
+      "Provides planning, execution, and safety monitoring in one atomic operation" "\n"
+      "=============================================================================")
+    struct GoToNamedPose_Goal {
+      @verbatim (language="comment", text=
+        "GOAL" "\n"
+        "Named pose from arm_params.yaml mission_poses")
+      string pose_name;
+
+      @verbatim (language="comment", text=
+        "Velocity scaling factor")
+      @default (value=0.1)
+      @unit (value="0.0-1.0")
+      float velocity_scaling;
+
+      @verbatim (language="comment", text=
+        "Acceleration scaling factor")
+      @default (value=0.1)
+      @unit (value="0.0-1.0")
+      float acceleration_scaling;
+
+      @verbatim (language="comment", text=
+        "If true, only plan but don't execute")
+      @default (value=FALSE)
+      boolean plan_only;
+
+      @verbatim (language="comment", text=
+        "Planning timeout in seconds")
+      @default (value=5.0)
+      float planning_timeout;
+
+      @verbatim (language="comment", text=
+        "Execution timeout in seconds")
+      @default (value=30.0)
+      float execution_timeout;
+
+      @verbatim (language="comment", text=
+        "Enable collision checking")
+      @default (value=TRUE)
+      boolean collision_checking;
+
+      @verbatim (language="comment", text=
+        "Planning group to use")
+      @default (value="arm")
+      string planning_group;
+    };
+    struct GoToNamedPose_Result {
+      @verbatim (language="comment", text=
+        "RESULT" "\n"
+        "True if pose reached successfully")
+      boolean success;
+
+      @verbatim (language="comment", text=
+        "Human-readable error description")
+      string error_message;
+
+      @verbatim (language="comment", text=
+        "Structured error code from safety_params.yaml")
+      int32 error_code;
+
+      @verbatim (language="comment", text=
+        "Final end-effector pose achieved")
+      geometry_msgs::msg::PoseStamped final_pose;
+
+      @verbatim (language="comment", text=
+        "Time spent planning (seconds)")
+      float planning_time;
+
+      @verbatim (language="comment", text=
+        "Time spent executing (seconds)")
+      float execution_time;
+
+      @verbatim (language="comment", text=
+        "Final position error (meters)")
+      float final_position_error;
+
+      @verbatim (language="comment", text=
+        "Final orientation error (radians)")
+      float final_orientation_error;
+    };
+    struct GoToNamedPose_Feedback {
+      @verbatim (language="comment", text=
+        "FEEDBACK" "\n"
+        "Current execution state (PLANNING, EXECUTING, etc.)")
+      string current_state;
+
+      @verbatim (language="comment", text=
+        "Execution progress")
+      @unit (value="0.0-100.0")
+      float progress_percentage;
+
+      @verbatim (language="comment", text=
+        "Current end-effector pose")
+      geometry_msgs::msg::PoseStamped current_pose;
+
+      @verbatim (language="comment", text=
+        "Estimated time to completion (seconds)")
+      float estimated_time_remaining;
+
+      @verbatim (language="comment", text=
+        "Current joint positions")
+      sensor_msgs::msg::JointState current_joint_state;
+
+      @verbatim (language="comment", text=
+        "True if collision detected")
+      boolean collision_detected;
+
+      @verbatim (language="comment", text=
+        "Human-readable status update")
+      string status_message;
+    };
+  };
+};

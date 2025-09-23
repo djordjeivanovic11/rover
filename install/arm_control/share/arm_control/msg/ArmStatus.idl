@@ -1,0 +1,171 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from arm_control/msg/ArmStatus.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "geometry_msgs/msg/Vector3.idl"
+#include "geometry_msgs/msg/WrenchStamped.idl"
+#include "sensor_msgs/msg/JointState.idl"
+#include "std_msgs/msg/Header.idl"
+
+module arm_control {
+  module msg {
+    module ArmStatus_Constants {
+      @verbatim (language="comment", text=
+        "Current arm state enum")
+      const uint8 IDLE = 0;
+      const uint8 PLANNING = 1;
+      const uint8 EXECUTING = 2;
+      const uint8 TOOL_CHANGE = 3;
+      const uint8 FAULT = 4;
+      const uint8 EMERGENCY_STOP = 5;
+      const uint8 CALIBRATING = 6;
+    };
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "ARM STATUS MESSAGE" "\n"
+      "=============================================================================" "\n"
+      "Comprehensive status message for dashboards, ROS bags, and judge telemetry" "\n"
+      "Published at regular intervals for system monitoring" "\n"
+      "=============================================================================")
+    struct ArmStatus {
+      @verbatim (language="comment", text=
+        "Header for timestamp and frame information")
+      std_msgs::msg::Header header;
+
+      uint8 state;
+
+      @verbatim (language="comment", text=
+        "Current end-effector pose")
+      geometry_msgs::msg::PoseStamped current_pose;
+
+      @verbatim (language="comment", text=
+        "Current joint state")
+      sensor_msgs::msg::JointState joint_state;
+
+      @verbatim (language="comment", text=
+        "Current tool information")
+      string current_tool_name;
+
+      boolean tool_attached;
+
+      @verbatim (language="comment", text=
+        "Current gripper opening (meters)")
+      float gripper_opening;
+
+      @verbatim (language="comment", text=
+        "Current gripper force (Newtons)")
+      float gripper_force;
+
+      @verbatim (language="comment", text=
+        "Safety status" "\n"
+        "Overall safety status")
+      boolean safety_ok;
+
+      @verbatim (language="comment", text=
+        "Emergency stop status")
+      boolean estop_active;
+
+      @verbatim (language="comment", text=
+        "Current error code (0 = no error)")
+      uint8 error_code;
+
+      @verbatim (language="comment", text=
+        "Human-readable error description")
+      string error_message;
+
+      @verbatim (language="comment", text=
+        "Motion status" "\n"
+        "True if arm is currently moving")
+      boolean in_motion;
+
+      @verbatim (language="comment", text=
+        "Current velocity magnitude (rad/s)")
+      float velocity_norm;
+
+      @verbatim (language="comment", text=
+        "TCP linear velocity (m/s)")
+      geometry_msgs::msg::Vector3 tcp_velocity;
+
+      @verbatim (language="comment", text=
+        "TCP angular velocity (rad/s)")
+      geometry_msgs::msg::Vector3 tcp_angular_velocity;
+
+      @verbatim (language="comment", text=
+        "Force/Torque status" "\n"
+        "Current F/T at TCP")
+      geometry_msgs::msg::WrenchStamped current_wrench;
+
+      @verbatim (language="comment", text=
+        "True if force limiting is active")
+      boolean force_limit_active;
+
+      @verbatim (language="comment", text=
+        "Temperature monitoring" "\n"
+        "Joint temperatures (Celsius)")
+      sequence<float> joint_temperatures;
+
+      @verbatim (language="comment", text=
+        "Highest joint temperature")
+      float max_temperature;
+
+      @verbatim (language="comment", text=
+        "True if any joint over warning temp")
+      boolean temperature_warning;
+
+      @verbatim (language="comment", text=
+        "Current monitoring" "\n"
+        "Joint currents (Amps)")
+      sequence<float> joint_currents;
+
+      @verbatim (language="comment", text=
+        "Highest joint current")
+      float max_current;
+
+      @verbatim (language="comment", text=
+        "True if any joint over current limit")
+      boolean current_warning;
+
+      @verbatim (language="comment", text=
+        "Workspace status" "\n"
+        "True if current pose is within workspace")
+      boolean workspace_valid;
+
+      @verbatim (language="comment", text=
+        "Distance to workspace boundary (meters)")
+      float workspace_margin;
+
+      @verbatim (language="comment", text=
+        "Mission context" "\n"
+        "Current mission type (ES, SC, DM, etc.)")
+      string current_mission;
+
+      @verbatim (language="comment", text=
+        "Current action being executed")
+      string current_action;
+
+      @verbatim (language="comment", text=
+        "Action progress percentage")
+      @unit (value="0.0-100.0")
+      float action_progress;
+
+      @verbatim (language="comment", text=
+        "System health" "\n"
+        "System uptime (seconds)")
+      float system_uptime;
+
+      @verbatim (language="comment", text=
+        "Total commands executed")
+      uint32 command_count;
+
+      @verbatim (language="comment", text=
+        "Total faults encountered")
+      uint32 fault_count;
+
+      @verbatim (language="comment", text=
+        "Recent command success rate")
+      @unit (value="0.0-1.0")
+      float success_rate;
+    };
+  };
+};

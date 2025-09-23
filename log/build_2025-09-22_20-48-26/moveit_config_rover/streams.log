@@ -1,0 +1,45 @@
+[0.135s] Invoking command in '/home/rover/workspaces/rover-real/src/build/moveit_config_rover': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake /home/rover/workspaces/rover-real/src/moveit/moveit_config_rover -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/moveit_config_rover
+[0.737s] -- The C compiler identification is GNU 11.4.0
+[1.114s] -- The CXX compiler identification is GNU 11.4.0
+[1.151s] -- Detecting C compiler ABI info
+[1.826s] -- Detecting C compiler ABI info - done
+[1.865s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.866s] -- Detecting C compile features
+[1.867s] -- Detecting C compile features - done
+[1.888s] -- Detecting CXX compiler ABI info
+[2.517s] -- Detecting CXX compiler ABI info - done
+[2.538s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.538s] -- Detecting CXX compile features
+[2.539s] -- Detecting CXX compile features - done
+[2.566s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[3.613s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[4.188s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[4.517s] -- Added test 'copyright' to check source files copyright and LICENSE
+[4.524s] -- Added test 'lint_cmake' to check CMake code style
+[4.529s] -- Added test 'xmllint' to check XML markup files
+[4.543s] -- Configuring done
+[4.637s] -- Generating done
+[4.644s] -- Build files have been written to: /home/rover/workspaces/rover-real/src/build/moveit_config_rover
+[4.694s] Invoked command in '/home/rover/workspaces/rover-real/src/build/moveit_config_rover' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake /home/rover/workspaces/rover-real/src/moveit/moveit_config_rover -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/moveit_config_rover
+[4.695s] Invoking command in '/home/rover/workspaces/rover-real/src/build/moveit_config_rover': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/moveit_config_rover -- -j6 -l6
+[4.997s] Invoked command in '/home/rover/workspaces/rover-real/src/build/moveit_config_rover' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/moveit_config_rover -- -j6 -l6
+[4.998s] Invoking command in '/home/rover/workspaces/rover-real/src/build/moveit_config_rover': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/moveit_config_rover
+[5.038s] -- Install configuration: ""
+[5.039s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover//rviz
+[5.039s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover//rviz/moveit.rviz
+[5.039s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/ament_index/resource_index/package_run_dependencies/moveit_config_rover
+[5.040s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/ament_index/resource_index/parent_prefix_path/moveit_config_rover
+[5.040s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/environment/ament_prefix_path.sh
+[5.040s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/environment/ament_prefix_path.dsv
+[5.041s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/environment/path.sh
+[5.041s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/environment/path.dsv
+[5.055s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/local_setup.bash
+[5.055s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/local_setup.sh
+[5.055s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/local_setup.zsh
+[5.056s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/local_setup.dsv
+[5.056s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/package.dsv
+[5.056s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/ament_index/resource_index/packages/moveit_config_rover
+[5.057s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/cmake/moveit_config_roverConfig.cmake
+[5.057s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/cmake/moveit_config_roverConfig-version.cmake
+[5.057s] -- Installing: /home/rover/workspaces/rover-real/src/install/moveit_config_rover/share/moveit_config_rover/package.xml
+[5.066s] Invoked command in '/home/rover/workspaces/rover-real/src/build/moveit_config_rover' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/moveit_config_rover

@@ -1,0 +1,167 @@
+# =============================================================================
+# ROVER CONTROL DRIVE PARAMETERS
+# =============================================================================
+# Core rover configuration including wheel geometry, control parameters,
+# and mission-specific behavior settings for URC competition.
+# =============================================================================
+
+rover_control:
+  ros__parameters:
+    # =======================================================================
+    # PHYSICAL PARAMETERS
+    # =======================================================================
+    
+    # Wheel and chassis geometry
+    wheelbase: 0.52                      # Distance between front and rear axles (m)
+    track_width: 0.48                    # Distance between left and right wheels (m)
+    wheel_radius: 0.125                  # Wheel radius (m)
+    gear_ratio: 20.0                     # Motor to wheel gear ratio
+    wheel_circumference: 0.785           # Wheel circumference (m) - calculated from radius
+    
+    # Mass and inertia properties
+    robot_mass: 45.0                     # Total robot mass (kg)
+    moment_of_inertia: 2.8               # Rotational moment of inertia (kg⋅m²)
+    center_of_mass: [0.0, 0.0, 0.2]     # Center of mass offset from base_link [x, y, z] (m)
+    
+    # =======================================================================
+    # CONTROL PARAMETERS
+    # =======================================================================
+    
+    # Maximum limits (hardware constraints)
+    max_linear_velocity: 2.5            # Maximum linear velocity (m/s)
+    max_angular_velocity: 1.2           # Maximum angular velocity (rad/s)
+    max_linear_acceleration: 2.0        # Maximum linear acceleration (m/s²)
+    max_angular_acceleration: 1.5       # Maximum angular acceleration (rad/s²)
+    
+    # Control loop parameters
+    control_frequency: 50.0              # Control loop frequency (Hz)
+    command_timeout: 0.5                 # Command timeout (seconds)
+    
+    # PID gains for velocity control
+    linear_pid:
+      p: 2.5                            # Proportional gain
+      i: 0.1                            # Integral gain
+      d: 0.05                           # Derivative gain
+      max_integral: 1.0                 # Maximum integral windup
+      
+    angular_pid:
+      p: 1.8                            # Proportional gain
+      i: 0.05                           # Integral gain
+      d: 0.08                           # Derivative gain
+      max_integral: 0.5                 # Maximum integral windup
+      
+    # =======================================================================
+    # MISSION MODES
+    # =======================================================================
+    
+    mission_modes:
+      # Exploration mode - balanced speed and safety
+      exploration:
+        max_linear_velocity: 1.8        # m/s
+        max_angular_velocity: 0.9       # rad/s
+        max_acceleration: 1.2           # m/s²
+        lookahead_distance: 1.5         # Pure pursuit lookahead (m)
+        position_tolerance: 0.1         # Position tolerance (m)
+        orientation_tolerance: 0.1      # Orientation tolerance (rad)
+        
+      # Science mode - slow and precise
+      science:
+        max_linear_velocity: 0.8        # m/s
+        max_angular_velocity: 0.4       # rad/s
+        max_acceleration: 0.6           # m/s²
+        lookahead_distance: 0.8         # Pure pursuit lookahead (m)
+        position_tolerance: 0.05        # Position tolerance (m)
+        orientation_tolerance: 0.05     # Orientation tolerance (rad)
+        
+      # Return to base mode - fast but safe
+      return_to_base:
+        max_linear_velocity: 2.2        # m/s
+        max_angular_velocity: 1.0       # rad/s
+        max_acceleration: 1.5           # m/s²
+        lookahead_distance: 2.0         # Pure pursuit lookahead (m)
+        position_tolerance: 0.2         # Position tolerance (m)
+        orientation_tolerance: 0.15     # Orientation tolerance (rad)
+        
+      # Manual mode - responsive for teleoperation
+      manual:
+        max_linear_velocity: 1.5        # m/s
+        max_angular_velocity: 0.8       # rad/s
+        max_acceleration: 2.0           # m/s²
+        lookahead_distance: 1.0         # Pure pursuit lookahead (m)
+        position_tolerance: 0.1         # Position tolerance (m)
+        orientation_tolerance: 0.1      # Orientation tolerance (rad)
+        
+    # =======================================================================
+    # PATH FOLLOWING
+    # =======================================================================
+    
+    path_following:
+      # Pure pursuit parameters
+      pure_pursuit:
+        min_lookahead: 0.5              # Minimum lookahead distance (m)
+        max_lookahead: 3.0              # Maximum lookahead distance (m)
+        lookahead_ratio: 0.3            # Lookahead = velocity * ratio + min_lookahead
+        
+      # Trajectory smoothing
+      trajectory_smoothing:
+        enable: true                    # Enable trajectory smoothing
+        smoothing_factor: 0.8           # Smoothing factor [0.0-1.0]
+        max_deviation: 0.2              # Maximum deviation from original path (m)
+        
+      # Goal reaching
+      goal_reaching:
+        approach_velocity_ratio: 0.5    # Velocity ratio for final approach
+        final_approach_distance: 1.0    # Distance to start final approach (m)
+        position_tolerance: 0.1         # Final position tolerance (m)
+        orientation_tolerance: 0.1      # Final orientation tolerance (rad)
+        
+    # =======================================================================
+    # OBSTACLE AVOIDANCE
+    # =======================================================================
+    
+    obstacle_avoidance:
+      enable: true                      # Enable dynamic obstacle avoidance
+      safety_margin: 0.3                # Safety margin around obstacles (m)
+      max_avoidance_distance: 2.0       # Maximum distance to consider obstacles (m)
+      avoidance_velocity_scaling: 0.7   # Velocity scaling when avoiding obstacles
+      recovery_distance: 0.5            # Distance to clear before resuming normal path
+      
+    # =======================================================================
+    # SLIP COMPENSATION
+    # =======================================================================
+    
+    slip_compensation:
+      enable: true                      # Enable wheel slip compensation
+      slip_threshold: 0.1               # Slip threshold for compensation
+      compensation_gain: 0.8            # Compensation gain factor
+      max_compensation: 1.5             # Maximum compensation factor
+      
+    # =======================================================================
+    # VISUAL SERVOING (URC-specific)
+    # =======================================================================
+    
+    visual_servoing:
+      enable: false                     # Enable visual servoing for tennis ball approach
+      activation_distance: 3.0          # Distance to activate visual servoing (m)
+      approach_velocity: 0.3            # Velocity during visual servoing (m/s)
+      position_tolerance: 0.05          # Final position tolerance (m)
+      timeout: 30.0                     # Visual servoing timeout (seconds)
+      
+    # =======================================================================
+    # COORDINATE FRAMES
+    # =======================================================================
+    
+    frames:
+      base_frame: "base_link"           # Base frame for the rover
+      odom_frame: "odom"                # Odometry frame
+      map_frame: "map"                  # Map frame for navigation
+      
+    # =======================================================================
+    # TOPICS
+    # =======================================================================
+    
+    topics:
+      cmd_vel: "/cmd_vel"               # Velocity command topic
+      odom: "/odom"                     # Odometry topic
+      status: "/rover/status"           # Rover status topic
+      drive_command: "/rover/drive_cmd" # Internal drive command topic 

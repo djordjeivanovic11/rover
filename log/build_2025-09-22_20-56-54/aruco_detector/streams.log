@@ -1,0 +1,20 @@
+[0.098s] Invoking command in '/home/rover/workspaces/rover-real/src/build/aruco_detector': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/aruco_detector -- -j6 -l6
+[0.713s] Invoked command in '/home/rover/workspaces/rover-real/src/build/aruco_detector' returned '0': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/aruco_detector -- -j6 -l6
+[0.728s] Invoking command in '/home/rover/workspaces/rover-real/src/build/aruco_detector': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/aruco_detector
+[1.077s] -- Install configuration: ""
+[1.078s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/ament_index/resource_index/package_run_dependencies/aruco_detector
+[1.078s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/ament_index/resource_index/parent_prefix_path/aruco_detector
+[1.078s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/environment/ament_prefix_path.sh
+[1.079s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/environment/ament_prefix_path.dsv
+[1.079s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/environment/path.sh
+[1.079s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/environment/path.dsv
+[1.079s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/local_setup.bash
+[1.079s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/local_setup.sh
+[1.079s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/local_setup.zsh
+[1.080s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/local_setup.dsv
+[1.080s] -- Installing: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/package.dsv
+[1.080s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/ament_index/resource_index/packages/aruco_detector
+[1.080s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/cmake/aruco_detectorConfig.cmake
+[1.080s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/cmake/aruco_detectorConfig-version.cmake
+[1.080s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/aruco_detector/share/aruco_detector/package.xml
+[1.114s] Invoked command in '/home/rover/workspaces/rover-real/src/build/aruco_detector' returned '0': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/aruco_detector

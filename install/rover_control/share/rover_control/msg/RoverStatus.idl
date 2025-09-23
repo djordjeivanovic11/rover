@@ -1,0 +1,190 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rover_control/msg/RoverStatus.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Point.idl"
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "geometry_msgs/msg/Twist.idl"
+#include "geometry_msgs/msg/Vector3.idl"
+#include "nav_msgs/msg/Odometry.idl"
+#include "std_msgs/msg/Header.idl"
+
+module rover_control {
+  module msg {
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "ROVER STATUS MESSAGE" "\n"
+      "=============================================================================" "\n"
+      "Comprehensive rover status message for telemetry, diagnostics, and" "\n"
+      "mission monitoring. Includes URC competition-specific fields." "\n"
+      "=============================================================================")
+    struct RoverStatus {
+      @verbatim (language="comment", text=
+        "Header")
+      std_msgs::msg::Header header;
+
+      @verbatim (language="comment", text=
+        "Current rover state" "\n"
+        "Current action being executed")
+      string current_action;
+
+      @verbatim (language="comment", text=
+        "Current mission mode")
+      string mission_mode;
+
+      @verbatim (language="comment", text=
+        "True if in autonomous mode")
+      boolean is_autonomous;
+
+      @verbatim (language="comment", text=
+        "True if all safety checks pass")
+      boolean safety_ok;
+
+      @verbatim (language="comment", text=
+        "True if emergency stop is active")
+      boolean emergency_stop_active;
+
+      @verbatim (language="comment", text=
+        "Position and motion" "\n"
+        "Current pose in map frame")
+      geometry_msgs::msg::PoseStamped current_pose;
+
+      @verbatim (language="comment", text=
+        "Current linear and angular velocity")
+      geometry_msgs::msg::Twist current_velocity;
+
+      @verbatim (language="comment", text=
+        "Full odometry information")
+      nav_msgs::msg::Odometry odometry;
+
+      @verbatim (language="comment", text=
+        "Mission progress" "\n"
+        "Overall mission progress")
+      @unit (value="0.0-100.0")
+      float mission_progress_percentage;
+
+      @verbatim (language="comment", text=
+        "Remaining autonomy timer (seconds)")
+      float autonomy_time_remaining;
+
+      @verbatim (language="comment", text=
+        "Number of waypoints completed")
+      int32 waypoints_completed;
+
+      @verbatim (language="comment", text=
+        "Total waypoints in current mission")
+      int32 total_waypoints;
+
+      @verbatim (language="comment", text=
+        "Hardware status" "\n"
+        "Battery voltage (V)")
+      float battery_voltage;
+
+      @verbatim (language="comment", text=
+        "Battery current (A)")
+      float battery_current;
+
+      @verbatim (language="comment", text=
+        "State of charge")
+      @unit (value="0.0-1.0")
+      float battery_soc;
+
+      @verbatim (language="comment", text=
+        "Battery temperature (C)")
+      float battery_temperature;
+
+      @verbatim (language="comment", text=
+        "Current draw for each motor (A)")
+      sequence<float> motor_currents;
+
+      @verbatim (language="comment", text=
+        "Temperature for each motor (C)")
+      sequence<float> motor_temperatures;
+
+      @verbatim (language="comment", text=
+        "Communication and performance" "\n"
+        "Link quality")
+      @unit (value="0.0-1.0")
+      float communication_quality;
+
+      @verbatim (language="comment", text=
+        "Current bandwidth usage (Mbps)")
+      float bandwidth_usage;
+
+      @verbatim (language="comment", text=
+        "CPU usage percentage")
+      @unit (value="0.0-100.0")
+      float cpu_usage;
+
+      @verbatim (language="comment", text=
+        "Memory usage percentage")
+      @unit (value="0.0-100.0")
+      float memory_usage;
+
+      @verbatim (language="comment", text=
+        "Safety and diagnostics" "\n"
+        "Array of active fault codes")
+      sequence<int32> active_faults;
+
+      @verbatim (language="comment", text=
+        "Human-readable fault descriptions")
+      sequence<string> fault_messages;
+
+      @verbatim (language="comment", text=
+        "True if rover is stuck")
+      boolean stuck_detected;
+
+      @verbatim (language="comment", text=
+        "Current wheel slip ratio")
+      @unit (value="0.0-1.0")
+      float slip_ratio;
+
+      @verbatim (language="comment", text=
+        "True if collision detected")
+      boolean collision_detected;
+
+      @verbatim (language="comment", text=
+        "Environmental" "\n"
+        "Ambient temperature (C)")
+      float ambient_temperature;
+
+      @verbatim (language="comment", text=
+        "Internal temperature (C)")
+      float internal_temperature;
+
+      @verbatim (language="comment", text=
+        "Humidity percentage")
+      @unit (value="0.0-100.0")
+      float humidity;
+
+      @verbatim (language="comment", text=
+        "Current acceleration (m/s²)")
+      geometry_msgs::msg::Vector3 acceleration;
+
+      @verbatim (language="comment", text=
+        "Angular velocity from IMU (rad/s)")
+      geometry_msgs::msg::Vector3 angular_velocity;
+
+      @verbatim (language="comment", text=
+        "URC-specific telemetry" "\n"
+        "URC competition mode")
+      string competition_mode;
+
+      @verbatim (language="comment", text=
+        "Estimated score for current task")
+      float judge_score_estimate;
+
+      @verbatim (language="comment", text=
+        "True if visual servoing is active")
+      boolean visual_servoing_active;
+
+      @verbatim (language="comment", text=
+        "Number of tennis balls detected")
+      int32 tennis_balls_detected;
+
+      @verbatim (language="comment", text=
+        "Sun direction vector (for navigation bias)")
+      geometry_msgs::msg::Point sun_direction;
+    };
+  };
+};

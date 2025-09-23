@@ -1,0 +1,12 @@
+source;share/rover_boot/hook/path.ps1
+source;share/rover_boot/hook/path.dsv
+source;share/rover_boot/hook/path.sh
+source;share/rover_boot/hook/pythonpath.ps1
+source;share/rover_boot/hook/pythonpath.dsv
+source;share/rover_boot/hook/pythonpath.sh
+source;share/rover_boot/hook/pythonscriptspath.ps1
+source;share/rover_boot/hook/pythonscriptspath.dsv
+source;share/rover_boot/hook/pythonscriptspath.sh
+source;share/rover_boot/hook/ament_prefix_path.ps1
+source;share/rover_boot/hook/ament_prefix_path.dsv
+source;share/rover_boot/hook/ament_prefix_path.sh

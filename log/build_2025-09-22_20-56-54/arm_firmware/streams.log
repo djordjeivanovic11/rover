@@ -1,0 +1,24 @@
+[0.179s] Invoking command in '/home/rover/workspaces/rover-real/src/build/arm_firmware': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/arm_firmware -- -j6 -l6
+[0.827s] [35m[1mConsolidate compiler generated dependencies of target arm_firmware.elf[0m
+[1.265s] [100%] Built target arm_firmware.elf
+[1.515s] Invoked command in '/home/rover/workspaces/rover-real/src/build/arm_firmware' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/arm_firmware -- -j6 -l6
+[1.518s] Invoking command in '/home/rover/workspaces/rover-real/src/build/arm_firmware': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/arm_firmware
+[1.637s] -- Install configuration: ""
+[1.638s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/firmware/arm_firmware.hex
+[1.638s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/lib/arm_firmware/upload_firmware.sh
+[1.638s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/ament_index/resource_index/package_run_dependencies/arm_firmware
+[1.638s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/ament_index/resource_index/parent_prefix_path/arm_firmware
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/ament_prefix_path.sh
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/ament_prefix_path.dsv
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/path.sh
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/path.dsv
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.bash
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.sh
+[1.639s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.zsh
+[1.640s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.dsv
+[1.640s] -- Installing: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/package.dsv
+[1.640s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/ament_index/resource_index/packages/arm_firmware
+[1.640s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/cmake/arm_firmwareConfig.cmake
+[1.640s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/cmake/arm_firmwareConfig-version.cmake
+[1.659s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/package.xml
+[3.440s] Invoked command in '/home/rover/workspaces/rover-real/src/build/arm_firmware' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/arm_firmware

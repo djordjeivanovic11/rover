@@ -1,0 +1,10 @@
+action/GoToNamedPose.action
+action/GoToNamedPose.idl
+action/PickAndPlace.action
+action/PickAndPlace.idl
+action/ToolChange.action
+action/ToolChange.idl
+msg/ArmStatus.idl
+msg/ArmStatus.msg
+msg/Fault.idl
+msg/Fault.msg

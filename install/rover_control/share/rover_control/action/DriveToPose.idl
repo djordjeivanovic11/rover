@@ -1,0 +1,142 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from rover_control/action/DriveToPose.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "nav_msgs/msg/Path.idl"
+
+module rover_control {
+  module action {
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "DRIVE TO POSE ACTION" "\n"
+      "=============================================================================" "\n"
+      "Action for driving the rover to a target pose with path planning and" "\n"
+      "execution monitoring. Includes URC-specific features like autonomy timer" "\n"
+      "and visual servoing for final approach." "\n"
+      "=============================================================================")
+    struct DriveToPose_Goal {
+      @verbatim (language="comment", text=
+        "GOAL" "\n"
+        "Target pose in map frame")
+      geometry_msgs::msg::PoseStamped target_pose;
+
+      @verbatim (language="comment", text=
+        "Maximum velocity during approach (m/s)")
+      @default (value=1.0)
+      float max_velocity;
+
+      @verbatim (language="comment", text=
+        "Position tolerance for success (meters)")
+      @default (value=0.1)
+      float position_tolerance;
+
+      @verbatim (language="comment", text=
+        "Orientation tolerance for success (radians)")
+      @default (value=0.1)
+      float orientation_tolerance;
+
+      @verbatim (language="comment", text=
+        "Execution timeout (seconds)")
+      @default (value=60.0)
+      float timeout;
+
+      @verbatim (language="comment", text=
+        "Enable visual servoing for final 3m")
+      @default (value=FALSE)
+      boolean use_visual_servoing;
+
+      @verbatim (language="comment", text=
+        "Mission mode: exploration, science, return_to_base")
+      @default (value="exploration")
+      string mission_mode;
+
+      @verbatim (language="comment", text=
+        "Allow reverse driving if needed")
+      @default (value=FALSE)
+      boolean reverse_allowed;
+
+      @verbatim (language="comment", text=
+        "Velocity for final approach (m/s)")
+      @default (value=0.5)
+      float approach_velocity;
+    };
+    struct DriveToPose_Result {
+      @verbatim (language="comment", text=
+        "RESULT" "\n"
+        "True if pose reached successfully")
+      boolean success;
+
+      @verbatim (language="comment", text=
+        "Structured result code (0=SUCCESS, 1=CANCELLED, etc.)")
+      int32 result_code;
+
+      @verbatim (language="comment", text=
+        "Human-readable error description")
+      string error_message;
+
+      @verbatim (language="comment", text=
+        "Final position error (meters)")
+      float final_position_error;
+
+      @verbatim (language="comment", text=
+        "Final orientation error (radians)")
+      float final_orientation_error;
+
+      @verbatim (language="comment", text=
+        "Total execution time (seconds)")
+      float execution_time;
+
+      @verbatim (language="comment", text=
+        "Total distance traveled (meters)")
+      float distance_traveled;
+
+      @verbatim (language="comment", text=
+        "Final pose achieved")
+      geometry_msgs::msg::PoseStamped final_pose;
+
+      @verbatim (language="comment", text=
+        "Path actually executed")
+      nav_msgs::msg::Path executed_path;
+    };
+    struct DriveToPose_Feedback {
+      @verbatim (language="comment", text=
+        "FEEDBACK" "\n"
+        "Current execution state (PLANNING, EXECUTING, APPROACHING, etc.)")
+      string current_state;
+
+      @verbatim (language="comment", text=
+        "Execution progress")
+      @unit (value="0.0-100.0")
+      float progress_percentage;
+
+      @verbatim (language="comment", text=
+        "Current rover pose")
+      geometry_msgs::msg::PoseStamped current_pose;
+
+      @verbatim (language="comment", text=
+        "Estimated time to completion (seconds)")
+      float estimated_time_remaining;
+
+      @verbatim (language="comment", text=
+        "Distance remaining to target (meters)")
+      float distance_remaining;
+
+      @verbatim (language="comment", text=
+        "Current rover velocity (m/s)")
+      float current_velocity;
+
+      @verbatim (language="comment", text=
+        "Human-readable status update")
+      string status_message;
+
+      @verbatim (language="comment", text=
+        "True if stuck condition detected")
+      boolean stuck_detected;
+
+      @verbatim (language="comment", text=
+        "Remaining autonomy timer (seconds)")
+      float autonomy_time_remaining;
+    };
+  };
+};

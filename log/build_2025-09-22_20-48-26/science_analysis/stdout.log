@@ -1,0 +1,39 @@
+running egg_info
+creating ../../build/science_analysis/science_analysis.egg-info
+writing ../../build/science_analysis/science_analysis.egg-info/PKG-INFO
+writing dependency_links to ../../build/science_analysis/science_analysis.egg-info/dependency_links.txt
+writing entry points to ../../build/science_analysis/science_analysis.egg-info/entry_points.txt
+writing requirements to ../../build/science_analysis/science_analysis.egg-info/requires.txt
+writing top-level names to ../../build/science_analysis/science_analysis.egg-info/top_level.txt
+writing manifest file '../../build/science_analysis/science_analysis.egg-info/SOURCES.txt'
+reading manifest file '../../build/science_analysis/science_analysis.egg-info/SOURCES.txt'
+writing manifest file '../../build/science_analysis/science_analysis.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/rover/workspaces/rover-real/src/build/science_analysis/build
+creating /home/rover/workspaces/rover-real/src/build/science_analysis/build/lib
+creating /home/rover/workspaces/rover-real/src/build/science_analysis/build/lib/science_analysis
+copying science_analysis/node.py -> /home/rover/workspaces/rover-real/src/build/science_analysis/build/lib/science_analysis
+copying science_analysis/__init__.py -> /home/rover/workspaces/rover-real/src/build/science_analysis/build/lib/science_analysis
+running install
+running install_lib
+creating /home/rover/workspaces/rover-real/src/install/science_analysis/lib/python3.10/site-packages/science_analysis
+copying /home/rover/workspaces/rover-real/src/build/science_analysis/build/lib/science_analysis/node.py -> /home/rover/workspaces/rover-real/src/install/science_analysis/lib/python3.10/site-packages/science_analysis
+copying /home/rover/workspaces/rover-real/src/build/science_analysis/build/lib/science_analysis/__init__.py -> /home/rover/workspaces/rover-real/src/install/science_analysis/lib/python3.10/site-packages/science_analysis
+byte-compiling /home/rover/workspaces/rover-real/src/install/science_analysis/lib/python3.10/site-packages/science_analysis/node.py to node.cpython-310.pyc
+byte-compiling /home/rover/workspaces/rover-real/src/install/science_analysis/lib/python3.10/site-packages/science_analysis/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/rover/workspaces/rover-real/src/install/science_analysis/share/ament_index
+creating /home/rover/workspaces/rover-real/src/install/science_analysis/share/ament_index/resource_index
+creating /home/rover/workspaces/rover-real/src/install/science_analysis/share/ament_index/resource_index/packages
+copying resource/science_analysis -> /home/rover/workspaces/rover-real/src/install/science_analysis/share/ament_index/resource_index/packages
+copying package.xml -> /home/rover/workspaces/rover-real/src/install/science_analysis/share/science_analysis
+creating /home/rover/workspaces/rover-real/src/install/science_analysis/share/science_analysis/launch
+copying launch/science_analysis.launch.py -> /home/rover/workspaces/rover-real/src/install/science_analysis/share/science_analysis/launch
+creating /home/rover/workspaces/rover-real/src/install/science_analysis/share/science_analysis/config
+copying config/assay_params.yaml -> /home/rover/workspaces/rover-real/src/install/science_analysis/share/science_analysis/config
+running install_egg_info
+Copying ../../build/science_analysis/science_analysis.egg-info to /home/rover/workspaces/rover-real/src/install/science_analysis/lib/python3.10/site-packages/science_analysis-0.0.0-py3.10.egg-info
+running install_scripts
+Installing science_analysis_node script to /home/rover/workspaces/rover-real/src/install/science_analysis/bin
+writing list of installed files to '/home/rover/workspaces/rover-real/src/build/science_analysis/install.log'

@@ -1,0 +1,148 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from arm_control/action/ToolChange.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+
+module arm_control {
+  module action {
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "TOOL CHANGE ACTION" "\n"
+      "=============================================================================" "\n"
+      "Action for changing end-effector tools with hot URDF/SRDF reloading" "\n"
+      "Handles tool release, acquisition, and kinematics updates without restarts" "\n"
+      "=============================================================================")
+    struct ToolChange_Goal {
+      @verbatim (language="comment", text=
+        "GOAL" "\n"
+        "Tool name from arm_params.yaml tools section")
+      string new_tool_name;
+
+      @verbatim (language="comment", text=
+        "Current tool name (for validation)")
+      string current_tool_name;
+
+      @verbatim (language="comment", text=
+        "Auto-detect current tool if true")
+      @default (value=FALSE)
+      boolean auto_detect_current;
+
+      @verbatim (language="comment", text=
+        "Tool docking station pose")
+      geometry_msgs::msg::PoseStamped tool_dock_pose;
+
+      @verbatim (language="comment", text=
+        "Distance for approach phase (meters)")
+      @default (value=0.1)
+      float approach_distance;
+
+      @verbatim (language="comment", text=
+        "Coupling operation timeout (seconds)")
+      @default (value=10.0)
+      float coupling_timeout;
+
+      @verbatim (language="comment", text=
+        "Verify tool change completion")
+      @default (value=TRUE)
+      boolean verify_tool_change;
+
+      @verbatim (language="comment", text=
+        "Update MoveIt kinematics after change")
+      @default (value=TRUE)
+      boolean update_kinematics;
+
+      @verbatim (language="comment", text=
+        "Slow velocity for tool change operations")
+      @default (value=0.05)
+      float velocity_scaling;
+
+      @verbatim (language="comment", text=
+        "Change strategy: \"auto\", \"manual\", \"force\"")
+      @default (value="auto")
+      string change_strategy;
+    };
+    struct ToolChange_Result {
+      @verbatim (language="comment", text=
+        "RESULT" "\n"
+        "True if tool change completed successfully")
+      boolean success;
+
+      @verbatim (language="comment", text=
+        "Human-readable error description")
+      string error_message;
+
+      @verbatim (language="comment", text=
+        "Structured error code")
+      int32 error_code;
+
+      @verbatim (language="comment", text=
+        "Tool that was removed")
+      string old_tool_name;
+
+      @verbatim (language="comment", text=
+        "Tool that was installed")
+      string new_tool_name;
+
+      @verbatim (language="comment", text=
+        "True if coupling mechanism verified")
+      boolean coupling_verified;
+
+      @verbatim (language="comment", text=
+        "True if kinematics successfully updated")
+      boolean kinematics_updated;
+
+      @verbatim (language="comment", text=
+        "Final tool tip pose")
+      geometry_msgs::msg::PoseStamped final_tool_pose;
+
+      @verbatim (language="comment", text=
+        "Total operation time (seconds)")
+      float total_execution_time;
+
+      @verbatim (language="comment", text=
+        "New tool configuration loaded")
+      string tool_configuration;
+    };
+    struct ToolChange_Feedback {
+      @verbatim (language="comment", text=
+        "FEEDBACK" "\n"
+        "Current phase (APPROACH, RELEASE, RETRACT, ACQUIRE, COUPLE, VERIFY)")
+      string current_phase;
+
+      @verbatim (language="comment", text=
+        "Progress within current phase")
+      @unit (value="0.0-100.0")
+      float phase_progress;
+
+      @verbatim (language="comment", text=
+        "Overall operation progress")
+      @unit (value="0.0-100.0")
+      float overall_progress;
+
+      @verbatim (language="comment", text=
+        "True if tool detected at dock")
+      boolean tool_detected;
+
+      @verbatim (language="comment", text=
+        "True if coupling mechanism engaged")
+      boolean coupling_engaged;
+
+      @verbatim (language="comment", text=
+        "Coupling status: \"LOCKED\", \"UNLOCKED\", \"ENGAGING\", \"ERROR\"")
+      string coupling_status;
+
+      @verbatim (language="comment", text=
+        "Kinematics update status: \"LOADING\", \"UPDATED\", \"FAILED\"")
+      string kinematics_status;
+
+      @verbatim (language="comment", text=
+        "Human-readable status update")
+      string status_message;
+
+      @verbatim (language="comment", text=
+        "Estimated time to completion (seconds)")
+      float estimated_time_remaining;
+    };
+  };
+};

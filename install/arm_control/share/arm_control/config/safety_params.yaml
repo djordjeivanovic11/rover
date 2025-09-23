@@ -1,0 +1,168 @@
+# =============================================================================
+# ARM CONTROL SAFETY PARAMETERS
+# =============================================================================
+# Critical safety limits and monitoring thresholds for 150ms fault response.
+# All topic schemas are defined here for future publisher integration.
+# =============================================================================
+
+safety_monitor:
+  ros__parameters:
+    # Core safety parameters
+    update_rate: 100.0  # 100 Hz monitoring (10ms cycle for <150ms response)
+    fault_response_timeout: 0.15  # 150ms maximum fault response time
+    
+    # Emergency stop configuration
+    estop:
+      software_topic: "/arm/estop_sw"
+      hardware_topic: "/arm/estop_hw" 
+      gpio_pin: 18
+      active_low: true
+      debounce_time: 0.01  # 10ms debounce
+      
+    # Joint monitoring topics (TODO: Publishers to be implemented)
+    monitoring_topics:
+      joint_currents: "/arm/joint_currents"        # sensor_msgs/JointState
+      joint_temps: "/arm/joint_temperatures"       # sensor_msgs/Temperature[]
+      tcp_wrench: "/arm/tcp_wrench"               # geometry_msgs/WrenchStamped
+      joint_states: "/joint_states"               # sensor_msgs/JointState
+      
+    # Current limits (Amps)
+    current_limits:
+      base_rotate: 8.0
+      shoulder_pitch: 10.0
+      shoulder_roll: 8.0
+      elbow_pitch: 6.0
+      wrist_pitch: 4.0
+      wrist_roll: 3.0
+      gripper_joint: 5.0
+      
+    # Temperature limits (Celsius)
+    temperature_limits:
+      warning_temp: 65.0
+      critical_temp: 80.0
+      shutdown_temp: 90.0
+      
+    # Force/Torque limits (N/Nm)
+    force_torque_limits:
+      max_force_x: 50.0
+      max_force_y: 50.0
+      max_force_z: 100.0  # Allow higher Z force for pressing
+      max_torque_x: 10.0
+      max_torque_y: 10.0
+      max_torque_z: 15.0
+      
+    # Velocity limits (rad/s) - safety margins on arm_params.yaml
+    velocity_limits:
+      base_rotate: 0.8      # 80% of arm_params limit
+      shoulder_pitch: 0.8
+      shoulder_roll: 0.8
+      elbow_pitch: 0.8
+      wrist_pitch: 1.2
+      wrist_roll: 1.6
+      
+    # Position limits (rad) - safety margins on arm_params.yaml  
+    position_limits:
+      base_rotate: [-3.0, 3.0]        # 95% of full range
+      shoulder_pitch: [-1.4, 1.4]
+      shoulder_roll: [-3.0, 3.0]
+      elbow_pitch: [-2.5, 2.5]
+      wrist_pitch: [-3.0, 3.0]
+      wrist_roll: [-3.0, 3.0]
+      
+    # Tracking error limits (rad)
+    tracking_error_limits:
+      position_error: 0.1    # 0.1 rad max position error
+      velocity_error: 0.5    # 0.5 rad/s max velocity error
+      
+    # Collision detection
+    collision_detection:
+      enable_self_collision: true
+      enable_environment_collision: true
+      collision_margin: 0.05  # meters
+      
+    # Workspace monitoring
+    workspace_limits:
+      max_reach: 0.6         # meters from base
+      min_reach: 0.1
+      max_height: 0.5        # meters above base
+      min_height: -0.3       # meters below base
+      
+    # Communication timeouts (seconds)
+    timeouts:
+      joint_state_timeout: 0.05      # 50ms max age for joint states
+      force_torque_timeout: 0.1      # 100ms max age for F/T data
+      command_timeout: 0.2           # 200ms max age for commands
+      estop_heartbeat_timeout: 1.0   # 1s heartbeat for E-stop
+      
+    # Fault response behavior
+    fault_response:
+      immediate_stop: true           # Stop all motion immediately
+      brake_engage: true             # Engage motor brakes
+      power_reduction: 0.0           # Reduce power to 0%
+      retry_attempts: 3              # Automatic retry attempts
+      manual_reset_required: true    # Require manual reset after fault
+      
+    # Fault reporting
+    fault_reporting:
+      publish_rate: 10.0            # 10 Hz fault status publishing
+      status_topic: "/arm/safety_status"
+      fault_topic: "/arm/faults"
+      log_level: "ERROR"
+      
+# Pre-defined fault codes for structured error reporting
+fault_codes:
+  # Joint faults (1xx)
+  JOINT_OVERCURRENT: 101
+  JOINT_OVERTEMP: 102
+  JOINT_POSITION_LIMIT: 103
+  JOINT_VELOCITY_LIMIT: 104
+  JOINT_TRACKING_ERROR: 105
+  
+  # Force/Torque faults (2xx)
+  FORCE_LIMIT_EXCEEDED: 201
+  TORQUE_LIMIT_EXCEEDED: 202
+  FT_SENSOR_TIMEOUT: 203
+  FT_SENSOR_ERROR: 204
+  
+  # Emergency stop faults (3xx)
+  ESTOP_ACTIVATED: 301
+  ESTOP_TIMEOUT: 302
+  ESTOP_HARDWARE_FAULT: 303
+  
+  # Communication faults (4xx)
+  JOINT_STATE_TIMEOUT: 401
+  COMMAND_TIMEOUT: 402
+  HARDWARE_COMM_LOSS: 403
+  CAN_BUS_ERROR: 404
+  
+  # Workspace faults (5xx)
+  WORKSPACE_VIOLATION: 501
+  COLLISION_DETECTED: 502
+  UNREACHABLE_TARGET: 503
+  
+  # System faults (6xx)
+  HARDWARE_FAILURE: 601
+  SOFTWARE_EXCEPTION: 602
+  CONFIGURATION_ERROR: 603
+  CALIBRATION_REQUIRED: 604
+
+# Fault recovery procedures
+fault_recovery:
+  # Automatic recovery for non-critical faults
+  auto_recovery_enabled: true
+  auto_recovery_faults:
+    - JOINT_TRACKING_ERROR
+    - FT_SENSOR_TIMEOUT
+    - COMMAND_TIMEOUT
+    
+  # Recovery timeouts
+  recovery_timeout: 5.0           # 5s max recovery time
+  reset_delay: 1.0               # 1s delay before retry
+  
+  # Manual recovery required for critical faults
+  manual_recovery_faults:
+    - JOINT_OVERCURRENT
+    - JOINT_OVERTEMP
+    - ESTOP_ACTIVATED
+    - COLLISION_DETECTED
+    - HARDWARE_FAILURE 

@@ -1,0 +1,12 @@
+// generated from rosidl_generator_cpp/resource/idl.hpp.em
+// generated code does not contain a copyright notice
+
+#ifndef ROVER_CONTROL__ACTION__CANCEL_MOTION_HPP_
+#define ROVER_CONTROL__ACTION__CANCEL_MOTION_HPP_
+
+#include "rover_control/action/detail/cancel_motion__struct.hpp"
+#include "rover_control/action/detail/cancel_motion__builder.hpp"
+#include "rover_control/action/detail/cancel_motion__traits.hpp"
+#include "rover_control/action/detail/cancel_motion__type_support.hpp"
+
+#endif  // ROVER_CONTROL__ACTION__CANCEL_MOTION_HPP_

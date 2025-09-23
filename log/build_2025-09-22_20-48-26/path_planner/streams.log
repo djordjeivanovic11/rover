@@ -1,0 +1,62 @@
+[0.092s] Invoking command in '/home/rover/workspaces/rover-real/src/build/path_planner': /usr/bin/cmake /home/rover/workspaces/rover-real/src/navigation/global_nav/path_planner -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/path_planner
+[0.504s] -- The C compiler identification is GNU 11.4.0
+[0.849s] -- The CXX compiler identification is GNU 11.4.0
+[0.930s] -- Detecting C compiler ABI info
+[1.507s] -- Detecting C compiler ABI info - done
+[1.535s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.536s] -- Detecting C compile features
+[1.536s] -- Detecting C compile features - done
+[1.556s] -- Detecting CXX compiler ABI info
+[2.228s] -- Detecting CXX compiler ABI info - done
+[2.270s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.272s] -- Detecting CXX compile features
+[2.274s] -- Detecting CXX compile features - done
+[2.298s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[3.283s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[3.840s] -- Found rclcpp: 16.0.14 (/opt/ros/humble/share/rclcpp/cmake)
+[4.039s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[4.055s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[4.096s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[4.135s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[4.191s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[4.342s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[4.367s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[4.442s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[4.495s] -- Looking for pthread.h
+[4.950s] -- Looking for pthread.h - found
+[4.950s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[5.304s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[5.306s] -- Found Threads: TRUE  
+[5.498s] -- Found geometry_msgs: 4.9.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[5.535s] -- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)
+[5.591s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[5.858s] -- Configuring done
+[5.911s] -- Generating done
+[5.914s] [33mCMake Warning:
+[5.915s]   Manually-specified variables were not used by the project:
+[5.915s] 
+[5.915s]     CATKIN_INSTALL_INTO_PREFIX_ROOT
+[5.915s] 
+[5.915s] [0m
+[5.922s] -- Build files have been written to: /home/rover/workspaces/rover-real/src/build/path_planner
+[5.997s] Invoked command in '/home/rover/workspaces/rover-real/src/build/path_planner' returned '0': /usr/bin/cmake /home/rover/workspaces/rover-real/src/navigation/global_nav/path_planner -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/path_planner
+[5.999s] Invoking command in '/home/rover/workspaces/rover-real/src/build/path_planner': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/path_planner -- -j6 -l6
+[6.440s] Invoked command in '/home/rover/workspaces/rover-real/src/build/path_planner' returned '0': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/path_planner -- -j6 -l6
+[6.448s] Invoking command in '/home/rover/workspaces/rover-real/src/build/path_planner': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/path_planner
+[6.534s] -- Install configuration: ""
+[6.535s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/ament_index/resource_index/package_run_dependencies/path_planner
+[6.536s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/ament_index/resource_index/parent_prefix_path/path_planner
+[6.536s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/ament_prefix_path.sh
+[6.539s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/ament_prefix_path.dsv
+[6.539s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/path.sh
+[6.540s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/path.dsv
+[6.540s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.bash
+[6.541s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.sh
+[6.541s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.zsh
+[6.542s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.dsv
+[6.542s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/package.dsv
+[6.542s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/ament_index/resource_index/packages/path_planner
+[6.542s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/cmake/path_plannerConfig.cmake
+[6.542s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/cmake/path_plannerConfig-version.cmake
+[6.542s] -- Installing: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/package.xml
+[6.543s] Invoked command in '/home/rover/workspaces/rover-real/src/build/path_planner' returned '0': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/path_planner

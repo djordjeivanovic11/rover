@@ -10,12 +10,24 @@ find_package(ament_cmake REQUIRED)
 
 # Install directories
 install(DIRECTORY
-  config
   launch
-  srdf
-  rviz
   DESTINATION share/${PROJECT_NAME}/
 )
+
+# Install config directory if it exists
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/config)
+  install(DIRECTORY config DESTINATION share/${PROJECT_NAME}/)
+endif()
+
+# Install srdf directory if it exists
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/srdf)
+  install(DIRECTORY srdf DESTINATION share/${PROJECT_NAME}/)
+endif()
+
+# Install rviz directory if it exists
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/rviz)
+  install(DIRECTORY rviz DESTINATION share/${PROJECT_NAME}/)
+endif()
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

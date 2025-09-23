@@ -1,0 +1,46 @@
+[3.893s] Invoking command in '/home/rover/workspaces/rover-real/src/perception/pointcloud_tools': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/pointcloud_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/pointcloud_tools build --build-base /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build install --record /home/rover/workspaces/rover-real/src/build/pointcloud_tools/install.log --single-version-externally-managed install_data
+[4.865s] running egg_info
+[4.866s] creating ../../build/pointcloud_tools/pointcloud_tools.egg-info
+[4.870s] writing ../../build/pointcloud_tools/pointcloud_tools.egg-info/PKG-INFO
+[4.873s] writing dependency_links to ../../build/pointcloud_tools/pointcloud_tools.egg-info/dependency_links.txt
+[4.876s] writing entry points to ../../build/pointcloud_tools/pointcloud_tools.egg-info/entry_points.txt
+[4.878s] writing requirements to ../../build/pointcloud_tools/pointcloud_tools.egg-info/requires.txt
+[4.880s] writing top-level names to ../../build/pointcloud_tools/pointcloud_tools.egg-info/top_level.txt
+[4.883s] writing manifest file '../../build/pointcloud_tools/pointcloud_tools.egg-info/SOURCES.txt'
+[4.893s] reading manifest file '../../build/pointcloud_tools/pointcloud_tools.egg-info/SOURCES.txt'
+[4.897s] writing manifest file '../../build/pointcloud_tools/pointcloud_tools.egg-info/SOURCES.txt'
+[4.898s] running build
+[4.899s] running build_py
+[4.899s] creating /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build
+[4.900s] creating /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib
+[4.901s] creating /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools
+[4.902s] copying pointcloud_tools/grid_builder_node.py -> /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools
+[4.904s] copying pointcloud_tools/depth_to_scan_node.py -> /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools
+[4.920s] copying pointcloud_tools/__init__.py -> /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools
+[4.921s] running install
+[4.921s] running install_lib
+[4.921s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools
+[4.921s] copying /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools/grid_builder_node.py -> /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools
+[4.921s] copying /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools/depth_to_scan_node.py -> /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools
+[4.921s] copying /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build/lib/pointcloud_tools/__init__.py -> /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools
+[4.922s] byte-compiling /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools/grid_builder_node.py to grid_builder_node.cpython-310.pyc
+[4.922s] byte-compiling /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools/depth_to_scan_node.py to depth_to_scan_node.cpython-310.pyc
+[4.923s] byte-compiling /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools/__init__.py to __init__.cpython-310.pyc
+[4.924s] running install_data
+[4.924s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share
+[4.924s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/ament_index
+[4.925s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/ament_index/resource_index
+[4.925s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/ament_index/resource_index/packages
+[4.925s] copying resource/pointcloud_tools -> /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/ament_index/resource_index/packages
+[4.925s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/pointcloud_tools
+[4.926s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/pointcloud_tools/launch
+[4.926s] copying launch/pointcloud_tools.launch.py -> /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/pointcloud_tools/launch
+[4.926s] creating /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/pointcloud_tools/config
+[4.926s] copying config/pointcloud_params.yaml -> /home/rover/workspaces/rover-real/src/install/pointcloud_tools/share/pointcloud_tools/config
+[4.926s] running install_egg_info
+[4.934s] Copying ../../build/pointcloud_tools/pointcloud_tools.egg-info to /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools-0.1.0-py3.10.egg-info
+[4.936s] running install_scripts
+[5.009s] Installing depth_to_scan script to /home/rover/workspaces/rover-real/src/install/pointcloud_tools/bin
+[5.010s] Installing grid_builder script to /home/rover/workspaces/rover-real/src/install/pointcloud_tools/bin
+[5.011s] writing list of installed files to '/home/rover/workspaces/rover-real/src/build/pointcloud_tools/install.log'
+[5.243s] Invoked command in '/home/rover/workspaces/rover-real/src/perception/pointcloud_tools' returned '0': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/pointcloud_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/pointcloud_tools build --build-base /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build install --record /home/rover/workspaces/rover-real/src/build/pointcloud_tools/install.log --single-version-externally-managed install_data

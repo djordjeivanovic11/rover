@@ -1,0 +1,22 @@
+[5.733s] Invoking command in '/home/rover/workspaces/rover-real/src/perception/pointcloud_tools': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/pointcloud_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/pointcloud_tools build --build-base /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build install --record /home/rover/workspaces/rover-real/src/build/pointcloud_tools/install.log --single-version-externally-managed install_data
+[7.470s] running egg_info
+[7.471s] writing ../../build/pointcloud_tools/pointcloud_tools.egg-info/PKG-INFO
+[7.477s] writing dependency_links to ../../build/pointcloud_tools/pointcloud_tools.egg-info/dependency_links.txt
+[7.479s] writing entry points to ../../build/pointcloud_tools/pointcloud_tools.egg-info/entry_points.txt
+[7.479s] writing requirements to ../../build/pointcloud_tools/pointcloud_tools.egg-info/requires.txt
+[7.479s] writing top-level names to ../../build/pointcloud_tools/pointcloud_tools.egg-info/top_level.txt
+[7.487s] reading manifest file '../../build/pointcloud_tools/pointcloud_tools.egg-info/SOURCES.txt'
+[7.498s] writing manifest file '../../build/pointcloud_tools/pointcloud_tools.egg-info/SOURCES.txt'
+[7.500s] running build
+[7.501s] running build_py
+[7.501s] running install
+[7.501s] running install_lib
+[7.501s] running install_data
+[7.501s] running install_egg_info
+[7.527s] removing '/home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools-0.1.0-py3.10.egg-info' (and everything under it)
+[7.528s] Copying ../../build/pointcloud_tools/pointcloud_tools.egg-info to /home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages/pointcloud_tools-0.1.0-py3.10.egg-info
+[7.530s] running install_scripts
+[7.590s] Installing depth_to_scan script to /home/rover/workspaces/rover-real/src/install/pointcloud_tools/bin
+[7.592s] Installing grid_builder script to /home/rover/workspaces/rover-real/src/install/pointcloud_tools/bin
+[7.593s] writing list of installed files to '/home/rover/workspaces/rover-real/src/build/pointcloud_tools/install.log'
+[9.149s] Invoked command in '/home/rover/workspaces/rover-real/src/perception/pointcloud_tools' returned '0': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/pointcloud_tools/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/pointcloud_tools/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/pointcloud_tools build --build-base /home/rover/workspaces/rover-real/src/build/pointcloud_tools/build install --record /home/rover/workspaces/rover-real/src/build/pointcloud_tools/install.log --single-version-externally-managed install_data

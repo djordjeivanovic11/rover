@@ -1,0 +1,39 @@
+running egg_info
+creating ../../build/urc_interfaces/urc_interfaces.egg-info
+writing ../../build/urc_interfaces/urc_interfaces.egg-info/PKG-INFO
+writing dependency_links to ../../build/urc_interfaces/urc_interfaces.egg-info/dependency_links.txt
+writing entry points to ../../build/urc_interfaces/urc_interfaces.egg-info/entry_points.txt
+writing requirements to ../../build/urc_interfaces/urc_interfaces.egg-info/requires.txt
+writing top-level names to ../../build/urc_interfaces/urc_interfaces.egg-info/top_level.txt
+writing manifest file '../../build/urc_interfaces/urc_interfaces.egg-info/SOURCES.txt'
+reading manifest file '../../build/urc_interfaces/urc_interfaces.egg-info/SOURCES.txt'
+writing manifest file '../../build/urc_interfaces/urc_interfaces.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/rover/workspaces/rover-real/src/build/urc_interfaces/build
+creating /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib
+creating /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces
+copying urc_interfaces/frames.py -> /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces
+copying urc_interfaces/topic_names.py -> /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces
+copying urc_interfaces/__init__.py -> /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces
+running install
+running install_lib
+creating /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces
+copying /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces/frames.py -> /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces
+copying /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces/topic_names.py -> /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces
+copying /home/rover/workspaces/rover-real/src/build/urc_interfaces/build/lib/urc_interfaces/__init__.py -> /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces
+byte-compiling /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces/frames.py to frames.cpython-310.pyc
+byte-compiling /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces/topic_names.py to topic_names.cpython-310.pyc
+byte-compiling /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/ament_index
+creating /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/ament_index/resource_index
+creating /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/ament_index/resource_index/packages
+copying resource/urc_interfaces -> /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/ament_index/resource_index/packages
+copying package.xml -> /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/urc_interfaces
+creating /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/urc_interfaces/launch
+copying launch/static_tf.launch.py -> /home/rover/workspaces/rover-real/src/install/urc_interfaces/share/urc_interfaces/launch
+running install_egg_info
+Copying ../../build/urc_interfaces/urc_interfaces.egg-info to /home/rover/workspaces/rover-real/src/install/urc_interfaces/lib/python3.10/site-packages/urc_interfaces-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/rover/workspaces/rover-real/src/build/urc_interfaces/install.log'

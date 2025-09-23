@@ -37,7 +37,7 @@ class ArucoDetector(Node):
         # --------------- OpenCV objects ------------ #
         self.bridge = CvBridge()
         self.dict   = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
-        self.params = aruco.DetectorParameters()
+        self.params = aruco.DetectorParameters_create()
 
         # --------------- ROS I/O ------------------- #
         self.cam_info_msg = None

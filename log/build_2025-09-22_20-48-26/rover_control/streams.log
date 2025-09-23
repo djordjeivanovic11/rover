@@ -1,0 +1,429 @@
+[0.110s] Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_control': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:/opt/ros/humble:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/rover/workspaces/rover-real/src/control/rover_control -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/rover_control
+[0.381s] -- The C compiler identification is GNU 11.4.0
+[0.533s] -- The CXX compiler identification is GNU 11.4.0
+[0.553s] -- Detecting C compiler ABI info
+[0.964s] -- Detecting C compiler ABI info - done
+[1.002s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.003s] -- Detecting C compile features
+[1.003s] -- Detecting C compile features - done
+[1.011s] -- Detecting CXX compiler ABI info
+[1.356s] -- Detecting CXX compiler ABI info - done
+[1.408s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.410s] -- Detecting CXX compile features
+[1.412s] -- Detecting CXX compile features - done
+[1.426s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[2.004s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[2.361s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[2.377s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.405s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.542s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.638s] -- Found rclcpp: 16.0.14 (/opt/ros/humble/share/rclcpp/cmake)
+[2.781s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[2.791s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[2.850s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[2.881s] -- Looking for pthread.h
+[3.189s] -- Looking for pthread.h - found
+[3.196s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.751s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[3.753s] -- Found Threads: TRUE  
+[4.018s] -- Found rclpy: 3.3.17 (/opt/ros/humble/share/rclpy/cmake)
+[4.022s] -- Found geometry_msgs: 4.9.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[4.057s] -- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[4.103s] -- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)
+[4.165s] -- Found tf2: 0.25.16 (/opt/ros/humble/share/tf2/cmake)
+[4.200s] -- Found tf2_ros: 0.25.16 (/opt/ros/humble/share/tf2_ros/cmake)
+[4.469s] -- Found tf2_geometry_msgs: 0.25.16 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)
+[4.512s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[4.517s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[4.517s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[4.526s] -- Found controller_interface: 2.51.0 (/opt/ros/humble/share/controller_interface/cmake)
+[4.802s] -- Found controller_manager: 2.51.0 (/opt/ros/humble/share/controller_manager/cmake)
+[4.868s] -- Found diff_drive_controller: 2.50.0 (/opt/ros/humble/share/diff_drive_controller/cmake)
+[4.945s] -- Found joint_state_broadcaster: 2.49.1 (/opt/ros/humble/share/joint_state_broadcaster/cmake)
+[4.976s] -- Found diagnostic_msgs: 4.9.0 (/opt/ros/humble/share/diagnostic_msgs/cmake)
+[5.010s] -- Found nav2_msgs: 1.1.18 (/opt/ros/humble/share/nav2_msgs/cmake)
+[5.064s] -- Found nav2_common: 1.1.18 (/opt/ros/humble/share/nav2_common/cmake)
+[6.257s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[7.178s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[8.391s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[8.463s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[8.467s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[8.557s] -- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[8.558s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[8.558s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[8.558s] -- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.10.so
+[8.627s] -- Found PythonExtra: .so  
+[8.905s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[10.099s] -- Added test 'copyright' to check source files copyright and LICENSE
+[10.107s] -- Added test 'flake8' to check Python code syntax and style conventions
+[10.108s] -- Added test 'lint_cmake' to check CMake code style
+[10.110s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[10.115s] -- Added test 'xmllint' to check XML markup files
+[10.123s] -- Configuring done
+[10.289s] -- Generating done
+[10.331s] -- Build files have been written to: /home/rover/workspaces/rover-real/src/build/rover_control
+[10.408s] Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_control' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:/opt/ros/humble:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/rover/workspaces/rover-real/src/control/rover_control -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/rover_control
+[10.414s] Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_control': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:/opt/ros/humble:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/rover_control -- -j6 -l6
+[10.594s] [  1%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[19.325s] [  1%] Built target rover_control__cpp
+[19.468s] [  1%] Built target ament_cmake_python_copy_rover_control
+[19.506s] [  2%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[26.789s] [  4%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rover_control/action/detail/drive_to_pose__type_support.cpp.o[0m
+[28.609s] [  5%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rover_control/action/detail/follow_path__type_support.cpp.o[0m
+[30.473s] [  7%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rover_control/action/detail/set_velocity__type_support.cpp.o[0m
+[32.376s] [  8%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rover_control/action/detail/cancel_motion__type_support.cpp.o[0m
+[34.174s] [  9%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rover_control/msg/detail/rover_status__type_support.cpp.o[0m
+[35.662s] [ 11%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/rover_control/msg/detail/drive_command__type_support.cpp.o[0m
+[36.814s] [ 12%] [32m[1mLinking CXX shared library librover_control__rosidl_typesupport_introspection_cpp.so[0m
+[37.165s] [ 12%] Built target rover_control__rosidl_typesupport_introspection_cpp
+[37.924s] running egg_info
+[37.925s] creating rover_control.egg-info
+[37.925s] writing rover_control.egg-info/PKG-INFO
+[37.926s] writing dependency_links to rover_control.egg-info/dependency_links.txt
+[37.926s] writing top-level names to rover_control.egg-info/top_level.txt
+[37.927s] writing manifest file 'rover_control.egg-info/SOURCES.txt'
+[37.933s] reading manifest file 'rover_control.egg-info/SOURCES.txt'
+[37.935s] writing manifest file 'rover_control.egg-info/SOURCES.txt'
+[38.064s] [ 12%] Built target ament_cmake_python_build_rover_control_egg
+[38.097s] [ 14%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[45.501s] [ 15%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rover_control/action/detail/dds_fastrtps/drive_to_pose__type_support.cpp.o[0m
+[47.252s] [ 16%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rover_control/action/detail/dds_fastrtps/cancel_motion__type_support.cpp.o[0m
+[49.018s] [ 18%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rover_control/msg/detail/dds_fastrtps/rover_status__type_support.cpp.o[0m
+[50.606s] [ 19%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rover_control/msg/detail/dds_fastrtps/drive_command__type_support.cpp.o[0m
+[51.837s] [ 21%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rover_control/action/detail/dds_fastrtps/set_velocity__type_support.cpp.o[0m
+[53.527s] [ 22%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/rover_control/action/detail/dds_fastrtps/follow_path__type_support.cpp.o[0m
+[55.237s] [ 23%] [32m[1mLinking CXX shared library librover_control__rosidl_typesupport_fastrtps_cpp.so[0m
+[55.534s] [ 23%] Built target rover_control__rosidl_typesupport_fastrtps_cpp
+[55.573s] [ 25%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[61.594s] [ 26%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rover_control/action/drive_to_pose__type_support.cpp.o[0m
+[62.934s] [ 28%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rover_control/msg/rover_status__type_support.cpp.o[0m
+[63.728s] [ 29%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rover_control/msg/drive_command__type_support.cpp.o[0m
+[64.521s] [ 30%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rover_control/action/cancel_motion__type_support.cpp.o[0m
+[65.858s] [ 32%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rover_control/action/set_velocity__type_support.cpp.o[0m
+[67.230s] [ 33%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/rover_control/action/follow_path__type_support.cpp.o[0m
+[68.549s] [ 35%] [32m[1mLinking CXX shared library librover_control__rosidl_typesupport_cpp.so[0m
+[68.668s] [ 35%] Built target rover_control__rosidl_typesupport_cpp
+[68.703s] [ 36%] [34m[1mGenerating C code for ROS interfaces[0m
+[81.829s] [ 38%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_c.dir/rosidl_generator_c/rover_control/action/detail/drive_to_pose__functions.c.o[0m
+[82.373s] [ 39%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_c.dir/rosidl_generator_c/rover_control/msg/detail/drive_command__functions.c.o[0m
+[82.745s] [ 40%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_c.dir/rosidl_generator_c/rover_control/msg/detail/rover_status__functions.c.o[0m
+[83.101s] [ 42%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_c.dir/rosidl_generator_c/rover_control/action/detail/cancel_motion__functions.c.o[0m
+[83.767s] [ 43%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_c.dir/rosidl_generator_c/rover_control/action/detail/set_velocity__functions.c.o[0m
+[84.721s] [ 45%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_c.dir/rosidl_generator_c/rover_control/action/detail/follow_path__functions.c.o[0m
+[85.334s] [ 46%] [32m[1mLinking C shared library librover_control__rosidl_generator_c.so[0m
+[85.739s] [ 46%] Built target rover_control__rosidl_generator_c
+[85.853s] [ 47%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[96.452s] [ 49%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rover_control/action/detail/drive_to_pose__type_support_c.cpp.o[0m
+[98.334s] [ 50%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rover_control/action/detail/cancel_motion__type_support_c.cpp.o[0m
+[99.867s] [ 52%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rover_control/msg/detail/rover_status__type_support_c.cpp.o[0m
+[101.058s] [ 53%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rover_control/msg/detail/drive_command__type_support_c.cpp.o[0m
+[102.148s] [ 54%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rover_control/action/detail/set_velocity__type_support_c.cpp.o[0m
+[103.434s] [ 56%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/rover_control/action/detail/follow_path__type_support_c.cpp.o[0m
+[104.644s] [ 57%] [32m[1mLinking CXX shared library librover_control__rosidl_typesupport_fastrtps_c.so[0m
+[104.953s] [ 57%] Built target rover_control__rosidl_typesupport_fastrtps_c
+[105.004s] [ 59%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[111.184s] [ 60%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_c.dir/rosidl_typesupport_c/rover_control/action/drive_to_pose__type_support.cpp.o[0m
+[111.325s] [ 61%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_c.dir/rosidl_typesupport_c/rover_control/msg/rover_status__type_support.cpp.o[0m
+[111.426s] [ 63%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_c.dir/rosidl_typesupport_c/rover_control/msg/drive_command__type_support.cpp.o[0m
+[111.517s] [ 64%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_c.dir/rosidl_typesupport_c/rover_control/action/cancel_motion__type_support.cpp.o[0m
+[111.661s] [ 66%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_c.dir/rosidl_typesupport_c/rover_control/action/set_velocity__type_support.cpp.o[0m
+[111.798s] [ 67%] [32mBuilding CXX object CMakeFiles/rover_control__rosidl_typesupport_c.dir/rosidl_typesupport_c/rover_control/action/follow_path__type_support.cpp.o[0m
+[111.934s] [ 69%] [32m[1mLinking CXX shared library librover_control__rosidl_typesupport_c.so[0m
+[112.072s] [ 69%] Built target rover_control__rosidl_typesupport_c
+[112.127s] [ 70%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[118.645s] [ 71%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rover_control/action/detail/drive_to_pose__type_support.c.o[0m
+[118.789s] [ 73%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rover_control/msg/detail/drive_command__type_support.c.o[0m
+[118.895s] [ 74%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rover_control/msg/detail/rover_status__type_support.c.o[0m
+[119.034s] [ 76%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rover_control/action/detail/cancel_motion__type_support.c.o[0m
+[119.173s] [ 77%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rover_control/action/detail/set_velocity__type_support.c.o[0m
+[119.310s] [ 78%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/rover_control/action/detail/follow_path__type_support.c.o[0m
+[119.448s] [ 80%] [32m[1mLinking C shared library librover_control__rosidl_typesupport_introspection_c.so[0m
+[119.550s] [ 80%] Built target rover_control__rosidl_typesupport_introspection_c
+[119.618s] [ 80%] Built target rover_control
+[119.687s] [ 81%] [34m[1mGenerating Python code for ROS interfaces[0m
+[135.734s] [ 81%] Built target rover_control__py
+[135.973s] [ 83%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_py.dir/rosidl_generator_py/rover_control/action/_drive_to_pose_s.c.o[0m
+[135.982s] [ 84%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_py.dir/rosidl_generator_py/rover_control/action/_follow_path_s.c.o[0m
+[136.791s] [ 85%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_py.dir/rosidl_generator_py/rover_control/msg/_drive_command_s.c.o[0m
+[136.856s] [ 87%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_py.dir/rosidl_generator_py/rover_control/msg/_rover_status_s.c.o[0m
+[137.601s] [ 88%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_py.dir/rosidl_generator_py/rover_control/action/_cancel_motion_s.c.o[0m
+[138.325s] [ 90%] [32mBuilding C object CMakeFiles/rover_control__rosidl_generator_py.dir/rosidl_generator_py/rover_control/action/_set_velocity_s.c.o[0m
+[139.123s] [ 91%] [32m[1mLinking C shared library rosidl_generator_py/rover_control/librover_control__rosidl_generator_py.so[0m
+[139.467s] [ 91%] Built target rover_control__rosidl_generator_py
+[139.542s] [ 92%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/rover_control/_rover_control_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[140.400s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/rover_control/rover_control_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so[0m
+[140.654s] [ 94%] Built target rover_control__rosidl_typesupport_fastrtps_c__pyext
+[140.788s] [ 95%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/rover_control/_rover_control_s.ep.rosidl_typesupport_c.c.o[0m
+[141.506s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/rover_control/rover_control_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so[0m
+[141.670s] [ 97%] Built target rover_control__rosidl_typesupport_c__pyext
+[141.757s] [ 98%] [32mBuilding C object CMakeFiles/rover_control__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/rover_control/_rover_control_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[142.413s] [100%] [32m[1mLinking C shared library rosidl_generator_py/rover_control/rover_control_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so[0m
+[142.609s] [100%] Built target rover_control__rosidl_typesupport_introspection_c__pyext
+[142.722s] Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_control' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:/opt/ros/humble:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/rover_control -- -j6 -l6
+[142.729s] Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_control': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:/opt/ros/humble:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/rover_control
+[142.800s] -- Install configuration: ""
+[142.801s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/ament_index/resource_index/rosidl_interfaces/rover_control
+[142.822s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control
+[142.822s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action
+[142.822s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/follow_path.h
+[142.823s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail
+[142.823s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__functions.h
+[142.823s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__struct.h
+[142.823s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__type_support.h
+[142.823s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__functions.c
+[142.837s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__functions.h
+[142.838s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__functions.h
+[142.838s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__functions.c
+[142.839s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__functions.c
+[142.841s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__type_support.h
+[142.842s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__functions.h
+[142.842s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__functions.c
+[142.845s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__type_support.h
+[142.847s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__struct.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__type_support.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__struct.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__struct.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/set_velocity.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/cancel_motion.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/drive_to_pose.h
+[142.848s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg
+[142.849s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rosidl_generator_c__visibility_control.h
+[142.849s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail
+[142.850s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__functions.h
+[142.850s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__functions.c
+[142.850s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__struct.h
+[142.850s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__type_support.h
+[142.851s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__type_support.h
+[142.851s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__struct.h
+[142.851s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__functions.c
+[142.861s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__functions.h
+[142.861s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/drive_command.h
+[142.861s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rover_status.h
+[142.862s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/library_path.sh
+[142.863s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/library_path.dsv
+[142.864s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_generator_c.so
+[142.866s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_generator_c.so" to ""
+[142.866s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control
+[142.866s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action
+[142.867s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail
+[142.867s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__rosidl_typesupport_fastrtps_c.h
+[142.867s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__rosidl_typesupport_fastrtps_c.h
+[142.867s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__rosidl_typesupport_fastrtps_c.h
+[142.868s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__rosidl_typesupport_fastrtps_c.h
+[142.868s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg
+[142.868s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail
+[142.868s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__rosidl_typesupport_fastrtps_c.h
+[142.868s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__rosidl_typesupport_fastrtps_c.h
+[142.869s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[142.869s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_fastrtps_c.so
+[142.870s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_fastrtps_c.so" to ""
+[142.870s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control
+[142.871s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action
+[142.871s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail
+[142.871s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__rosidl_typesupport_introspection_c.h
+[142.871s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__type_support.c
+[142.872s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__type_support.c
+[142.873s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__rosidl_typesupport_introspection_c.h
+[142.873s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__type_support.c
+[142.874s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__rosidl_typesupport_introspection_c.h
+[142.874s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__type_support.c
+[142.875s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__rosidl_typesupport_introspection_c.h
+[142.875s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg
+[142.875s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail
+[142.875s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__type_support.c
+[142.875s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__type_support.c
+[142.876s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__rosidl_typesupport_introspection_c.h
+[142.876s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__rosidl_typesupport_introspection_c.h
+[142.876s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[142.876s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_introspection_c.so
+[142.878s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_introspection_c.so" to ""
+[142.878s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_c.so
+[142.879s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_c.so" to ""
+[142.879s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control
+[142.879s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action
+[142.879s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/drive_to_pose.hpp
+[142.893s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail
+[142.893s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__struct.hpp
+[142.894s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__traits.hpp
+[142.895s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__type_support.hpp
+[142.900s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__traits.hpp
+[142.902s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__builder.hpp
+[142.902s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__builder.hpp
+[142.908s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__type_support.hpp
+[142.908s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__type_support.hpp
+[142.909s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__type_support.hpp
+[142.910s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__struct.hpp
+[142.910s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__builder.hpp
+[142.911s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__traits.hpp
+[142.912s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__struct.hpp
+[142.912s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__builder.hpp
+[142.914s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__traits.hpp
+[142.916s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__struct.hpp
+[142.916s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/cancel_motion.hpp
+[142.917s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/set_velocity.hpp
+[142.918s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/follow_path.hpp
+[142.918s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg
+[142.919s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/drive_command.hpp
+[142.919s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rover_status.hpp
+[142.920s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rosidl_generator_cpp__visibility_control.hpp
+[142.921s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail
+[142.921s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__struct.hpp
+[142.922s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__struct.hpp
+[142.922s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__traits.hpp
+[142.924s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__builder.hpp
+[142.925s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__type_support.hpp
+[142.927s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__type_support.hpp
+[142.928s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__builder.hpp
+[142.929s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__traits.hpp
+[142.930s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control
+[142.931s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action
+[142.931s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail
+[142.931s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/dds_fastrtps
+[142.931s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__rosidl_typesupport_fastrtps_cpp.hpp
+[142.932s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__rosidl_typesupport_fastrtps_cpp.hpp
+[142.933s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__rosidl_typesupport_fastrtps_cpp.hpp
+[142.934s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__rosidl_typesupport_fastrtps_cpp.hpp
+[142.935s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg
+[142.935s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail
+[142.936s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/dds_fastrtps
+[142.936s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__rosidl_typesupport_fastrtps_cpp.hpp
+[142.936s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__rosidl_typesupport_fastrtps_cpp.hpp
+[142.937s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[142.937s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_fastrtps_cpp.so
+[142.956s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_fastrtps_cpp.so" to ""
+[142.956s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control
+[142.956s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action
+[142.956s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail
+[142.957s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__rosidl_typesupport_introspection_cpp.hpp
+[142.957s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__type_support.cpp
+[142.959s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__type_support.cpp
+[142.961s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/follow_path__type_support.cpp
+[142.964s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/drive_to_pose__rosidl_typesupport_introspection_cpp.hpp
+[142.964s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__type_support.cpp
+[142.966s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/cancel_motion__rosidl_typesupport_introspection_cpp.hpp
+[142.967s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/action/detail/set_velocity__rosidl_typesupport_introspection_cpp.hpp
+[142.968s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg
+[142.969s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail
+[142.969s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__type_support.cpp
+[142.969s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__type_support.cpp
+[142.975s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/rover_status__rosidl_typesupport_introspection_cpp.hpp
+[142.976s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/include/rover_control/rover_control/msg/detail/drive_command__rosidl_typesupport_introspection_cpp.hpp
+[142.977s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_introspection_cpp.so
+[142.984s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_introspection_cpp.so" to ""
+[142.985s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_cpp.so
+[142.988s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_typesupport_cpp.so" to ""
+[142.989s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/pythonpath.sh
+[142.989s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/pythonpath.dsv
+[142.990s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control-1.0.0-py3.10.egg-info
+[142.991s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control-1.0.0-py3.10.egg-info/top_level.txt
+[142.991s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control-1.0.0-py3.10.egg-info/SOURCES.txt
+[142.992s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control-1.0.0-py3.10.egg-info/PKG-INFO
+[142.993s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control-1.0.0-py3.10.egg-info/dependency_links.txt
+[142.994s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control
+[142.994s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/librover_control__rosidl_generator_py.so
+[142.995s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/_rover_control_s.ep.rosidl_typesupport_c.c
+[142.996s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action
+[142.996s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_set_velocity_s.c
+[142.996s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_drive_to_pose_s.c
+[142.997s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_set_velocity.py
+[142.997s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_follow_path_s.c
+[142.997s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_follow_path.py
+[142.998s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_cancel_motion_s.c
+[142.998s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_cancel_motion.py
+[142.999s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_drive_to_pose.py
+[142.999s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/__init__.py
+[142.999s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/_rover_control_s.ep.rosidl_typesupport_fastrtps_c.c
+[143.000s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[143.001s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg
+[143.001s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/_rover_status_s.c
+[143.002s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/_drive_command_s.c
+[143.002s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/_rover_status.py
+[143.002s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/_drive_command.py
+[143.002s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/__init__.py
+[143.003s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[143.017s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[143.017s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/_rover_control_s.ep.rosidl_typesupport_introspection_c.c
+[143.018s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/__init__.py
+[143.292s] Listing '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control'...
+[143.293s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/__init__.py'...
+[143.293s] Listing '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action'...
+[143.293s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/__init__.py'...
+[143.293s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_cancel_motion.py'...
+[143.293s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_drive_to_pose.py'...
+[143.293s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_follow_path.py'...
+[143.293s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/action/_set_velocity.py'...
+[143.294s] Listing '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg'...
+[143.294s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/__init__.py'...
+[143.294s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/_drive_command.py'...
+[143.294s] Compiling '/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/msg/_rover_status.py'...
+[143.319s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[143.320s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so" to ""
+[143.320s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[143.322s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so" to ""
+[143.322s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[143.325s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/local/lib/python3.10/dist-packages/rover_control/rover_control_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so" to ""
+[143.326s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_generator_py.so
+[143.328s] -- Set runtime path of "/home/rover/workspaces/rover-real/src/install/rover_control/lib/librover_control__rosidl_generator_py.so" to ""
+[143.329s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/DriveToPose.idl
+[143.329s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/FollowPath.idl
+[143.329s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/SetVelocity.idl
+[143.330s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/CancelMotion.idl
+[143.330s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/msg/RoverStatus.idl
+[143.331s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/msg/DriveCommand.idl
+[143.331s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/DriveToPose.action
+[143.331s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/FollowPath.action
+[143.332s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/SetVelocity.action
+[143.333s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/action/CancelMotion.action
+[143.333s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/msg/RoverStatus.msg
+[143.333s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/msg/DriveCommand.msg
+[143.333s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/launch/
+[143.333s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/launch//uno_drive.launch.py
+[143.335s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/launch//rover_control.launch.py
+[143.336s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/config/
+[143.337s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/config//safety_params.yaml
+[143.337s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/config//controller_config.yaml
+[143.338s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/config//drive_params.yaml
+[143.339s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/resource/
+[143.340s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/resource//rover_control
+[143.341s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/test/
+[143.342s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/test//README.md
+[143.343s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/ament_index/resource_index/package_run_dependencies/rover_control
+[143.346s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/ament_index/resource_index/parent_prefix_path/rover_control
+[143.348s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/ament_prefix_path.sh
+[143.349s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/ament_prefix_path.dsv
+[143.351s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/path.sh
+[143.352s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/environment/path.dsv
+[143.354s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/local_setup.bash
+[143.356s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/local_setup.sh
+[143.358s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/local_setup.zsh
+[143.360s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/local_setup.dsv
+[143.363s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/package.dsv
+[143.365s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/ament_index/resource_index/packages/rover_control
+[143.366s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_generator_cExport.cmake
+[143.370s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_generator_cExport-noconfig.cmake
+[143.373s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_typesupport_fastrtps_cExport.cmake
+[143.375s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[143.376s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_introspection_cExport.cmake
+[143.378s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[143.380s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_cExport.cmake
+[143.382s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_cExport-noconfig.cmake
+[143.384s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_generator_cppExport.cmake
+[143.386s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_typesupport_fastrtps_cppExport.cmake
+[143.387s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[143.389s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_introspection_cppExport.cmake
+[143.390s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[143.392s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_cppExport.cmake
+[143.393s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_control__rosidl_typesupport_cppExport-noconfig.cmake
+[143.395s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_generator_pyExport.cmake
+[143.397s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/export_rover_control__rosidl_generator_pyExport-noconfig.cmake
+[143.398s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rosidl_cmake-extras.cmake
+[143.400s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/ament_cmake_export_dependencies-extras.cmake
+[143.402s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/ament_cmake_export_include_directories-extras.cmake
+[143.403s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/ament_cmake_export_libraries-extras.cmake
+[143.405s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/ament_cmake_export_targets-extras.cmake
+[143.406s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[143.408s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[143.409s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_controlConfig.cmake
+[143.411s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/cmake/rover_controlConfig-version.cmake
+[143.430s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_control/share/rover_control/package.xml
+[143.448s] Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_control' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:/opt/ros/humble:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/rover_control

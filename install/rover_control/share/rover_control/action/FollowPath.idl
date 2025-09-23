@@ -1,0 +1,153 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from rover_control/action/FollowPath.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "nav_msgs/msg/Path.idl"
+
+module rover_control {
+  module action {
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "FOLLOW PATH ACTION" "\n"
+      "=============================================================================" "\n"
+      "Action for following a predefined path with waypoints. Includes progress" "\n"
+      "tracking, stuck detection, and mission-specific optimizations." "\n"
+      "=============================================================================")
+    struct FollowPath_Goal {
+      @verbatim (language="comment", text=
+        "GOAL" "\n"
+        "Path to follow with waypoints")
+      nav_msgs::msg::Path path;
+
+      @verbatim (language="comment", text=
+        "Maximum velocity during execution (m/s)")
+      @default (value=1.0)
+      float max_velocity;
+
+      @verbatim (language="comment", text=
+        "Tolerance for reaching waypoints (meters)")
+      @default (value=0.2)
+      float waypoint_tolerance;
+
+      @verbatim (language="comment", text=
+        "Allow reverse driving if needed")
+      @default (value=FALSE)
+      boolean reverse_allowed;
+
+      @verbatim (language="comment", text=
+        "Total execution timeout (seconds)")
+      @default (value=300.0)
+      float timeout;
+
+      @verbatim (language="comment", text=
+        "Mission mode for parameter selection")
+      @default (value="exploration")
+      string mission_mode;
+
+      @verbatim (language="comment", text=
+        "Skip waypoints that are unreachable")
+      @default (value=FALSE)
+      boolean skip_unreachable;
+
+      @verbatim (language="comment", text=
+        "Pure pursuit lookahead distance (meters)")
+      @default (value=1.0)
+      float lookahead_distance;
+
+      @verbatim (language="comment", text=
+        "Enable dynamic obstacle avoidance")
+      @default (value=TRUE)
+      boolean use_obstacle_avoidance;
+    };
+    struct FollowPath_Result {
+      @verbatim (language="comment", text=
+        "RESULT" "\n"
+        "True if path completed successfully")
+      boolean success;
+
+      @verbatim (language="comment", text=
+        "Structured result code (0=SUCCESS, 1=CANCELLED, etc.)")
+      int32 result_code;
+
+      @verbatim (language="comment", text=
+        "Human-readable error description")
+      string error_message;
+
+      @verbatim (language="comment", text=
+        "Number of waypoints successfully reached")
+      int32 waypoints_completed;
+
+      @verbatim (language="comment", text=
+        "Total number of waypoints in path")
+      int32 total_waypoints;
+
+      @verbatim (language="comment", text=
+        "Total distance traveled (meters)")
+      float total_distance;
+
+      @verbatim (language="comment", text=
+        "Total execution time (seconds)")
+      float execution_time;
+
+      @verbatim (language="comment", text=
+        "Actual path executed")
+      nav_msgs::msg::Path executed_path;
+
+      @verbatim (language="comment", text=
+        "Final pose achieved")
+      geometry_msgs::msg::PoseStamped final_pose;
+
+      @verbatim (language="comment", text=
+        "Average velocity during execution (m/s)")
+      float average_velocity;
+    };
+    struct FollowPath_Feedback {
+      @verbatim (language="comment", text=
+        "FEEDBACK" "\n"
+        "Current execution state (FOLLOWING, APPROACHING_WAYPOINT, etc.)")
+      string current_state;
+
+      @verbatim (language="comment", text=
+        "Execution progress")
+      @unit (value="0.0-100.0")
+      float progress_percentage;
+
+      @verbatim (language="comment", text=
+        "Index of current target waypoint")
+      int32 current_waypoint;
+
+      @verbatim (language="comment", text=
+        "Current rover pose")
+      geometry_msgs::msg::PoseStamped current_pose;
+
+      @verbatim (language="comment", text=
+        "Estimated time to completion (seconds)")
+      float estimated_time_remaining;
+
+      @verbatim (language="comment", text=
+        "Distance remaining on path (meters)")
+      float distance_remaining;
+
+      @verbatim (language="comment", text=
+        "Current rover velocity (m/s)")
+      float current_velocity;
+
+      @verbatim (language="comment", text=
+        "Human-readable status update")
+      string status_message;
+
+      @verbatim (language="comment", text=
+        "True if stuck condition detected")
+      boolean stuck_detected;
+
+      @verbatim (language="comment", text=
+        "Remaining autonomy timer (seconds)")
+      float autonomy_time_remaining;
+
+      @verbatim (language="comment", text=
+        "Current target waypoint")
+      geometry_msgs::msg::PoseStamped target_waypoint;
+    };
+  };
+};

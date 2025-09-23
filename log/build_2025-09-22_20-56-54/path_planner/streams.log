@@ -1,0 +1,20 @@
+[0.290s] Invoking command in '/home/rover/workspaces/rover-real/src/build/path_planner': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/path_planner -- -j6 -l6
+[1.798s] Invoked command in '/home/rover/workspaces/rover-real/src/build/path_planner' returned '0': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/path_planner -- -j6 -l6
+[1.800s] Invoking command in '/home/rover/workspaces/rover-real/src/build/path_planner': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/path_planner
+[1.894s] -- Install configuration: ""
+[1.896s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/ament_index/resource_index/package_run_dependencies/path_planner
+[1.897s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/ament_index/resource_index/parent_prefix_path/path_planner
+[1.897s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/ament_prefix_path.sh
+[1.897s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/ament_prefix_path.dsv
+[1.897s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/path.sh
+[1.897s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/environment/path.dsv
+[1.897s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.bash
+[1.898s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.sh
+[1.898s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.zsh
+[1.898s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/local_setup.dsv
+[1.899s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/package.dsv
+[1.902s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/ament_index/resource_index/packages/path_planner
+[1.902s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/cmake/path_plannerConfig.cmake
+[1.903s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/cmake/path_plannerConfig-version.cmake
+[1.903s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/path_planner/share/path_planner/package.xml
+[1.950s] Invoked command in '/home/rover/workspaces/rover-real/src/build/path_planner' returned '0': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/path_planner

@@ -1,0 +1,36 @@
+[0.380s] Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_description': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/rover_description -- -j6 -l6
+[2.249s] Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/rover_description -- -j6 -l6
+[2.254s] Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_description': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/rover_description
+[2.325s] -- Install configuration: ""
+[2.325s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//launch
+[2.325s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//launch/display.launch.py
+[2.325s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf
+[2.326s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes
+[2.327s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes/arm.xacro
+[2.327s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes/sensors.xacro
+[2.328s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes/gazebo_tags.xacro
+[2.328s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes/chassis.xacro
+[2.330s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes/wheel.xacro
+[2.330s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/_includes/transmissions.xacro
+[2.331s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/materials.xacro
+[2.333s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//urdf/rover.urdf.xacro
+[2.333s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//meshes
+[2.333s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//rviz
+[2.334s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//rviz/display.rviz
+[2.334s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description//config
+[2.334s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/ament_index/resource_index/package_run_dependencies/rover_description
+[2.335s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/ament_index/resource_index/parent_prefix_path/rover_description
+[2.339s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/environment/ament_prefix_path.sh
+[2.340s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/environment/ament_prefix_path.dsv
+[2.341s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/environment/path.sh
+[2.342s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/environment/path.dsv
+[2.342s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/local_setup.bash
+[2.343s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/local_setup.sh
+[2.343s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/local_setup.zsh
+[2.343s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/local_setup.dsv
+[2.343s] -- Installing: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/package.dsv
+[2.346s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/ament_index/resource_index/packages/rover_description
+[2.346s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/cmake/rover_descriptionConfig.cmake
+[2.346s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/cmake/rover_descriptionConfig-version.cmake
+[2.347s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/rover_description/share/rover_description/package.xml
+[2.561s] Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_description' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/rover_description

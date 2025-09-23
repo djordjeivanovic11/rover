@@ -1,0 +1,39 @@
+[7.026s] Invoking command in '/home/rover/workspaces/rover-real/src/science/cache_manager': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/cache_manager/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cache_manager build --build-base /home/rover/workspaces/rover-real/src/build/cache_manager/build install --record /home/rover/workspaces/rover-real/src/build/cache_manager/install.log --single-version-externally-managed install_data
+[10.800s] running egg_info
+[10.811s] creating ../../build/cache_manager/cache_manager.egg-info
+[10.823s] writing ../../build/cache_manager/cache_manager.egg-info/PKG-INFO
+[10.827s] writing dependency_links to ../../build/cache_manager/cache_manager.egg-info/dependency_links.txt
+[10.828s] writing entry points to ../../build/cache_manager/cache_manager.egg-info/entry_points.txt
+[10.829s] writing requirements to ../../build/cache_manager/cache_manager.egg-info/requires.txt
+[10.830s] writing top-level names to ../../build/cache_manager/cache_manager.egg-info/top_level.txt
+[10.832s] writing manifest file '../../build/cache_manager/cache_manager.egg-info/SOURCES.txt'
+[10.842s] reading manifest file '../../build/cache_manager/cache_manager.egg-info/SOURCES.txt'
+[10.846s] writing manifest file '../../build/cache_manager/cache_manager.egg-info/SOURCES.txt'
+[10.848s] running build
+[10.849s] running build_py
+[10.850s] creating /home/rover/workspaces/rover-real/src/build/cache_manager/build
+[10.851s] creating /home/rover/workspaces/rover-real/src/build/cache_manager/build/lib
+[10.852s] creating /home/rover/workspaces/rover-real/src/build/cache_manager/build/lib/cache_manager
+[10.853s] copying cache_manager/node.py -> /home/rover/workspaces/rover-real/src/build/cache_manager/build/lib/cache_manager
+[10.855s] copying cache_manager/__init__.py -> /home/rover/workspaces/rover-real/src/build/cache_manager/build/lib/cache_manager
+[10.857s] running install
+[10.859s] running install_lib
+[10.864s] creating /home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages/cache_manager
+[10.869s] copying /home/rover/workspaces/rover-real/src/build/cache_manager/build/lib/cache_manager/node.py -> /home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages/cache_manager
+[10.870s] copying /home/rover/workspaces/rover-real/src/build/cache_manager/build/lib/cache_manager/__init__.py -> /home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages/cache_manager
+[10.874s] byte-compiling /home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages/cache_manager/node.py to node.cpython-310.pyc
+[10.876s] byte-compiling /home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages/cache_manager/__init__.py to __init__.cpython-310.pyc
+[10.877s] running install_data
+[10.879s] creating /home/rover/workspaces/rover-real/src/install/cache_manager/share/ament_index
+[10.880s] creating /home/rover/workspaces/rover-real/src/install/cache_manager/share/ament_index/resource_index
+[10.881s] creating /home/rover/workspaces/rover-real/src/install/cache_manager/share/ament_index/resource_index/packages
+[10.882s] copying resource/cache_manager -> /home/rover/workspaces/rover-real/src/install/cache_manager/share/ament_index/resource_index/packages
+[10.886s] copying package.xml -> /home/rover/workspaces/rover-real/src/install/cache_manager/share/cache_manager
+[10.888s] creating /home/rover/workspaces/rover-real/src/install/cache_manager/share/cache_manager/launch
+[10.889s] copying launch/cache_manager.launch.py -> /home/rover/workspaces/rover-real/src/install/cache_manager/share/cache_manager/launch
+[10.893s] running install_egg_info
+[10.903s] Copying ../../build/cache_manager/cache_manager.egg-info to /home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages/cache_manager-0.0.0-py3.10.egg-info
+[10.908s] running install_scripts
+[10.997s] Installing cache_manager_node script to /home/rover/workspaces/rover-real/src/install/cache_manager/bin
+[11.000s] writing list of installed files to '/home/rover/workspaces/rover-real/src/build/cache_manager/install.log'
+[11.324s] Invoked command in '/home/rover/workspaces/rover-real/src/science/cache_manager' returned '0': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/cache_manager/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/cache_manager/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cache_manager build --build-base /home/rover/workspaces/rover-real/src/build/cache_manager/build install --record /home/rover/workspaces/rover-real/src/build/cache_manager/install.log --single-version-externally-managed install_data

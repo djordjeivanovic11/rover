@@ -1,0 +1,40 @@
+running egg_info
+creating ../../build/rover_boot/rover_boot.egg-info
+writing ../../build/rover_boot/rover_boot.egg-info/PKG-INFO
+writing dependency_links to ../../build/rover_boot/rover_boot.egg-info/dependency_links.txt
+writing entry points to ../../build/rover_boot/rover_boot.egg-info/entry_points.txt
+writing requirements to ../../build/rover_boot/rover_boot.egg-info/requires.txt
+writing top-level names to ../../build/rover_boot/rover_boot.egg-info/top_level.txt
+writing manifest file '../../build/rover_boot/rover_boot.egg-info/SOURCES.txt'
+reading manifest file '../../build/rover_boot/rover_boot.egg-info/SOURCES.txt'
+writing manifest file '../../build/rover_boot/rover_boot.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/rover/workspaces/rover-real/src/build/rover_boot/build
+creating /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib
+creating /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot
+copying rover_boot/failsafes.py -> /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot
+copying rover_boot/boot_node.py -> /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot
+copying rover_boot/__init__.py -> /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot
+running install
+running install_lib
+creating /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot
+copying /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot/failsafes.py -> /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot
+copying /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot/boot_node.py -> /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot
+copying /home/rover/workspaces/rover-real/src/build/rover_boot/build/lib/rover_boot/__init__.py -> /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot
+byte-compiling /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot/failsafes.py to failsafes.cpython-310.pyc
+byte-compiling /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot/boot_node.py to boot_node.cpython-310.pyc
+byte-compiling /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/rover/workspaces/rover-real/src/install/rover_boot/share/ament_index
+creating /home/rover/workspaces/rover-real/src/install/rover_boot/share/ament_index/resource_index
+creating /home/rover/workspaces/rover-real/src/install/rover_boot/share/ament_index/resource_index/packages
+copying resource/rover_boot -> /home/rover/workspaces/rover-real/src/install/rover_boot/share/ament_index/resource_index/packages
+copying package.xml -> /home/rover/workspaces/rover-real/src/install/rover_boot/share/rover_boot
+creating /home/rover/workspaces/rover-real/src/install/rover_boot/share/rover_boot/launch
+copying launch/rover.launch.py -> /home/rover/workspaces/rover-real/src/install/rover_boot/share/rover_boot/launch
+running install_egg_info
+Copying ../../build/rover_boot/rover_boot.egg-info to /home/rover/workspaces/rover-real/src/install/rover_boot/lib/python3.10/site-packages/rover_boot-0.1.0-py3.10.egg-info
+running install_scripts
+Installing boot_node script to /home/rover/workspaces/rover-real/src/install/rover_boot/bin
+writing list of installed files to '/home/rover/workspaces/rover-real/src/build/rover_boot/install.log'

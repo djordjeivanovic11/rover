@@ -1,0 +1,151 @@
+# =============================================================================
+# ARM CONTROL CONTROLLER CONFIGURATION
+# =============================================================================
+# This config works with arm_params.yaml and adds runtime controller settings.
+# All stubs are included for future expansion without launch-time errors.
+# =============================================================================
+
+controller_manager:
+  ros__parameters:
+    update_rate: 250  # 250 Hz control loop as required
+    
+    # Controller definitions - matching arm_params.yaml
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      
+    gripper_controller:
+      type: position_controllers/GripperActionController
+      
+    # Hardware interface
+    hardware_interface:
+      type: arm_control/ArmHardwareInterface
+      
+    # Future controllers (stubs for expansion)
+    force_torque_controller:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+      
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+# Joint Trajectory Controller (inherits from arm_params.yaml)
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - base_rotate
+      - shoulder_pitch
+      - shoulder_roll
+      - elbow_pitch
+      - wrist_pitch
+      - wrist_roll
+    
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+      
+    # PID gains (stub - will pull from arm_params.yaml)
+    gains:
+      base_rotate: [100.0, 1.0, 10.0]
+      shoulder_pitch: [100.0, 1.0, 10.0]
+      shoulder_roll: [100.0, 1.0, 10.0]
+      elbow_pitch: [100.0, 1.0, 10.0]
+      wrist_pitch: [100.0, 1.0, 10.0]
+      wrist_roll: [100.0, 1.0, 10.0]
+    
+    # Trajectory constraints
+    constraints:
+      goal_time: 0.6
+      stopped_velocity_tolerance: 0.05
+      
+    # Allow stale transforms for robustness
+    allow_partial_joints_goal: false
+    allow_integration_in_goal_trajectories: true
+
+# Gripper Controller
+gripper_controller:
+  ros__parameters:
+    joint: "gripper_joint"
+    action_monitor_rate: 20.0
+    goal_tolerance: 0.01
+    max_effort: 100.0
+    allow_stalling: true
+    stall_velocity_threshold: 0.001
+    stall_timeout: 1.0
+
+# Hardware Interface Configuration
+arm_hardware_interface:
+  ros__parameters:
+    # Hardware communication
+    can_bus_id: "can0"
+    update_rate: 250.0
+    
+    # Joint motor mappings (CAN IDs)
+    motor_ids:
+      base_rotate: 1
+      shoulder_pitch: 2
+      shoulder_roll: 3
+      elbow_pitch: 4
+      wrist_pitch: 5
+      wrist_roll: 6
+      gripper_joint: 7
+    
+    # Encoder configurations
+    encoder_resolution: 4096  # counts per revolution
+    gear_ratios:
+      base_rotate: 100.0
+      shoulder_pitch: 80.0
+      shoulder_roll: 60.0
+      elbow_pitch: 50.0
+      wrist_pitch: 40.0
+      wrist_roll: 30.0
+      gripper_joint: 20.0
+    
+    # Current monitoring
+    current_limit_amps: 10.0
+    current_filter_cutoff: 10.0  # Hz
+    
+    # Temperature monitoring  
+    temp_limit_celsius: 80.0
+    temp_warning_celsius: 65.0
+    
+    # Emergency stop
+    estop_gpio_pin: 18
+    estop_active_low: true
+    
+    # Mock mode for testing (set to false for real hardware)
+    mock_mode: true
+    
+# Force/Torque Sensor (stub for future expansion)
+force_torque_sensor:
+  ros__parameters:
+    sensor_name: "wrist_ft_sensor"
+    interface_name: "force_torque"
+    frame_id: "tool_flange"
+    topic_name: "/tcp_wrench"
+    
+# Joint State Broadcaster
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - base_rotate
+      - shoulder_pitch
+      - shoulder_roll
+      - elbow_pitch
+      - wrist_pitch
+      - wrist_roll
+      - gripper_joint
+    interfaces:
+      - position
+      - velocity
+      - effort
+
+# Tool Change Controller (stub for future expansion)
+tool_change_controller:
+  ros__parameters:
+    coupling_joint: "tool_coupling"
+    lock_position: 0.0
+    unlock_position: 1.57  # 90 degrees
+    lock_timeout: 5.0
+    tool_detection_timeout: 2.0 

@@ -1,0 +1,20 @@
+[1.403s] Invoking command in '/home/rover/workspaces/rover-real/src/build/detection_pose_estimator': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/detection_pose_estimator -- -j6 -l6
+[1.730s] Invoked command in '/home/rover/workspaces/rover-real/src/build/detection_pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/detection_pose_estimator -- -j6 -l6
+[1.731s] Invoking command in '/home/rover/workspaces/rover-real/src/build/detection_pose_estimator': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/detection_pose_estimator
+[1.793s] -- Install configuration: ""
+[1.794s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/ament_index/resource_index/package_run_dependencies/detection_pose_estimator
+[1.794s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/ament_index/resource_index/parent_prefix_path/detection_pose_estimator
+[1.794s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/environment/ament_prefix_path.sh
+[1.794s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/environment/ament_prefix_path.dsv
+[1.794s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/environment/path.sh
+[1.795s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/environment/path.dsv
+[1.795s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/local_setup.bash
+[1.795s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/local_setup.sh
+[1.802s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/local_setup.zsh
+[1.803s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/local_setup.dsv
+[1.803s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/package.dsv
+[1.803s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/ament_index/resource_index/packages/detection_pose_estimator
+[1.803s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/cmake/detection_pose_estimatorConfig.cmake
+[1.804s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/cmake/detection_pose_estimatorConfig-version.cmake
+[1.804s] -- Up-to-date: /home/rover/workspaces/rover-real/src/install/detection_pose_estimator/share/detection_pose_estimator/package.xml
+[1.821s] Invoked command in '/home/rover/workspaces/rover-real/src/build/detection_pose_estimator' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/zed2i_launch:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/detection_pose_estimator

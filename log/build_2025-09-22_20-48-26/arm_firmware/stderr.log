@@ -1,0 +1,51 @@
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/NativeEthernet/src/NativeEthernetServer.cpp:[m[K In member function '[01m[KEthernetClient EthernetServer::available()[m[K':
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/NativeEthernet/src/NativeEthernetServer.cpp:119:103:[m[K [01;35m[Kwarning: [m[Kenum constant in boolean context [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wint-in-bool-context-Wint-in-bool-context]8;;[m[K]
+  119 |                   if(socket_poll.events_occurred & (FNET_SOCKET_EVENT_OUT || [01;35m[KFNET_SOCKET_EVENT_IN[m[K)) {
+      |                                                                              [01;35m[K^~~~~~~~~~~~~~~~~~~~[m[K
+
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/service/llmnr/fnet_llmnr.c:60:30:[m[K [01;35m[Kwarning: [m[K'[01m[Kfnet_llmnr_ip6_multicast_addr[m[K' defined but not used [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-const-variable=-Wunused-const-variable=]8;;[m[K]
+   60 | static const fnet_ip6_addr_t [01;35m[Kfnet_llmnr_ip6_multicast_addr[m[K = FNET_IP6_ADDR_INIT(0xFF, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x01, 0x00, 0x03);
+      |                              [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:1062:83:[m[K [01;35m[Kwarning: [m[Kargument 2 of type '[01m[Kunsigned char[36][m[K' with mismatched bound [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Warray-parameter=-Warray-parameter=]8;;[m[K]
+ 1062 | TLSFLASHMEM void ssl_calc_verify_tls( mbedtls_ssl_context *ssl, [01;35m[Kunsigned char hash[36][m[K )
+      |                                                                 [01;35m[K~~~~~~~~~~~~~~^~~~~~~~[m[K
+
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:483:73:[m[K [01;36m[Knote: [m[Kpreviously declared as '[01m[Kunsigned char *[m[K'
+  483 | MBEDTLSFLASHMEM static void ssl_calc_verify_tls( mbedtls_ssl_context *, [01;36m[Kunsigned char *[m[K );
+      |                                                                         [01;36m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:1090:90:[m[K [01;35m[Kwarning: [m[Kargument 2 of type '[01m[Kunsigned char[32][m[K' with mismatched bound [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Warray-parameter=-Warray-parameter=]8;;[m[K]
+ 1090 | HMEM void ssl_calc_verify_tls_sha256( mbedtls_ssl_context *ssl, [01;35m[Kunsigned char hash[32][m[K )
+      |                                                                 [01;35m[K~~~~~~~~~~~~~~^~~~~~~~[m[K
+
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:490:79:[m[K [01;36m[Knote: [m[Kpreviously declared as '[01m[Kunsigned char *[m[K'
+  490 | BEDTLSFLASHMEM static void ssl_calc_verify_tls_sha256( mbedtls_ssl_context *,[01;36m[Kunsigned char *[m[K );
+      |                                                                              [01;36m[K^~~~~~~~~~~~~~~[m[K
+
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:1111:90:[m[K [01;35m[Kwarning: [m[Kargument 2 of type '[01m[Kunsigned char[48][m[K' with mismatched bound [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Warray-parameter=-Warray-parameter=]8;;[m[K]
+ 1111 | HMEM void ssl_calc_verify_tls_sha384( mbedtls_ssl_context *ssl, [01;35m[Kunsigned char hash[48][m[K )
+      |                                                                 [01;35m[K~~~~~~~~~~~~~~^~~~~~~~[m[K
+
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:496:80:[m[K [01;36m[Knote: [m[Kpreviously declared as '[01m[Kunsigned char *[m[K'
+  496 | EDTLSFLASHMEM static void ssl_calc_verify_tls_sha384( mbedtls_ssl_context *, [01;36m[Kunsigned char *[m[K );
+      |                                                                              [01;36m[K^~~~~~~~~~~~~~~[m[K
+
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:[m[K In function '[01m[Kssl_calc_verify_tls_sha384[m[K':
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:1120:5:[m[K [01;35m[Kwarning: [m[K'[01m[Kmbedtls_sha512_finish_ret[m[K' accessing 64 bytes in a region of size 48 [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overflow=-Wstringop-overflow=]8;;[m[K]
+ 1120 |     [01;35m[Kmbedtls_sha512_finish_ret( &sha512, hash )[m[K;
+      |     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:1120:5:[m[K [01;36m[Knote: [m[Kreferencing argument 2 of type '[01m[Kunsigned char *[m[K'
+In file included from [01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls/ssl_internal.h:43[m[K,
+                 from [01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:48[m[K:
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls/sha512.h:128:21:[m[K [01;36m[Knote: [m[Kin a call to function '[01m[Kmbedtls_sha512_finish_ret[m[K'
+  128 | MBEDTLSFLASHMEM int [01;36m[Kmbedtls_sha512_finish_ret[m[K( mbedtls_sha512_context *ctx,
+      |                     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:[m[K In function '[01m[Kssl_calc_finished_tls_sha384[m[K':
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:5376:5:[m[K [01;35m[Kwarning: [m[K'[01m[Kmbedtls_sha512_finish_ret[m[K' accessing 64 bytes in a region of size 48 [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overflow=-Wstringop-overflow=]8;;[m[K]
+ 5376 |     [01;35m[Kmbedtls_sha512_finish_ret( &sha512, padbuf )[m[K;
+      |     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:5376:5:[m[K [01;36m[Knote: [m[Kreferencing argument 2 of type '[01m[Kunsigned char *[m[K'
+In file included from [01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls/ssl_internal.h:43[m[K,
+                 from [01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/ssl_tls.c:48[m[K:
+[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/FNET/src/third_party/mbedtls-2.12.0/src/mbedtls/sha512.h:128:21:[m[K [01;36m[Knote: [m[Kin a call to function '[01m[Kmbedtls_sha512_finish_ret[m[K'
+  128 | MBEDTLSFLASHMEM int [01;36m[Kmbedtls_sha512_finish_ret[m[K( mbedtls_sha512_context *ctx,
+      |                     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~[m[K

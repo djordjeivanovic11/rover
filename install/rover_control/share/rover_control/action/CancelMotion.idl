@@ -1,0 +1,89 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from rover_control/action/CancelMotion.action
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/PoseStamped.idl"
+#include "geometry_msgs/msg/Twist.idl"
+
+module rover_control {
+  module action {
+    @verbatim (language="comment", text=
+      "=============================================================================" "\n"
+      "CANCEL MOTION ACTION" "\n"
+      "=============================================================================" "\n"
+      "Action for immediately canceling all rover motion. Used for emergency stops," "\n"
+      "safety interventions, and motion cancellation." "\n"
+      "=============================================================================")
+    struct CancelMotion_Goal {
+      @verbatim (language="comment", text=
+        "GOAL" "\n"
+        "True for emergency stop (immediate halt)")
+      @default (value=FALSE)
+      boolean emergency_stop;
+
+      @verbatim (language="comment", text=
+        "Time to decelerate to stop (seconds, ignored if emergency)")
+      @default (value=1.0)
+      float deceleration_time;
+
+      @verbatim (language="comment", text=
+        "Cancel all running navigation actions")
+      @default (value=TRUE)
+      boolean cancel_all_actions;
+
+      @verbatim (language="comment", text=
+        "Reason for cancellation (for logging)")
+      @default (value="user_request")
+      string reason;
+    };
+    struct CancelMotion_Result {
+      @verbatim (language="comment", text=
+        "RESULT" "\n"
+        "True if motion canceled successfully")
+      boolean success;
+
+      @verbatim (language="comment", text=
+        "Structured result code (0=SUCCESS, etc.)")
+      int32 result_code;
+
+      @verbatim (language="comment", text=
+        "Human-readable error description")
+      string error_message;
+
+      @verbatim (language="comment", text=
+        "Time taken to stop (seconds)")
+      float stop_time;
+
+      @verbatim (language="comment", text=
+        "Velocity when stop command was issued")
+      geometry_msgs::msg::Twist velocity_at_stop;
+
+      @verbatim (language="comment", text=
+        "Final pose after stopping")
+      geometry_msgs::msg::PoseStamped final_pose;
+
+      @verbatim (language="comment", text=
+        "Number of actions that were cancelled")
+      int32 actions_cancelled;
+    };
+    struct CancelMotion_Feedback {
+      @verbatim (language="comment", text=
+        "FEEDBACK" "\n"
+        "Current state (STOPPING, STOPPED)")
+      string current_state;
+
+      @verbatim (language="comment", text=
+        "Current rover velocity")
+      geometry_msgs::msg::Twist current_velocity;
+
+      @verbatim (language="comment", text=
+        "Deceleration progress")
+      @unit (value="0.0-100.0")
+      float progress_percentage;
+
+      @verbatim (language="comment", text=
+        "Human-readable status update")
+      string status_message;
+    };
+  };
+};

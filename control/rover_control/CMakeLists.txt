@@ -43,7 +43,7 @@ find_package(nav2_msgs REQUIRED)
 find_package(nav2_common REQUIRED)
 
 # Custom interfaces
-find_package(urc_interfaces REQUIRED)
+# find_package(urc_interfaces REQUIRED)  # Commented out - not actually used in code
 
 # Generate interfaces
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -61,18 +61,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
     action_msgs
 )
 
-# Install Python modules
-ament_python_install_package(${PROJECT_NAME})
-
-# Install Python executables
-install(PROGRAMS
-  rover_control/hardware_interface.py
-  rover_control/safety_monitor.py
-  rover_control/action_servers.py
-  rover_control/path_follower.py
-  rover_control/odometry_publisher.py
-  DESTINATION lib/${PROJECT_NAME}
-)
+# Python modules and executables are handled by setup.py
+# The setup.py file manages Python package installation and entry points
 
 # Install launch files
 install(DIRECTORY launch/

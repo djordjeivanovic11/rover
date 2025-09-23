@@ -1,0 +1,294 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="urc_arm_template">
+
+  <!-- =============================================================================
+       PARAMETER-DRIVEN 6-DOF ARM TEMPLATE
+       =============================================================================
+       This URDF is completely parameterized. All dimensions, masses, and limits
+       are read from arm_params.yaml through xacro properties.
+       
+       Edit arm_params.yaml to adapt to any physical arm without touching this file.
+       ============================================================================= -->
+
+  <!-- Load parameters from YAML -->
+  <xacro:property name="arm_params" value="${load_yaml('$(find arm_template)/config/arm_params.yaml')}" />
+  
+  <!-- Extract main arm parameters -->
+  <xacro:property name="arm_name" value="${arm_params['arm']['name']}" />
+  <xacro:property name="joints" value="${arm_params['arm']['joints']}" />
+  <xacro:property name="links" value="${arm_params['arm']['links']}" />
+  <xacro:property name="kinematics" value="${arm_params['arm']['kinematics']}" />
+  <xacro:property name="joint_limits" value="${arm_params['arm']['joint_limits']}" />
+  <xacro:property name="link_masses" value="${arm_params['arm']['link_masses']}" />
+  <xacro:property name="link_inertias" value="${arm_params['arm']['link_inertias']}" />
+  <xacro:property name="link_geometries" value="${arm_params['arm']['link_geometries']}" />
+  <xacro:property name="gripper_params" value="${arm_params['arm']['gripper']}" />
+
+  <!-- Material definitions -->
+  <material name="arm_grey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+  
+  <material name="arm_blue">
+    <color rgba="0.2 0.4 0.8 1.0"/>
+  </material>
+  
+  <material name="arm_red">
+    <color rgba="0.8 0.2 0.2 1.0"/>
+  </material>
+
+  <!-- =============================================================================
+       MACRO FOR CREATING PARAMETERIZED LINKS
+       ============================================================================= -->
+  <xacro:macro name="arm_link" params="name mass geometry inertia material">
+    <link name="${name}">
+      <!-- Visual -->
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${geometry[0]} ${geometry[1]} ${geometry[2]}"/>
+        </geometry>
+        <material name="${material}"/>
+      </visual>
+      
+      <!-- Collision -->
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${geometry[0]} ${geometry[1]} ${geometry[2]}"/>
+        </geometry>
+      </collision>
+      
+      <!-- Inertial -->
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="${inertia[0]}" ixy="${inertia[3]}" ixz="${inertia[4]}"
+                 iyy="${inertia[1]}" iyz="${inertia[5]}" izz="${inertia[2]}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <!-- =============================================================================
+       MACRO FOR CREATING PARAMETERIZED JOINTS
+       ============================================================================= -->
+  <xacro:macro name="arm_joint" params="name type parent child origin_xyz origin_rpy axis limits velocity_limit effort_limit">
+    <joint name="${name}" type="${type}">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin xyz="${origin_xyz[0]} ${origin_xyz[1]} ${origin_xyz[2]}" 
+              rpy="${origin_rpy[0]} ${origin_rpy[1]} ${origin_rpy[2]}"/>
+      <axis xyz="${axis[0]} ${axis[1]} ${axis[2]}"/>
+      <limit lower="${limits[0]}" upper="${limits[1]}" 
+             velocity="${velocity_limit}" effort="${effort_limit}"/>
+      <dynamics damping="0.1" friction="0.1"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- =============================================================================
+       ARM LINKS (Generated from parameters)
+       ============================================================================= -->
+  
+  <!-- Base Link -->
+  <xacro:arm_link name="${links[0]}" 
+                  mass="${link_masses[links[0]]}"
+                  geometry="${link_geometries[links[0]]}"
+                  inertia="${link_inertias[links[0]]}"
+                  material="arm_grey"/>
+
+  <!-- Shoulder Link -->
+  <xacro:arm_link name="${links[1]}" 
+                  mass="${link_masses[links[1]]}"
+                  geometry="${link_geometries[links[1]]}"
+                  inertia="${link_inertias[links[1]]}"
+                  material="arm_blue"/>
+
+  <!-- Upper Arm Link -->
+  <xacro:arm_link name="${links[2]}" 
+                  mass="${link_masses[links[2]]}"
+                  geometry="${link_geometries[links[2]]}"
+                  inertia="${link_inertias[links[2]]}"
+                  material="arm_grey"/>
+
+  <!-- Forearm Link -->
+  <xacro:arm_link name="${links[3]}" 
+                  mass="${link_masses[links[3]]}"
+                  geometry="${link_geometries[links[3]]}"
+                  inertia="${link_inertias[links[3]]}"
+                  material="arm_blue"/>
+
+  <!-- Wrist Link -->
+  <xacro:arm_link name="${links[4]}" 
+                  mass="${link_masses[links[4]]}"
+                  geometry="${link_geometries[links[4]]}"
+                  inertia="${link_inertias[links[4]]}"
+                  material="arm_grey"/>
+
+  <!-- Tool Flange -->
+  <xacro:arm_link name="${links[5]}" 
+                  mass="${link_masses[links[5]]}"
+                  geometry="${link_geometries[links[5]]}"
+                  inertia="${link_inertias[links[5]]}"
+                  material="arm_red"/>
+
+  <!-- =============================================================================
+       ARM JOINTS (Generated from parameters)
+       ============================================================================= -->
+
+  <!-- Base Rotate Joint -->
+  <xacro:arm_joint name="${joints[0]}" 
+                   type="revolute"
+                   parent="${links[0]}" 
+                   child="${links[1]}"
+                   origin_xyz="[0, 0, ${kinematics['base_height']}]"
+                   origin_rpy="[0, 0, 0]"
+                   axis="${kinematics['joint_axes'][joints[0]]}"
+                   limits="${joint_limits['position'][joints[0]]}"
+                   velocity_limit="${joint_limits['velocity'][joints[0]]}"
+                   effort_limit="${joint_limits['effort'][joints[0]]}"/>
+
+  <!-- Shoulder Pitch Joint -->
+  <xacro:arm_joint name="${joints[1]}" 
+                   type="revolute"
+                   parent="${links[1]}" 
+                   child="${links[2]}"
+                   origin_xyz="[${kinematics['shoulder_offset']}, 0, 0]"
+                   origin_rpy="[0, 0, 0]"
+                   axis="${kinematics['joint_axes'][joints[1]]}"
+                   limits="${joint_limits['position'][joints[1]]}"
+                   velocity_limit="${joint_limits['velocity'][joints[1]]}"
+                   effort_limit="${joint_limits['effort'][joints[1]]}"/>
+
+  <!-- Shoulder Roll Joint -->
+  <xacro:arm_joint name="${joints[2]}" 
+                   type="revolute"
+                   parent="${links[2]}" 
+                   child="${links[3]}"
+                   origin_xyz="[0, 0, ${kinematics['upper_arm_length']}]"
+                   origin_rpy="[0, 0, 0]"
+                   axis="${kinematics['joint_axes'][joints[2]]}"
+                   limits="${joint_limits['position'][joints[2]]}"
+                   velocity_limit="${joint_limits['velocity'][joints[2]]}"
+                   effort_limit="${joint_limits['effort'][joints[2]]}"/>
+
+  <!-- Elbow Pitch Joint -->
+  <xacro:arm_joint name="${joints[3]}" 
+                   type="revolute"
+                   parent="${links[3]}" 
+                   child="${links[4]}"
+                   origin_xyz="[0, 0, ${kinematics['forearm_length']}]"
+                   origin_rpy="[0, 0, 0]"
+                   axis="${kinematics['joint_axes'][joints[3]]}"
+                   limits="${joint_limits['position'][joints[3]]}"
+                   velocity_limit="${joint_limits['velocity'][joints[3]]}"
+                   effort_limit="${joint_limits['effort'][joints[3]]}"/>
+
+  <!-- Wrist Pitch Joint -->
+  <xacro:arm_joint name="${joints[4]}" 
+                   type="revolute"
+                   parent="${links[4]}" 
+                   child="${links[5]}"
+                   origin_xyz="[0, 0, ${kinematics['wrist_offset']}]"
+                   origin_rpy="[0, 0, 0]"
+                   axis="${kinematics['joint_axes'][joints[4]]}"
+                   limits="${joint_limits['position'][joints[4]]}"
+                   velocity_limit="${joint_limits['velocity'][joints[4]]}"
+                   effort_limit="${joint_limits['effort'][joints[4]]}"/>
+
+  <!-- Wrist Roll Joint -->
+  <xacro:arm_joint name="${joints[5]}" 
+                   type="revolute"
+                   parent="${links[5]}" 
+                   child="tool_flange"
+                   origin_xyz="[0, 0, ${kinematics['tool_flange_length']}]"
+                   origin_rpy="[0, 0, 0]"
+                   axis="${kinematics['joint_axes'][joints[5]]}"
+                   limits="${joint_limits['position'][joints[5]]}"
+                   velocity_limit="${joint_limits['velocity'][joints[5]]}"
+                   effort_limit="${joint_limits['effort'][joints[5]]}"/>
+
+  <!-- =============================================================================
+       GRIPPER INTEGRATION (Optional)
+       ============================================================================= -->
+  <xacro:if value="${gripper_params != None}">
+    <xacro:include filename="$(find arm_template)/urdf/gripper_template.urdf.xacro"/>
+    <xacro:gripper_template parent="tool_flange" 
+                           name="${gripper_params['name']}"
+                           max_opening="${gripper_params['max_opening']}"
+                           finger_length="${gripper_params['finger_length']}"
+                           finger_width="${gripper_params['finger_width']}"
+                           palm_size="${gripper_params['palm_size']}"/>
+  </xacro:if>
+
+  <!-- =============================================================================
+       ROS2 CONTROL INTEGRATION
+       ============================================================================= -->
+  <ros2_control name="${arm_name}_hardware" type="system">
+    <hardware>
+      <!-- This would be replaced with actual hardware interface -->
+      <plugin>mock_components/GenericSystem</plugin>
+      <param name="state_following_offset">0.0</param>
+    </hardware>
+    
+    <!-- Joint interfaces -->
+    <xacro:macro name="joint_interface" params="joint_name">
+      <joint name="${joint_name}">
+        <command_interface name="position">
+          <param name="min">${joint_limits['position'][joint_name][0]}</param>
+          <param name="max">${joint_limits['position'][joint_name][1]}</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+    </xacro:macro>
+
+    <!-- Apply joint interfaces to all joints -->
+    <xacro:joint_interface joint_name="${joints[0]}"/>
+    <xacro:joint_interface joint_name="${joints[1]}"/>
+    <xacro:joint_interface joint_name="${joints[2]}"/>
+    <xacro:joint_interface joint_name="${joints[3]}"/>
+    <xacro:joint_interface joint_name="${joints[4]}"/>
+    <xacro:joint_interface joint_name="${joints[5]}"/>
+    
+    <!-- Gripper interface (if present) -->
+    <xacro:if value="${gripper_params != None}">
+      <joint name="gripper_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">${gripper_params['max_opening']}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+    </xacro:if>
+  </ros2_control>
+
+  <!-- =============================================================================
+       GAZEBO SIMULATION SUPPORT
+       ============================================================================= -->
+  <gazebo>
+    <plugin filename="gazebo_ros2_control-system" name="gazebo_ros2_control">
+      <robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type>
+      <parameters>$(find arm_template)/config/arm_params.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+  <!-- Gazebo materials -->
+  <xacro:macro name="gazebo_material" params="link_name material_name">
+    <gazebo reference="${link_name}">
+      <material>Gazebo/${material_name}</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:gazebo_material link_name="${links[0]}" material_name="Grey"/>
+  <xacro:gazebo_material link_name="${links[1]}" material_name="Blue"/>
+  <xacro:gazebo_material link_name="${links[2]}" material_name="Grey"/>
+  <xacro:gazebo_material link_name="${links[3]}" material_name="Blue"/>
+  <xacro:gazebo_material link_name="${links[4]}" material_name="Grey"/>
+  <xacro:gazebo_material link_name="${links[5]}" material_name="Red"/>
+
+</robot> 

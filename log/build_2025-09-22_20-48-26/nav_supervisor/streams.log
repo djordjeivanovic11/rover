@@ -1,0 +1,62 @@
+[0.068s] Invoking command in '/home/rover/workspaces/rover-real/src/build/nav_supervisor': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/rover/workspaces/rover-real/src/control/nav_supervisor -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/nav_supervisor
+[0.452s] -- The C compiler identification is GNU 11.4.0
+[0.721s] -- The CXX compiler identification is GNU 11.4.0
+[0.750s] -- Detecting C compiler ABI info
+[1.035s] -- Detecting C compiler ABI info - done
+[1.059s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.060s] -- Detecting C compile features
+[1.060s] -- Detecting C compile features - done
+[1.069s] -- Detecting CXX compiler ABI info
+[1.406s] -- Detecting CXX compiler ABI info - done
+[1.420s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.421s] -- Detecting CXX compile features
+[1.422s] -- Detecting CXX compile features - done
+[1.431s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[2.152s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[2.521s] -- Found rclcpp: 16.0.14 (/opt/ros/humble/share/rclcpp/cmake)
+[2.646s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.661s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.691s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.720s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.767s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.912s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[2.921s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[2.986s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[3.015s] -- Looking for pthread.h
+[3.272s] -- Looking for pthread.h - found
+[3.274s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.511s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[3.513s] -- Found Threads: TRUE  
+[3.689s] -- Found geometry_msgs: 4.9.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[3.734s] -- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)
+[3.773s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[4.147s] -- Configuring done
+[4.186s] -- Generating done
+[4.189s] [33mCMake Warning:
+[4.189s]   Manually-specified variables were not used by the project:
+[4.189s] 
+[4.189s]     CATKIN_INSTALL_INTO_PREFIX_ROOT
+[4.189s] 
+[4.190s] [0m
+[4.211s] -- Build files have been written to: /home/rover/workspaces/rover-real/src/build/nav_supervisor
+[4.328s] Invoked command in '/home/rover/workspaces/rover-real/src/build/nav_supervisor' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/rover/workspaces/rover-real/src/control/nav_supervisor -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover-real/src/install/nav_supervisor
+[4.329s] Invoking command in '/home/rover/workspaces/rover-real/src/build/nav_supervisor': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/nav_supervisor -- -j6 -l6
+[4.476s] Invoked command in '/home/rover/workspaces/rover-real/src/build/nav_supervisor' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/nav_supervisor -- -j6 -l6
+[4.491s] Invoking command in '/home/rover/workspaces/rover-real/src/build/nav_supervisor': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/nav_supervisor
+[4.541s] -- Install configuration: ""
+[4.541s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/ament_index/resource_index/package_run_dependencies/nav_supervisor
+[4.543s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/ament_index/resource_index/parent_prefix_path/nav_supervisor
+[4.547s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/environment/ament_prefix_path.sh
+[4.552s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/environment/ament_prefix_path.dsv
+[4.556s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/environment/path.sh
+[4.559s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/environment/path.dsv
+[4.563s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/local_setup.bash
+[4.566s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/local_setup.sh
+[4.597s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/local_setup.zsh
+[4.598s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/local_setup.dsv
+[4.628s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/package.dsv
+[4.630s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/ament_index/resource_index/packages/nav_supervisor
+[4.631s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/cmake/nav_supervisorConfig.cmake
+[4.632s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/cmake/nav_supervisorConfig-version.cmake
+[4.633s] -- Installing: /home/rover/workspaces/rover-real/src/install/nav_supervisor/share/nav_supervisor/package.xml
+[4.647s] Invoked command in '/home/rover/workspaces/rover-real/src/build/nav_supervisor' returned '0': AMENT_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/rover/workspaces/rover-real/src/install/urc_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/nav_supervisor

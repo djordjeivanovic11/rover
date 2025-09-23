@@ -1,0 +1,4 @@
+Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_simulation': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/rover_simulation -- -j6 -l6
+Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_simulation' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/rover_simulation -- -j6 -l6
+Invoking command in '/home/rover/workspaces/rover-real/src/build/rover_simulation': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/rover_simulation
+Invoked command in '/home/rover/workspaces/rover-real/src/build/rover_simulation' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble:${CMAKE_PREFIX_PATH} /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/rover_simulation

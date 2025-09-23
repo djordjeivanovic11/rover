@@ -1,0 +1,20 @@
+[35m[1mConsolidate compiler generated dependencies of target arm_firmware.elf[0m
+[100%] Built target arm_firmware.elf
+-- Install configuration: ""
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/firmware/arm_firmware.hex
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/lib/arm_firmware/upload_firmware.sh
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/ament_index/resource_index/package_run_dependencies/arm_firmware
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/ament_index/resource_index/parent_prefix_path/arm_firmware
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/ament_prefix_path.sh
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/path.sh
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/environment/path.dsv
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.bash
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.sh
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.zsh
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/local_setup.dsv
+-- Installing: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/package.dsv
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/ament_index/resource_index/packages/arm_firmware
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/cmake/arm_firmwareConfig.cmake
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/cmake/arm_firmwareConfig-version.cmake
+-- Up-to-date: /home/rover/workspaces/rover-real/src/install/arm_firmware/share/arm_firmware/package.xml

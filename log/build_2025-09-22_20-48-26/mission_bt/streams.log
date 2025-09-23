@@ -1,0 +1,35 @@
+[7.640s] Invoking command in '/home/rover/workspaces/rover-real/src/mission_bt': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/mission_bt/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/mission_bt/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mission_bt build --build-base /home/rover/workspaces/rover-real/src/build/mission_bt/build install --record /home/rover/workspaces/rover-real/src/build/mission_bt/install.log --single-version-externally-managed install_data
+[9.319s] running egg_info
+[9.322s] creating ../build/mission_bt/mission_bt.egg-info
+[9.325s] writing ../build/mission_bt/mission_bt.egg-info/PKG-INFO
+[9.328s] writing dependency_links to ../build/mission_bt/mission_bt.egg-info/dependency_links.txt
+[9.330s] writing entry points to ../build/mission_bt/mission_bt.egg-info/entry_points.txt
+[9.331s] writing requirements to ../build/mission_bt/mission_bt.egg-info/requires.txt
+[9.333s] writing top-level names to ../build/mission_bt/mission_bt.egg-info/top_level.txt
+[9.336s] writing manifest file '../build/mission_bt/mission_bt.egg-info/SOURCES.txt'
+[9.339s] reading manifest file '../build/mission_bt/mission_bt.egg-info/SOURCES.txt'
+[9.343s] writing manifest file '../build/mission_bt/mission_bt.egg-info/SOURCES.txt'
+[9.345s] running build
+[9.345s] running install
+[9.346s] running install_data
+[9.347s] creating /home/rover/workspaces/rover-real/src/install/mission_bt/share/ament_index
+[9.348s] creating /home/rover/workspaces/rover-real/src/install/mission_bt/share/ament_index/resource_index
+[9.348s] creating /home/rover/workspaces/rover-real/src/install/mission_bt/share/ament_index/resource_index/packages
+[9.349s] copying resource/mission_bt -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/ament_index/resource_index/packages
+[9.351s] copying package.xml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt
+[9.353s] creating /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/launch
+[9.354s] copying launch/mission_bt.launch.py -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/launch
+[9.356s] creating /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/config
+[9.357s] copying config/bt_params.yaml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/config
+[9.358s] copying config/mission_config.yaml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/config
+[9.361s] creating /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/bt_trees
+[9.362s] copying bt_trees/sampling.xml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/bt_trees
+[9.363s] copying bt_trees/sample_mission.xml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/bt_trees
+[9.365s] copying bt_trees/root_tree.xml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/bt_trees
+[9.368s] copying bt_trees/nav.xml -> /home/rover/workspaces/rover-real/src/install/mission_bt/share/mission_bt/bt_trees
+[9.370s] running install_egg_info
+[9.390s] Copying ../build/mission_bt/mission_bt.egg-info to /home/rover/workspaces/rover-real/src/install/mission_bt/lib/python3.10/site-packages/mission_bt-0.0.0-py3.10.egg-info
+[9.426s] running install_scripts
+[9.525s] Installing bt_executor script to /home/rover/workspaces/rover-real/src/install/mission_bt/bin
+[9.529s] writing list of installed files to '/home/rover/workspaces/rover-real/src/build/mission_bt/install.log'
+[9.822s] Invoked command in '/home/rover/workspaces/rover-real/src/mission_bt' returned '0': PYTHONPATH=/home/rover/workspaces/rover-real/src/build/mission_bt/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rover/workspaces/rover-real/src/install/mission_bt/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mission_bt build --build-base /home/rover/workspaces/rover-real/src/build/mission_bt/build install --record /home/rover/workspaces/rover-real/src/build/mission_bt/install.log --single-version-externally-managed install_data
