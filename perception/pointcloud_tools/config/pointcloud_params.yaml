@@ -6,7 +6,7 @@ depth_to_scan:
   min_z: -0.1
   max_z: 0.30
   angular_res_deg: 1.0
-  pointcloud_topic: /zed2i/point_cloud/cloud_registered
+  pointcloud_topic: /zed2i/zed2i_camera/point_cloud/cloud_registered
   scan_topic: /scan
 
 grid_builder:

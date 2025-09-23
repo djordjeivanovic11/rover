@@ -15,7 +15,7 @@ setup(
     entry_points={
         'console_scripts': [
             'depth_to_scan = pointcloud_tools.depth_to_scan_node:main',
-            'grid_builder  = pointcloud_tools.grid_builder_node:main',
+            'grid_builder = pointcloud_tools.grid_builder_node:main',
         ],
     },
 )

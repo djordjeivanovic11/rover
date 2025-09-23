@@ -11,12 +11,12 @@ def generate_launch_description():
 
     depth_to_scan = Node(
         package='pointcloud_tools', executable='depth_to_scan',
-        name='depth_to_scan', parameters=[cfg, {'~namespace': 'depth_to_scan'}],
+        name='depth_to_scan', parameters=[cfg],
         output='screen')
 
     grid_builder = Node(
         package='pointcloud_tools', executable='grid_builder',
-        name='grid_builder', parameters=[cfg, {'~namespace': 'grid_builder'}],
+        name='grid_builder', parameters=[cfg],
         output='screen')
 
     return LaunchDescription([depth_to_scan, grid_builder])

@@ -22,7 +22,14 @@ from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
 from nav_msgs.msg import OccupancyGrid, MapMetaData
 import sensor_msgs_py.point_cloud2 as pc2
-import tf2_ros, tf2_py, geometry_msgs.msg as geo
+import tf2_ros
+try:
+    from tf2_geometry_msgs import do_transform_point
+except ImportError:
+    # Fallback for older ROS2 versions
+    import tf2_py
+    do_transform_point = tf2_py.do_transform_point
+import geometry_msgs.msg as geo
 
 class GridBuilder(Node):
     def __init__(self):
@@ -88,7 +95,7 @@ class GridBuilder(Node):
             pt = geo.PointStamped()
             pt.header = cloud.header
             pt.point.x, pt.point.y, pt.point.z = x, y, z
-            pt2 = tf2_py.do_transform_point(pt, tf).point
+            pt2 = do_transform_point(pt, tf).point
 
             if math.isnan(pt2.x) or math.isnan(pt2.y):
                 continue
