@@ -287,11 +287,56 @@ zed_launch = IncludeLaunchDescription(
 - **Debugging**: Set `output='screen'` in launch file to see ZED wrapper diagnostics
 - **Topic Remapping**: Use remapped topics (`/zed2i/*`) for cleaner integration in other packages
 
+## Installation Dependencies
+
+The following system packages were required to get the ZED 2i camera working with ROS 2:
+
+### Core ZED Dependencies
+```bash
+# ZED SDK and ROS 2 wrapper packages
+sudo apt install ros-humble-zed-wrapper
+sudo apt install ros-humble-zed-components
+sudo apt install ros-humble-zed-ros2
+sudo apt install ros-humble-zed-msgs
+```
+
+### Navigation Dependencies
+```bash
+# Required for rover navigation integration
+sudo apt install ros-humble-nav2-msgs
+sudo apt install ros-humble-nav2-common
+```
+
+### Additional ROS 2 Packages
+```bash
+# Geographic and mapping support
+sudo apt install ros-humble-geographic-msgs
+sudo apt install ros-humble-robot-state-publisher
+sudo apt install ros-humble-rclcpp-components
+```
+
+### Hardware Requirements
+- **ZED 2i Camera**: Connected via USB 3.0
+- **CUDA Support**: For optimal performance (optional but recommended)
+- **Sufficient USB Bandwidth**: ZED 2i requires high-bandwidth USB connection
+
+### Verification
+After installation, verify the ZED camera is detected:
+```bash
+# Check USB connection
+lsusb | grep -i stereolabs
+
+# Expected output:
+# Bus 002 Device 003: ID 2b03:f880 STEREOLABS ZED 2i
+# Bus 001 Device 008: ID 2b03:f881 STEREOLABS ZED-2i HID INTERFACE
+```
+
 ## References
 
 - [ZED ROS 2 Wrapper Documentation](https://github.com/stereolabs/zed-ros2-wrapper)
 - [Stereolabs ROS 2 Integration Guide](https://www.stereolabs.com/docs/ros2)
 - [ZED SDK API Reference](https://www.stereolabs.com/docs/api)
+- [ROS 2 Humble Installation Guide](https://docs.ros.org/en/humble/Installation.html)
 
 ---
 *Maintained by: Rover Team*
