@@ -1,9 +1,0 @@
-source;share/pointcloud_tools/hook/path.ps1
-source;share/pointcloud_tools/hook/path.dsv
-source;share/pointcloud_tools/hook/path.sh
-source;share/pointcloud_tools/hook/pythonpath.ps1
-source;share/pointcloud_tools/hook/pythonpath.dsv
-source;share/pointcloud_tools/hook/pythonpath.sh
-source;share/pointcloud_tools/hook/pythonscriptspath.ps1
-source;share/pointcloud_tools/hook/pythonscriptspath.dsv
-source;share/pointcloud_tools/hook/pythonscriptspath.sh

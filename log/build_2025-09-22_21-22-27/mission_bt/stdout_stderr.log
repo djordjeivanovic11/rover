@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2851, in get_entry_map
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2813, in __getattr__
+    raise AttributeError(attr)
+AttributeError: _ep_map. Did you mean: '_dep_map'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rover/workspaces/rover-real/src/mission_bt/setup.py", line 7, in <module>
+    setup(
+  File "/home/rover/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 152, in setup
+    _install_setup_requires(attrs)
+  File "/home/rover/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 142, in _install_setup_requires
+    dist = MinimalDistribution(attrs)
+  File "/home/rover/.local/lib/python3.10/site-packages/setuptools/__init__.py", line 134, in __init__
+    distutils.core.Distribution.__init__(self, filtered)
+  File "/home/rover/.local/lib/python3.10/site-packages/setuptools/dist.py", line 451, in __init__
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 641, in <genexpr>
+    for entry in dist.get_entry_map(group).values()
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2853, in get_entry_map
+    ep_map = self._ep_map = EntryPoint.parse_map(
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2542, in parse_map
+    maps[group] = cls.parse_group(group, lines, dist)
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2520, in parse_group
+    ep = cls.parse(line, dist)
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2500, in parse
+    extras = cls._parse_extras(res['extras'])
+  File "/home/rover/.local/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2504, in _parse_extras
+    @classmethod
+KeyboardInterrupt

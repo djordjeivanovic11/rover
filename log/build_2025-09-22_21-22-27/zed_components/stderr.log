@@ -1,0 +1,7 @@
+[0m * 'isaac_ros_common' not found, ISAAC ROS NITROS transport will not be available.[0m
+gmake[2]: *** [CMakeFiles/zed_camera_component.dir/build.make:76: CMakeFiles/zed_camera_component.dir/src/tools/src/sl_tools.cpp.o] Interrupt
+gmake[2]: *** [CMakeFiles/zed_camera_component.dir/build.make:132: CMakeFiles/zed_camera_component.dir/src/zed_camera/src/zed_camera_component_main.cpp.o] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:166: CMakeFiles/zed_camera_component.dir/all] Interrupt
+gmake[2]: *** [CMakeFiles/zed_camera_one_component.dir/build.make:76: CMakeFiles/zed_camera_one_component.dir/src/tools/src/sl_tools.cpp.o] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:192: CMakeFiles/zed_camera_one_component.dir/all] Interrupt
+gmake: *** [Makefile:146: all] Interrupt

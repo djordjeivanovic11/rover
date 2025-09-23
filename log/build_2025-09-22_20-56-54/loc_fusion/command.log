@@ -1,4 +1,0 @@
-Invoking command in '/home/rover/workspaces/rover-real/src/build/loc_fusion': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/loc_fusion -- -j6 -l6
-Invoked command in '/home/rover/workspaces/rover-real/src/build/loc_fusion' returned '0': /usr/bin/cmake --build /home/rover/workspaces/rover-real/src/build/loc_fusion -- -j6 -l6
-Invoking command in '/home/rover/workspaces/rover-real/src/build/loc_fusion': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/loc_fusion
-Invoked command in '/home/rover/workspaces/rover-real/src/build/loc_fusion' returned '0': /usr/bin/cmake --install /home/rover/workspaces/rover-real/src/build/loc_fusion

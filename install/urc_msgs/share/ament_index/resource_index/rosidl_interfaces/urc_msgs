@@ -1,8 +1,0 @@
-msg/GapCmd.idl
-msg/GapCmd.msg
-msg/GapDiag.idl
-msg/GapDiag.msg
-msg/RoverStatus.idl
-msg/RoverStatus.msg
-msg/ScienceData.idl
-msg/ScienceData.msg

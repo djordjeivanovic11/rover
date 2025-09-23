@@ -24,8 +24,8 @@ point_cloud:
 
 # this shall be switched to 'true' when we focus on object detection segment of the mission
 object_detection:
-  enable: true
-  detection_model: “HUMAN_BODY_FAST”
+  enable: false  # Disable object detection for now to avoid configuration issues
+  model: "HUMAN_BODY_FAST"
   enable_tracking: true
   tracking_confidence_threshold: 30
-  object_class_filter: [ “PERSON” ] # adjust for the objects we want to focus on
+  object_class_filter: [ "PERSON" ] # adjust for the objects we want to focus on
