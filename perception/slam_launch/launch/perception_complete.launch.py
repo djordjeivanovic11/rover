@@ -75,6 +75,10 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'enable_calibration_validation', default_value='true',
             description='Enable sensor calibration validation'
+        ),
+        DeclareLaunchArgument(
+            'enable_rviz', default_value='true',
+            description='Enable RViz visualization with rover model'
         )
     ]
     
@@ -189,6 +193,13 @@ def generate_launch_description():
                             'tracking_ids_topic': '/object_tracking_ids',
                             'detections_topic': '/detected_objects'
                         }]
+                    ),
+                    # Object Selection Service
+                    Node(
+                        package='object_detection',
+                        executable='select_object_service',
+                        name='object_selection_service',
+                        output='screen'
                     )
                 ]
             )
@@ -335,6 +346,27 @@ def generate_launch_description():
         ]
     )
     
+    # RViz Visualization with Rover Model
+    rviz_group = GroupAction(
+        condition=IfCondition(LaunchConfiguration('enable_rviz')),
+        actions=[
+            LogInfo(msg="Starting RViz with rover model..."),
+            TimerAction(
+                period=5.0,  # Start after other components are ready
+                actions=[
+                    IncludeLaunchDescription(
+                        PythonLaunchDescriptionSource([
+                            share('rover_description', 'launch/display.launch.py')
+                        ]),
+                        launch_arguments={
+                            'use_sim_time': 'false'
+                        }.items()
+                    )
+                ]
+            )
+        ]
+    )
+    
     # ============================================================================
     # LAUNCH DESCRIPTION ASSEMBLY
     # ============================================================================
@@ -367,6 +399,9 @@ def generate_launch_description():
         health_monitor,
         status_publisher,
         recording_system,
+        
+        # Visualization
+        rviz_group,
         
         # Ready message
         TimerAction(

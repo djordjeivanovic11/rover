@@ -214,11 +214,66 @@ Visualization Manager:
               {}
       Update Interval: 0
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /object_selection_markers
+      Name: Object Selection
+      Namespaces:
+        selected_objects: true
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Arrow Length: 0.3
+      Axes Length: 0.3
+      Axes Radius: 0.01
+      Class: rviz/PoseStamped
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.3
+      Head Radius: 0.1
+      Name: Target Pose
+      Shaft Length: 1
+      Shaft Radius: 0.05
+      Shape: Arrow (Flat)
+      Topic: /target_pose
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Arrow Length: 0.3
+      Axes Length: 0.3
+      Axes Radius: 0.01
+      Class: rviz/PoseStamped
+      Color: 0; 255; 0
+      Enabled: true
+      Head Length: 0.3
+      Head Radius: 0.1
+      Name: Approach Pose
+      Shaft Length: 1
+      Shaft Radius: 0.05
+      Shape: Arrow (Flat)
+      Topic: /approach_pose
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.1
+      Class: rviz/PoseArray
+      Color: 255; 255; 0
+      Enabled: true
+      Head Length: 0.07
+      Head Radius: 0.03
+      Name: Object Poses
+      Shaft Length: 0.23
+      Shaft Radius: 0.01
+      Shape: Arrow (Flat)
+      Topic: /object_pose_array
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: Chassis
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:

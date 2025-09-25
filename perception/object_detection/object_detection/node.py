@@ -37,7 +37,7 @@ class URCObjectDetection(Node):
         self.declare_parameter('image_topic', '/zed2i/left/image_rect_color')
         self.declare_parameter('output_topic', '/detected_objects')
         self.declare_parameter('max_detections', 100)
-        
+
         # Get parameters
         model_path = self.get_parameter('model_path').value
         classes_file = self.get_parameter('classes_file').value
@@ -277,6 +277,7 @@ class URCObjectDetection(Node):
             
         except Exception as e:
             self.get_logger().error(f"Detection failed: {e}")
+
 
     def log_performance(self):
         """Log performance metrics"""
