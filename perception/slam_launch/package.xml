@@ -21,4 +21,14 @@
   <exec_depend>loc_fusion</exec_depend>
   <exec_depend>rtabmap_launch</exec_depend>
   <exec_depend>rtabmap_ros</exec_depend>
+  <exec_depend>pointcloud_tools</exec_depend>
+  <exec_depend>object_detection</exec_depend>
+  <exec_depend>aruco_detector</exec_depend>
+  <exec_depend>detection_pose_estimator</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>scipy</exec_depend>
+  <exec_depend>numpy</exec_depend>
 </package>

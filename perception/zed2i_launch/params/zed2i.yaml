@@ -19,6 +19,7 @@ sensors:
   imu_pub_rate: 200.0
 
 point_cloud:
+  enable: true
   pub_frequency: 10.0
   format: "XYZRGBA"
 
