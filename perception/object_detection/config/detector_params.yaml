@@ -1,8 +1,8 @@
-# path to exported ONNX model
-model_path:     $(find object_detection)/models/sample_model.onnx
+# path to exported ONNX model (will be resolved by launch file)
+model_path:     "model/model.onnx"
 
-# list of classes (must match your network’s training order)
-classes_file:   $(find object_detection)/models/classes.txt
+# list of classes (will be resolved by launch file)
+classes_file:   "model/classes.txt"
 
 # minimum confidence to accept a detection
 confidence_threshold: 0.5

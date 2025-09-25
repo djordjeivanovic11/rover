@@ -10,6 +10,30 @@ Launch wrapper and tuned parameters for the Stereolabs ZED 2i camera in the rove
 **Topics**: 20/20 core topics publishing data at optimal rates  
 **Integration**: Ready for production use with rover navigation stack
 
+## Remote Desktop Access
+
+### Linux Desktop Access
+To start the desktop environment on the rover:
+```bash
+sudo systemctl start gdm
+```
+
+### VNC Connection (Mac/Remote)
+For remote access via VNC, use the "Connect to Server" option with:
+```
+vnc://rover@10.242.187.175:59XX
+```
+
+Where `XX` is the display number (01, 02, 03, etc.) that corresponds to the VNC server port number set with:
+```bash
+vncserver :NUMBER
+```
+
+Once connected, you'll have access to the rover's desktop environment.
+
+
+
+
 ## Purpose
 
 This package provides a carefully configured interface to the Stereolabs ZED 2i stereo camera, optimized specifically for our rover's autonomous navigation and human interaction missions. Rather than using the default ZED settings, we've created this wrapper to ensure consistent, mission-appropriate sensor behavior for the rover.

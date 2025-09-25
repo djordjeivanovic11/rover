@@ -39,7 +39,7 @@ def generate_launch_description():
     navsat = Node(
         package='robot_localization', executable='navsat_transform_node',
         name='navsat_transform', output='screen',
-        parameters=[share('loc_fusion', 'config/rtabmap_params.yaml')],
+        parameters=[share('loc_fusion', 'config/navsat_transform.yaml')],
         remappings=[
             ('imu',      '/zed2i/imu/data'),
             ('gps/fix',  '/gnss/fix'),
