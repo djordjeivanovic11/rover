@@ -83,6 +83,18 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'use_zed_detection', default_value='true',
             description='Use ZED native object detection (faster, more accurate)'
+        ),
+        DeclareLaunchArgument(
+            'enable_global_localization', default_value='false',
+            description='Enable camera-GNSS fusion for global navigation'
+        ),
+        DeclareLaunchArgument(
+            'enable_gpu_mapping', default_value='false', 
+            description='Enable GPU-accelerated spatial mapping'
+        ),
+        DeclareLaunchArgument(
+            'mapping_mode', default_value='hybrid_fusion',
+            description='Mapping mode: hybrid_fusion, zed_primary, rtabmap_only'
         )
     ]
 
@@ -90,13 +102,15 @@ def generate_launch_description():
     # CORE PERCEPTION STACK (Always Active)
     # ============================================================================
 
-    # Base SLAM system (ZED2i + Localization + Mapping)
+    # Enhanced SLAM system (Hybrid ZED + RTAB-Map Mapping)
     core_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             get_package_path('slam_launch', 'launch', 'slam.launch.py')
         ),
         launch_arguments={
-            'debug': LaunchConfiguration('debug_mode')
+            'mapping_mode': LaunchConfiguration('mapping_mode'),
+            'enable_zed_mapping': LaunchConfiguration('enable_gpu_mapping'),
+            'enable_rtabmap': 'true'
         }.items()
     )
 
@@ -380,7 +394,109 @@ def generate_launch_description():
             )
         ]
     )
-
+    
+    # Navigation Integration (Frame & Topic Coordination)
+    navigation_integration = GroupAction(
+        actions=[
+            LogInfo(msg="Starting navigation integration..."),
+            # Frame Coordinator
+            Node(
+                package='slam_launch',
+                executable='frame_coordinator',
+                name='frame_coordinator',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            ),
+            # Topic Coordinator  
+            Node(
+                package='slam_launch',
+                executable='topic_coordinator',
+                name='topic_coordinator',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            ),
+            # Nav2 Integration Bridge
+            Node(
+                package='slam_launch',
+                executable='nav2_integration_bridge',
+                name='nav2_integration_bridge',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            ),
+            # Sensor Costmap Publisher
+            Node(
+                package='slam_launch',
+                executable='sensor_costmap_publisher',
+                name='sensor_costmap_publisher',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            ),
+            # Navigation Recovery
+            Node(
+                package='slam_launch',
+                executable='navigation_recovery',
+                name='navigation_recovery',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            ),
+            # Localization Switcher
+            Node(
+                package='slam_launch',
+                executable='localization_switcher',
+                name='localization_switcher',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            ),
+            # Nav2 Parameter Sync
+            Node(
+                package='slam_launch',
+                executable='nav2_parameter_sync',
+                name='nav2_parameter_sync',
+                output='screen',
+                parameters=[share('slam_launch', 'config/navigation_integration.yaml')]
+            )
+        ]
+    )
+    
+    # Global Localization (Camera-GNSS Fusion)
+    global_localization_group = GroupAction(
+        condition=IfCondition(LaunchConfiguration('enable_global_localization')),
+        actions=[
+            LogInfo(msg="Starting global localization with camera-GNSS fusion..."),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([
+                    share('zed_integration', 'launch/global_localization.launch.py')
+                ]),
+                launch_arguments={
+                    'gnss_topic': '/gps/fix',
+                    'enable_fusion': LaunchConfiguration('enable_global_localization')
+                }.items()
+            )
+        ]
+    )
+    
+    # GPU Spatial Mapping
+    gpu_mapping_group = GroupAction(
+        condition=IfCondition(LaunchConfiguration('enable_gpu_mapping')),
+        actions=[
+            LogInfo(msg="Starting GPU-accelerated spatial mapping..."),
+            TimerAction(
+                period=5.0,  # Start after camera and localization ready
+                actions=[
+                    IncludeLaunchDescription(
+                        PythonLaunchDescriptionSource([
+                            share('zed_integration', 'launch/spatial_mapping.launch.py')
+                        ]),
+                        launch_arguments={
+                            'mapping_resolution': '0.05',
+                            'publish_occupancy_grid': 'true'
+                        }.items()
+                    )
+                ]
+            )
+        ]
+    )
+    
     # RViz Visualization with Rover Model
     rviz_group = GroupAction(
         condition=IfCondition(LaunchConfiguration('enable_rviz')),
@@ -418,6 +534,9 @@ def generate_launch_description():
         core_slam,
         pointcloud_processing,
 
+        # Navigation integration (critical for operation)
+        navigation_integration,
+        
         # Detection components (parallel after core is ready)
         object_detection_group,
         aruco_detection_group,
@@ -430,12 +549,16 @@ def generate_launch_description():
         # Robustness and validation
         perception_guardian,
         calibration_validation,
-
+        
+        # Global capabilities
+        global_localization_group,
+        gpu_mapping_group,
+        
         # System utilities
         health_monitor,
         status_publisher,
         recording_system,
-
+        
         # Visualization
         rviz_group,
 

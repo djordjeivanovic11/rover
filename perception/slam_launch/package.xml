@@ -32,4 +32,5 @@
   <exec_depend>scipy</exec_depend>
   <exec_depend>numpy</exec_depend>
   <exec_depend>rover_description</exec_depend>
+  <exec_depend>zed_integration</exec_depend>
 </package>

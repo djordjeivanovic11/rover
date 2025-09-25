@@ -28,12 +28,27 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'perception_health_monitor.py = slam_launch.perception_health_monitor:main',
-            'system_status.py = slam_launch.system_status:main',
-            'semantic_mapper.py = slam_launch.semantic_mapper:main',
-            'sensor_fusion.py = slam_launch.sensor_fusion:main',
-            'perception_guardian.py = slam_launch.perception_guardian:main',
-            'calibration_validator.py = slam_launch.calibration_validator:main',
+            # Monitoring components
+            'perception_health_monitor.py = slam_launch.monitoring.perception_health_monitor:main',
+            'system_status.py = slam_launch.monitoring.system_status:main',
+            'perception_guardian.py = slam_launch.monitoring.perception_guardian:main',
+            'calibration_validator.py = slam_launch.monitoring.calibration_validator:main',
+            
+            # Navigation components
+            'frame_coordinator = slam_launch.navigation.frame_coordinator:main',
+            'topic_coordinator = slam_launch.navigation.topic_coordinator:main',
+            'nav2_integration_bridge = slam_launch.navigation.nav2_integration_bridge:main',
+            'sensor_costmap_publisher = slam_launch.navigation.sensor_costmap_publisher:main',
+            'navigation_recovery = slam_launch.navigation.navigation_recovery:main',
+            'localization_switcher = slam_launch.navigation.localization_switcher:main',
+            'nav2_parameter_sync = slam_launch.navigation.nav2_parameter_sync:main',
+            
+            # Mapping components
+            'mapping_coordinator = slam_launch.mapping.mapping_coordinator:main',
+            
+            # Integration components
+            'semantic_mapper.py = slam_launch.integration.semantic_mapper:main',
+            'sensor_fusion.py = slam_launch.integration.sensor_fusion:main',
         ],
     },
 )

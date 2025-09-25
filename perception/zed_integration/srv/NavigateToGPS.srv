@@ -1,0 +1,8 @@
+# Navigate to GPS coordinates
+float64 latitude        # Target latitude (WGS84)
+float64 longitude       # Target longitude (WGS84)  
+float64 altitude        # Target altitude (meters)
+---
+bool success           # Navigation command accepted
+string message         # Status message
+geometry_msgs/PoseStamped target_pose  # Converted map frame target
