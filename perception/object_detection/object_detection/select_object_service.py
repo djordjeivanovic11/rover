@@ -2,6 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from vision_msgs.msg import Detection2DArray
+from object_detection.msg import Detection3DArray, Detection3D
 from geometry_msgs.msg import PoseStamped, PoseArray, Pose
 from std_msgs.msg import String, Float32MultiArray, Int32MultiArray
 from std_srvs.srv import SetBool
@@ -17,8 +18,9 @@ class ObjectSelectionService(Node):
     def __init__(self):
         super().__init__('object_selection_service')
         
-        # Current detection data
+        # Detection data (support both 2D and 3D)
         self.current_detections: Optional[Detection2DArray] = None
+        self.current_detections_3d: Optional[Detection3DArray] = None
         self.current_poses: Optional[PoseArray] = None
         self.current_tracking_ids: Optional[Int32MultiArray] = None
         self.object_priorities: List[float] = []
@@ -26,6 +28,7 @@ class ObjectSelectionService(Node):
         self.selection_status: List[str] = []
         self.selected_object_idx: Optional[int] = None
         self.selected_pose: Optional[Pose] = None
+        self.use_zed_3d: bool = True  # Prefer ZED 3D when available
         
         # Mission categories mapping
         self.mission_categories = {
@@ -36,8 +39,9 @@ class ObjectSelectionService(Node):
             'obstacle': 'obstacle', 'barrier': 'obstacle'
         }
         
-        # Subscribers
+        # Subscribers (support both 2D and 3D detection pipelines)
         self.create_subscription(Detection2DArray, '/detected_objects', self.cb_detections, 10)
+        self.create_subscription(Detection3DArray, '/zed_detections_3d', self.cb_detections_3d, 10)
         self.create_subscription(PoseArray, '/object_pose_array', self.cb_poses, 10)
         self.create_subscription(Int32MultiArray, '/object_tracking_ids', self.cb_tracking_ids, 10)
         
@@ -91,6 +95,31 @@ class ObjectSelectionService(Node):
         """Handle 3D poses from pose estimator"""
         self.current_poses = msg
     
+    def cb_detections_3d(self, msg: Detection3DArray):
+        """Handle ZED 3D detections (preferred when available)"""
+        self.current_detections_3d = msg
+        
+        # Process 3D detections for metadata
+        self.object_priorities = []
+        self.object_categories = []
+        self.selection_status = []
+        
+        for i, detection_3d in enumerate(msg.detections):
+            # Use built-in mission metadata from ZED detector
+            category = detection_3d.mission_category
+            priority = detection_3d.mission_priority
+            
+            self.object_categories.append(category)
+            self.object_priorities.append(priority)
+            
+            # Selection status
+            if i == self.selected_object_idx:
+                self.selection_status.append('selected')
+            else:
+                self.selection_status.append('available')
+        
+        self.get_logger().debug(f"Processed {len(msg.detections)} ZED 3D detections")
+    
     def cb_tracking_ids(self, msg: Int32MultiArray):
         """Handle tracking IDs from pose estimator"""
         self.current_tracking_ids = msg
@@ -122,10 +151,57 @@ class ObjectSelectionService(Node):
     
     def _select_by_category(self, target_category: str, request, response):
         """Select best object of given category"""
-        if not self.current_detections or not self.object_categories:
+        # Prefer ZED 3D detections when available
+        if self.use_zed_3d and self.current_detections_3d and self.current_detections_3d.detections:
+            return self._select_from_3d_detections(target_category, request, response)
+        elif self.current_detections and self.object_categories:
+            return self._select_from_2d_detections(target_category, request, response)
+        else:
             response.success = False
             response.message = f"No {target_category} objects available"
             return response
+    
+    def _select_from_3d_detections(self, target_category: str, request, response):
+        """Select from ZED 3D detections (preferred method)"""
+        # Find best object in category
+        best_idx = None
+        best_priority = 0.0
+        
+        for i, detection_3d in enumerate(self.current_detections_3d.detections):
+            if detection_3d.mission_category == target_category and detection_3d.mission_priority > best_priority:
+                best_idx = i
+                best_priority = detection_3d.mission_priority
+        
+        if best_idx is None:
+            response.success = False
+            response.message = f"No {target_category} objects found in ZED detections"
+            return response
+        
+        # Select the object
+        self.selected_object_idx = best_idx
+        detection_3d = self.current_detections_3d.detections[best_idx]
+        class_name = detection_3d.detection_2d.results[0].hypothesis.class_id
+        confidence = detection_3d.confidence_3d
+        
+        # Use native 3D pose from ZED
+        pose_3d = Pose()
+        pose_3d.position = detection_3d.position
+        pose_3d.orientation = detection_3d.orientation
+        
+        self.selected_pose = pose_3d
+        self._publish_target_poses(pose_3d, target_category)
+        
+        # Publish visual markers
+        self._publish_selection_markers()
+        
+        response.success = True
+        response.message = f"Selected {class_name} ({target_category}) with 3D confidence {confidence:.2f} at distance {detection_3d.distance:.2f}m"
+        
+        self.get_logger().info(f"🎯 ZED 3D: {response.message}")
+        return response
+    
+    def _select_from_2d_detections(self, target_category: str, request, response):
+        """Fallback to 2D detections with pose estimation"""
         
         # Find best object in category
         best_idx = None
@@ -138,7 +214,7 @@ class ObjectSelectionService(Node):
         
         if best_idx is None:
             response.success = False
-            response.message = f"No {target_category} objects found"
+            response.message = f"No {target_category} objects found in 2D detections"
             return response
         
         # Select the object
@@ -147,23 +223,23 @@ class ObjectSelectionService(Node):
         class_name = detection.results[0].hypothesis.class_id
         confidence = detection.results[0].hypothesis.score
         
-        # Get 3D pose if available
+        # Get 3D pose if available from pose estimator
         pose_3d = self._get_3d_pose_for_detection(best_idx)
         if pose_3d:
             self.selected_pose = pose_3d
             self._publish_target_poses(pose_3d, target_category)
             response.success = True
-            response.message = f"Selected {class_name} ({target_category}) with confidence {confidence:.2f} at 3D position"
+            response.message = f"Selected {class_name} ({target_category}) with 2D→3D confidence {confidence:.2f}"
         else:
             # Fallback to 2D estimation
             self._publish_target_pose_2d(detection)
             response.success = True
-            response.message = f"Selected {class_name} ({target_category}) with confidence {confidence:.2f} (2D fallback)"
+            response.message = f"Selected {class_name} ({target_category}) with 2D confidence {confidence:.2f} (2D fallback)"
         
         # Publish visual markers
         self._publish_selection_markers()
         
-        self.get_logger().info(f"🎯 {response.message}")
+        self.get_logger().info(f"🎯 2D Fallback: {response.message}")
         return response
     
     def clear_selection(self, request, response):

@@ -21,6 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'object_detection_node = object_detection.node:main',
+            'zed_object_detector = object_detection.zed_detector:main',
+            'zed_object_bridge = object_detection.zed_bridge:main',
             'select_object_service = object_detection.select_object_service:main',
         ],
     },

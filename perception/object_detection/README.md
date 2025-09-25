@@ -1,26 +1,121 @@
 # URC Object Detection Module
 
+**High-Performance Object Detection with Dual Pipeline Support**
+
+This module provides **two detection systems** optimized for University Rover Challenge missions:
+
+1. **🚀 ZED Native Detection** (Recommended) - GPU-accelerated with native 3D bounding boxes  
+2. **🔄 YOLO Detection** (Fallback) - CPU-based with 2D→3D conversion
+
+## 🎯 Detection Pipeline Comparison
+
+| Feature | ZED Native | YOLO Pipeline |
+|---------|------------|---------------|
+| **Speed** | 30-50ms (GPU) | 150-250ms (CPU) |
+| **3D Accuracy** | Native 3D boxes | 2D→3D conversion |
+| **Tracking** | Built-in persistent IDs | Custom tracker |
+| **Hardware** | Requires ZED SDK | Any camera |
+| **Custom Models** | ZED training tools | ONNX models |
+
 ## Quick Start Guide
 
-### 🚀 Option 1: Test with Pre-trained Model (5 minutes)
+### 🚀 Option 1: ZED Integrated Detection (Recommended - 2 minutes)
 
-**Already set up!** The module comes with a pre-trained YOLOv8 model that detects common objects including bottles, backpacks, and people - useful for testing your pipeline.
+**Uses official ZED ROS2 wrapper with GPU-accelerated object detection**
 
 ```bash
-# Build the package
+# Build the packages
 cd /home/rover/workspaces/rover
-colcon build --packages-select object_detection
+colcon build --packages-select zed_wrapper zed_components object_detection
 
-# Launch object detection (requires ZED2i camera)
+# Launch ZED integrated detection (uses official ZED ROS2 wrapper)
+ros2 launch object_detection zed_integrated_detection.launch.py
+
+# Check 3D detections
+ros2 topic echo /zed_detections_3d
+
+# Test object selection
+ros2 service call /select_best_science std_srvs/srv/SetBool "{data: true}"
+```
+
+**Architecture:** `ZED Wrapper → zed_msgs/ObjectsStamped → Bridge → Detection3DArray → Selection`
+
+### 🔄 Option 2: YOLO Detection (Fallback - 5 minutes)
+
+**CPU-based detection with pre-trained YOLOv8 model**
+
+```bash
+# Launch YOLO detection (works without ZED SDK)
 ros2 launch object_detection object_detection.launch.py
 
-# In another terminal, check detections
+# Check 2D detections
 ros2 topic echo /detected_objects
 ```
 
 **What it detects:** 80 COCO objects including `person`, `bottle`, `backpack`, `chair`, `laptop` - some overlap with URC mission objects.
 
-### 🎯 Option 2: Train Custom URC Model (2-3 days)
+## 🔄 Migration Plan: YOLO → ZED Native
+
+### **Phase 1: Parallel Testing (Current)**
+- ✅ Both systems available
+- ✅ ZED detector implemented with 3D messages
+- ✅ Selection service supports both pipelines
+- 🔄 **Test both systems side-by-side**
+
+### **Phase 2: Switch to ZED (Recommended)**
+```bash
+# Use ZED integrated detection in complete perception system
+ros2 launch slam_launch perception_complete.launch.py use_zed_detection:=true
+
+# Or disable ZED and use YOLO fallback  
+ros2 launch slam_launch perception_complete.launch.py use_zed_detection:=false
+```
+
+**Note:** ZED detection uses the official ZED ROS2 wrapper, not direct SDK access. This avoids camera resource conflicts and leverages the existing ZED ecosystem.
+
+### **Phase 3: Custom URC Model Training**
+1. **Collect URC dataset** (bottles, rocks, equipment, flags)
+2. **Use ZED training tools** (Docker-based pipeline)
+3. **Deploy custom model** to Jetson
+4. **Fine-tune for mission scenarios**
+
+## 🛠️ ZED Integration Setup
+
+### **Architecture: Official ZED ROS2 Wrapper (Recommended)**
+
+Our implementation uses the **official ZED ROS2 wrapper** instead of direct SDK access:
+
+```
+ZED Camera → ZED ROS2 Wrapper → zed_msgs/ObjectsStamped → Bridge → Detection3DArray → Selection
+```
+
+**Benefits:**
+- ✅ **No camera conflicts** - uses existing ZED integration
+- ✅ **Leverages ZED configuration** - uses official config files
+- ✅ **Better performance** - optimized ZED ROS2 implementation
+- ✅ **Custom model support** - via ZED wrapper's ONNX integration
+
+### **Dependencies (Already in workspace)**
+```bash
+# ZED packages already available:
+# - zed_wrapper (official ZED ROS2 wrapper)
+# - zed_components (ZED camera components)
+# - zed_ros2 (ZED ROS2 utilities)
+
+# Verify ZED packages
+ros2 pkg list | grep zed
+```
+
+### **Custom URC Model Training**
+```bash
+# Use ZED's official training pipeline
+# 1. Collect URC dataset
+# 2. Train ONNX model using ZED tools
+# 3. Configure via custom_object_detection.yaml
+# 4. Load in ZED wrapper: custom_onnx_file: '/path/to/urc_model.onnx'
+```
+
+### 🎯 Option 3: Train Custom URC Model (2-3 days)
 
 For competition-ready detection of URC-specific objects like rocks, toolboxes, and flags:
 
