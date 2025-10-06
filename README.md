@@ -1,7 +1,7 @@
 ### Docker setup
 To quickly open the repo in a ROS2 docker image with a similar environment to the rover's jetson, run:
 ```bash
-docker run --rm -it $(docker build -q .)
+docker run --rm -it $(docker build -q .) /bin/bash
 ```
 **Be careful**, any changes you make to the repo from inside the docker container will not be reflected on your host filesystem and any changes made to the container will be lost as soon as you exit the container.
 

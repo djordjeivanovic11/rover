@@ -8,12 +8,12 @@ USER rover
 WORKDIR /home/rover
 RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh -s 1.3.1
 RUN /home/rover/bin/arduino-cli config init --additional-urls https://www.pjrc.com/teensy/package_teensy_index.json
-RUN /home/rover/bin/arduino-cli core install teensy:avr@1.59.0
+RUN /home/rover/bin/arduino-cli core install teensy:avr@1.57.3
 
 WORKDIR /tmp
 ADD --chown=rover https://github.com/micro-ROS/micro_ros_arduino/archive/refs/tags/v2.0.7-humble.tar.gz /tmp/micro_ros_arduino.tar.gz
 RUN tar -xzf micro_ros_arduino.tar.gz
-RUN mv micro_ros_arduino-2.0.7-humble /home/rover/.arduino15/packages/teensy/hardware/avr/1.59.0/libraries/micro_ros_arduino
+RUN mv micro_ros_arduino-2.0.7-humble /home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/libraries/micro_ros_arduino
 
 RUN sudo rm -rf /tmp/*
 

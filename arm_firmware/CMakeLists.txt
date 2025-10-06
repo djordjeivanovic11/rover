@@ -5,8 +5,14 @@ project(arm_firmware)
 find_package(ament_cmake REQUIRED)
 
 # Path to Teensyduino install
+set(TEENSYDUINO_VER 1.57.3)
+set(TEENSY_TOOLCHAIN_VER 5.4.1)
 set(TEENSY_ROOT $ENV{HOME}/.arduino15/packages/teensy)
-set(TEENSY_BASE ${TEENSY_ROOT}/hardware/avr/1.59.0)
+set(TEENSY_BASE ${TEENSY_ROOT}/hardware/avr/${TEENSYDUINO_VER})
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(TEENSY_LIBS
   AccelStepper
@@ -18,9 +24,9 @@ set(TEENSY_LIBS
 # Toolchain (override compiler for this target)
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR cortex-m7)
-set(CMAKE_C_COMPILER ${TEENSY_ROOT}/tools/teensy-compile/11.3.1/arm/bin/arm-none-eabi-gcc)
-set(CMAKE_CXX_COMPILER ${TEENSY_ROOT}/tools/teensy-compile/11.3.1/arm/bin/arm-none-eabi-g++)
-set(CMAKE_ASM_COMPILER ${TEENSY_ROOT}/tools/teensy-compile/11.3.1/arm/bin/arm-none-eabi-gcc)
+set(CMAKE_C_COMPILER ${TEENSY_ROOT}/tools/teensy-compile/${TEENSY_TOOLCHAIN_VER}/arm/bin/arm-none-eabi-gcc)
+set(CMAKE_CXX_COMPILER ${TEENSY_ROOT}/tools/teensy-compile/${TEENSY_TOOLCHAIN_VER}/arm/bin/arm-none-eabi-g++)
+set(CMAKE_ASM_COMPILER ${TEENSY_ROOT}/tools/teensy-compile/${TEENSY_TOOLCHAIN_VER}/arm/bin/arm-none-eabi-gcc)
 
 # Common compiler flags
 set(TEENSY_FLAGS "-mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-d16")
@@ -74,7 +80,7 @@ add_executable(${PROJECT_NAME}.elf
 # Linker script
 set(LINKER_SCRIPT ${TEENSY_BASE}/cores/teensy4/imxrt1062_t41.ld)
 set_target_properties(${PROJECT_NAME}.elf PROPERTIES
-  LINK_FLAGS "-T${LINKER_SCRIPT} -nostdlib -Wl,--gc-sections"
+  LINK_FLAGS "-T${LINKER_SCRIPT} -specs=nosys.specs -Wl,--gc-sections"
 )
 
 # Link against required runtime libraries
@@ -89,7 +95,7 @@ target_link_libraries(${PROJECT_NAME}.elf
 
 # HEX output
 add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
-  COMMAND ${TEENSY_ROOT}/tools/teensy-compile/11.3.1/arm/bin/arm-none-eabi-objcopy -O ihex ${PROJECT_NAME}.elf ${PROJECT_NAME}.hex
+  COMMAND ${TEENSY_ROOT}/tools/teensy-compile/${TEENSY_TOOLCHAIN_VER}/arm/bin/arm-none-eabi-objcopy -O ihex ${PROJECT_NAME}.elf ${PROJECT_NAME}.hex
   COMMENT "Generating HEX firmware"
 )
 
