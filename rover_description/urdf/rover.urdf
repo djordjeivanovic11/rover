@@ -28,10 +28,8 @@
         <mesh
           filename="package://rover_description/meshes/Chassis.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.866666666666667 0.909803921568627 1 1" />
+      <material name="ChassisBlue">
+        <color rgba="0.0 0.4 0.8 1.0"/>
       </material>
     </visual>
     <collision>
@@ -68,10 +66,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Rocker-Right.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="StructuralGrey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
       </material>
     </visual>
     <collision>
@@ -121,10 +117,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Bogie-Right.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="StructuralGrey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
       </material>
     </visual>
     <collision>
@@ -174,10 +168,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Wheel-Rear-Right.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="WheelBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
       </material>
     </visual>
     <collision>
@@ -227,10 +219,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Wheel-Mid-Right.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="WheelBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
       </material>
     </visual>
     <collision>
@@ -280,10 +270,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Wheel-Front-Right.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="WheelBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
       </material>
     </visual>
     <collision>
@@ -333,10 +321,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Rocker-Left.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="StructuralGrey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
       </material>
     </visual>
     <collision>
@@ -386,10 +372,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Bogie-Left.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="StructuralGrey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
       </material>
     </visual>
     <collision>
@@ -439,10 +423,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Wheel-Rear-Left.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="WheelBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
       </material>
     </visual>
     <collision>
@@ -492,10 +474,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Wheel-Mid-Left.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="WheelBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
       </material>
     </visual>
     <collision>
@@ -545,10 +525,8 @@
         <mesh
           filename="package://rover_description/meshes/Susp-Wheel-Front-Left.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="WheelBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
       </material>
     </visual>
     <collision>
@@ -598,10 +576,8 @@
         <mesh
           filename="package://rover_description/meshes/Arm-Base.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="ArmOrange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
       </material>
     </visual>
     <collision>
@@ -651,10 +627,8 @@
         <mesh
           filename="package://rover_description/meshes/Arm-Stage1.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="ArmOrange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
       </material>
     </visual>
     <collision>
@@ -704,10 +678,8 @@
         <mesh
           filename="package://rover_description/meshes/Arm-Stage2.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="ArmOrange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
       </material>
     </visual>
     <collision>
@@ -757,10 +729,8 @@
         <mesh
           filename="package://rover_description/meshes/Arm-Wrist.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="ArmOrange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
       </material>
     </visual>
     <collision>
@@ -810,10 +780,8 @@
         <mesh
           filename="package://rover_description/meshes/Arm-Manip.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      <material name="ManipulatorRed">
+        <color rgba="0.8 0.0 0.0 1.0"/>
       </material>
     </visual>
     <collision>

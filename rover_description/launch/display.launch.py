@@ -51,6 +51,15 @@ def generate_launch_description():
         }]
     )
     
+    # Static transform publisher for map -> Chassis
+    static_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_publisher_map_to_chassis',
+        output='log',
+        arguments=['0', '0', '0', '0', '0', '0', 'map', 'Chassis']
+    )
+    
     # RViz node
     rviz_node = Node(
         package='rviz2',
@@ -65,6 +74,7 @@ def generate_launch_description():
     
     return LaunchDescription([
         use_sim_time_arg,
+        static_tf_node,
         robot_state_publisher_node,
         joint_state_publisher_gui_node,
         rviz_node
