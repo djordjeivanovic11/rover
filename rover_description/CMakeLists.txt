@@ -18,6 +18,7 @@ install(DIRECTORY
   config
   launch
   meshes
+  models
   urdf
   DESTINATION share/${PROJECT_NAME}/
 )
