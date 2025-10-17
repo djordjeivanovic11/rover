@@ -926,4 +926,28 @@
     </plugin>
   </gazebo>
 
+  <!-- Ignition Gazebo Differential Drive Plugin -->
+  <gazebo>
+    <plugin
+      filename="libignition-gazebo-diff-drive-system.so"
+      name="ignition::gazebo::systems::DiffDrive">
+      <left_joint>WFL-Rev</left_joint>
+      <left_joint>WML-Rev</left_joint>
+      <left_joint>WRL-Rev</left_joint>
+      <right_joint>WFR-Rev</right_joint>
+      <right_joint>WMR-Rev</right_joint>
+      <right_joint>WRR-Rev</right_joint>
+      <wheel_separation>0.435</wheel_separation>
+      <wheel_radius>0.095</wheel_radius>
+      <max_linear_acceleration>1.0</max_linear_acceleration>
+      <max_angular_acceleration>2.0</max_angular_acceleration>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>tf</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>Chassis</child_frame_id>
+    </plugin>
+  </gazebo>
+
 </robot>

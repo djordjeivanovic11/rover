@@ -73,6 +73,40 @@ For headless simulation (no GUI):
 ros2 launch rover_description gazebo.launch.py ign_args:='--headless-rendering -v 4'
 ```
 
+### Running on Jetson with Display
+
+When running on **NVIDIA Jetson devices** (Orin Nano, Xavier, etc.) with a connected display:
+
+**1. Set up display environment (first time or after reboot):**
+```bash
+export DISPLAY=:0
+```
+
+**2. Launch RViz2 visualization:**
+```bash
+export DISPLAY=:0
+ros2 launch rover_description display.launch.py
+```
+
+**3. Launch Gazebo simulation:**
+```bash
+export DISPLAY=:0
+ros2 launch rover_description gazebo.launch.py
+```
+
+**Notes for Jetson:**
+- The `DISPLAY=:0` environment variable tells GUI applications to use the connected display
+- The launch files are pre-configured to work with Jetson's integrated GPU
+- Gazebo uses MESA EGL rendering for compatibility with Jetson graphics drivers
+- First launch of Gazebo may take 30-60 seconds to initialize the GUI
+
+**Persistent display setup (optional):**
+Add to your `~/.bashrc` to avoid setting DISPLAY each time:
+```bash
+echo "export DISPLAY=:0" >> ~/.bashrc
+source ~/.bashrc
+```
+
 ## Robot Structure
 
 ### Suspension System
