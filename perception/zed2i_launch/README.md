@@ -18,6 +18,10 @@ To start the desktop environment on the rover:
 sudo systemctl start gdm
 ```
 
+```bash
+cd /home/rover/workspaces/rover && export RMW_IMPLEMENTATION=rmw_fastrtps_cpp && export DISPLAY=:0 && source install/setup.bash && ros2 launch zed2i_launch zed2i_driver.launch.py
+```
+
 ### VNC Connection (Mac/Remote)
 For remote access via VNC, use the "Connect to Server" option with:
 ```

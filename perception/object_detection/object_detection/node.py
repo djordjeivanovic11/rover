@@ -31,6 +31,7 @@ class URCObjectDetection(Node):
         # Parameters
         self.declare_parameter('model_path', '')
         self.declare_parameter('classes_file', '')
+        self.declare_parameter('urc_filter_file', '')  #  URC-specific filter
         self.declare_parameter('confidence_threshold', 0.5)
         self.declare_parameter('iou_threshold', 0.45)
         self.declare_parameter('input_size', 640)
@@ -41,6 +42,7 @@ class URCObjectDetection(Node):
         # Get parameters
         model_path = self.get_parameter('model_path').value
         classes_file = self.get_parameter('classes_file').value
+        urc_filter_file = self.get_parameter('urc_filter_file').value
         self.conf_thresh = self.get_parameter('confidence_threshold').value
         self.iou_thresh = self.get_parameter('iou_threshold').value
         self.input_size = self.get_parameter('input_size').value
@@ -48,9 +50,15 @@ class URCObjectDetection(Node):
         img_topic = self.get_parameter('image_topic').value
         out_topic = self.get_parameter('output_topic').value
 
-        # Load URC mission classes
+        # Load all COCO classes
         self.classes = self._load_urc_classes(classes_file)
-        self.get_logger().info(f"Loaded {len(self.classes)} URC object classes")
+        
+        # Load URC mission filter (specific classes we care about)
+        self.urc_filter = self._load_urc_filter(urc_filter_file)
+        if self.urc_filter:
+            self.get_logger().info(f"URC Filter: Detecting {len(self.urc_filter)} mission objects: {list(self.urc_filter.values())}")
+        else:
+            self.get_logger().info(f"No URC filter - detecting all {len(self.classes)} COCO classes")
 
         # Initialize ONNX runtime with optimization
         # Try GPU first, fallback to CPU for Jetson compatibility
@@ -83,18 +91,34 @@ class URCObjectDetection(Node):
         self.get_logger().info("URC Object Detection Node initialized")
 
     def _load_urc_classes(self, classes_file: str) -> List[str]:
-        """Load URC-specific object classes"""
+        """Load COCO object classes"""
         try:
             with open(classes_file, 'r') as f:
                 classes = [line.strip() for line in f if line.strip()]
             return classes
         except Exception as e:
             self.get_logger().error(f"Failed to load classes: {e}")
-            # Fallback URC classes
-            return [
-                'rock', 'mineral', 'biological_sample', 'bottle', 'toolbox', 
-                'container', 'cable', 'flag', 'post', 'sign', 'obstacle'
-            ]
+            return []
+    
+    def _load_urc_filter(self, filter_file: str) -> dict:
+        """Load URC mission-specific object filter (class_id -> display_name)"""
+        if not filter_file or filter_file == '':
+            return {}  # No filter, allow all classes
+        
+        try:
+            urc_filter = {}
+            with open(filter_file, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        # Format: class_id:display_name
+                        if ':' in line:
+                            class_id, name = line.split(':', 1)
+                            urc_filter[int(class_id.strip())] = name.strip()
+            return urc_filter
+        except Exception as e:
+            self.get_logger().error(f"Failed to load URC filter: {e}")
+            return {}
 
     def preprocess_image(self, image: np.ndarray) -> Tuple[np.ndarray, float, Tuple[int, int]]:
         """
@@ -127,35 +151,49 @@ class URCObjectDetection(Node):
                              pads: Tuple[int, int], original_shape: Tuple[int, int]) -> List[dict]:
         """
         Postprocess YOLO outputs to get final detections
+        YOLOv8 outputs RAW LOGITS that need sigmoid activation
         """
-        # Assuming YOLO format: [batch, num_detections, 85] where 85 = 4(bbox) + 1(conf) + 80(classes)
-        predictions = outputs[0][0]  # Remove batch dimension
+        # YOLOv8 format: [batch, 4+classes, num_predictions] -> transpose to [batch, num_predictions, 4+classes]
+        predictions = outputs[0]  # Shape: [1, 84, 8400] for COCO
         
-        # Filter by confidence
-        conf_mask = predictions[:, 4] >= self.conf_thresh
-        predictions = predictions[conf_mask]
+        # Transpose from [1, 84, 8400] to [1, 8400, 84]
+        if predictions.shape[1] < predictions.shape[2]:
+            predictions = predictions.transpose(0, 2, 1)
         
-        if len(predictions) == 0:
+        predictions = predictions[0]  # Remove batch dimension -> [8400, 84]
+        
+        # Extract components  
+        boxes = predictions[:, :4]  # x_center, y_center, width, height
+        class_scores = predictions[:, 4:]  # 80 class probabilities (already sigmoid-activated!)
+        
+        # Get best class for each detection
+        class_ids = np.argmax(class_scores, axis=1)
+        confidences = np.max(class_scores, axis=1)  # Use max class probability as confidence
+        
+        # Debug: log prediction stats every 50 frames
+        if self.frame_count % 50 == 0:
+            max_conf = confidences.max() if len(confidences) > 0 else 0
+            num_above_thresh = (confidences >= self.conf_thresh).sum()
+            top_conf_indices = np.argsort(confidences)[-10:][::-1]
+            top_confs = confidences[top_conf_indices]
+            self.get_logger().info(f"Frame {self.frame_count}: Max conf: {max_conf:.3f}, "
+                                 f"Top 10: {top_confs}, Above threshold ({self.conf_thresh}): {num_above_thresh}")
+        
+        # Filter by confidence threshold
+        conf_mask = confidences >= self.conf_thresh
+        boxes = boxes[conf_mask]
+        confidences = confidences[conf_mask]
+        class_ids = class_ids[conf_mask]
+        
+        if len(boxes) == 0:
             return []
         
-        # Extract boxes, confidences, and class predictions
-        boxes = predictions[:, :4]  # x_center, y_center, width, height (normalized)
-        confidences = predictions[:, 4]
-        class_scores = predictions[:, 5:]
-        
-        # Get class with highest score for each detection
-        class_ids = np.argmax(class_scores, axis=1)
-        class_confidences = np.max(class_scores, axis=1)
-        
-        # Final confidence = objectness * class_confidence
-        final_confidences = confidences * class_confidences
-        
-        # Convert to absolute coordinates and remove padding
+        # Convert from model coordinates to original image coordinates
         pad_x, pad_y = pads
-        boxes[:, 0] = (boxes[:, 0] * self.input_size - pad_x) / scale  # x_center
-        boxes[:, 1] = (boxes[:, 1] * self.input_size - pad_y) / scale  # y_center
-        boxes[:, 2] = boxes[:, 2] * self.input_size / scale  # width
-        boxes[:, 3] = boxes[:, 3] * self.input_size / scale  # height
+        boxes[:, 0] = (boxes[:, 0] - pad_x) / scale  # x_center
+        boxes[:, 1] = (boxes[:, 1] - pad_y) / scale  # y_center
+        boxes[:, 2] = boxes[:, 2] / scale  # width
+        boxes[:, 3] = boxes[:, 3] / scale  # height
         
         # Convert to x1, y1, x2, y2 format for NMS
         x1 = boxes[:, 0] - boxes[:, 2] / 2
@@ -163,21 +201,49 @@ class URCObjectDetection(Node):
         x2 = boxes[:, 0] + boxes[:, 2] / 2
         y2 = boxes[:, 1] + boxes[:, 3] / 2
         
+        # Clip to image boundaries
+        x1 = np.clip(x1, 0, original_shape[1])
+        y1 = np.clip(y1, 0, original_shape[0])
+        x2 = np.clip(x2, 0, original_shape[1])
+        y2 = np.clip(y2, 0, original_shape[0])
+        
         # Apply Non-Maximum Suppression
         nms_boxes = np.column_stack([x1, y1, x2, y2])
-        keep_indices = self.nms(nms_boxes, final_confidences, self.iou_thresh)
+        keep_indices = self.nms(nms_boxes, confidences, self.iou_thresh)
+        
+        # Debug NMS
+        if self.frame_count % 50 == 0:
+            self.get_logger().info(f"Before NMS: {len(confidences)} boxes, After NMS: {len(keep_indices)} boxes")
         
         # Build final detections
         detections = []
         for idx in keep_indices[:self.max_detections]:
-            if class_ids[idx] < len(self.classes):
-                detection = {
-                    'bbox': [float(x1[idx]), float(y1[idx]), float(x2[idx]), float(y2[idx])],
-                    'confidence': float(final_confidences[idx]),
-                    'class_id': int(class_ids[idx]),
-                    'class_name': self.classes[class_ids[idx]]
-                }
-                detections.append(detection)
+            class_id = int(class_ids[idx])
+            
+            # Apply URC filter if configured
+            if self.urc_filter and class_id not in self.urc_filter:
+                continue  # Skip objects not in URC mission list
+            
+            # Get class name
+            if self.urc_filter and class_id in self.urc_filter:
+                class_name = self.urc_filter[class_id]
+            elif class_id < len(self.classes):
+                class_name = self.classes[class_id]
+            else:
+                continue
+            
+            detection = {
+                'bbox': [float(x1[idx]), float(y1[idx]), float(x2[idx]), float(y2[idx])],
+                'confidence': float(confidences[idx]),
+                'class_id': class_id,
+                'class_name': class_name
+            }
+            detections.append(detection)
+        
+        # Debug final detections
+        if len(detections) > 0 and self.frame_count % 10 == 0:
+            det_summary = ', '.join([f"{d['class_name']}:{d['confidence']:.2f}" for d in detections[:5]])
+            self.get_logger().info(f"🎯 Publishing {len(detections)} detections: {det_summary}")
         
         return detections
 
@@ -282,7 +348,7 @@ class URCObjectDetection(Node):
     def log_performance(self):
         """Log performance metrics"""
         fps = self.frame_count / 5.0
-        self.get_logger().info(f"Detection FPS: {fps:.2f}")
+        self.get_logger().info(f"Detection FPS: {fps:.2f}, Conf threshold: {self.conf_thresh}")
         self.frame_count = 0
 
 def main(args=None):

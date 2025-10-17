@@ -40,6 +40,9 @@ run_signal = False
 exit_signal = False
 image_net = None
 detections_data = []
+last_detections = []
+persist_misses = 0
+PERSIST_FRAMES = 10
 
 
 def aruco_thread(detector, camera_matrix, dist_coeffs, marker_size_m):
@@ -370,9 +373,25 @@ def main():
 
                 # Ingest custom boxes
                 lock.acquire()
-                if detections_data:
-                    zed.ingest_custom_box_objects(detections_data)
-                lock.release()
+                try:
+                    global last_detections, persist_misses
+
+                    if detections_data and len(detections_data) > 0:
+                        # fresh detections this frame
+                        last_detections = detections_data
+                        persist_misses = 0
+                        zed.ingest_custom_box_objects(detections_data)
+                    else:
+                        # no detections this frame -> reuse last for a few frames, then clear
+                        if last_detections and persist_misses < PERSIST_FRAMES:
+                            persist_misses += 1
+                            zed.ingest_custom_box_objects(last_detections)
+                        else:
+                            persist_misses = 0
+                            last_detections = []
+                            zed.ingest_custom_box_objects([])  # force-clear after grace window
+                finally:
+                    lock.release()
 
                 # Retrieve tracked objects
                 zed.retrieve_objects(objects, obj_runtime_params)
