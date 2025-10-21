@@ -1,197 +1,194 @@
 #!/usr/bin/env python3
 """
 =============================================================================
-ROVER ARM HARDWARE INTERFACE
+ROVER ARM HARDWARE BRIDGE - ADAPTED FROM OLD SYSTEM
 =============================================================================
-ROS2 Control hardware interface that bridges MoveIt trajectories to the
-actual rover arm motor controllers. This replaces the old custom IK system
-with a MoveIt-compatible interface while maintaining hardware compatibility.
+Exactly matches the old ros_arm_interface.py behavior for hardware compatibility.
 
-Based on the existing motor control system from old_arm/.
+Topics (same as old system):
+- Subscribes: /get_arm_position (Int32MultiArray) - encoder ticks from motors
+- Publishes: /arm_target_motor_positions (Int32MultiArray) - motor commands in ticks
+
+Bridge for ros2_control:
+- Subscribes: /arm_joint_commands (JointState) - from ros2_control
+- Publishes: /arm_joint_states (JointState) - to ros2_control
 =============================================================================
 """
 
 import rclpy
 from rclpy.node import Node
-from rclpy.lifecycle import LifecycleNode, LifecycleState, TransitionCallbackReturn
-from std_msgs.msg import Int32MultiArray, Float32MultiArray
+from std_msgs.msg import Int32MultiArray
+from sensor_msgs.msg import JointState
 import numpy as np
-import time
 
-
-# Motor and encoder constants from old system
+# Constants from old system (ros_arm_interface.py)
 TICKS_PER_REV = 1600
-GEAR_RATIOS = {
-    'AB_Rev': 50,       # Base rotation (continuous)
-    'AS1_Rev': 100,     # Shoulder pitch (Y-axis)
-    'AS2_Rev': 100,     # Shoulder yaw (Z-axis) - NEW 5th DOF
-    'AW_Rev': 50,       # Elbow pitch
-    'AM_Rev': 50 * 22 / 9,  # Wrist roll
+
+# Gear ratios from old system - EXACTLY as they were
+# Index: [0,      1,    2,    3,   4,         5]
+# Joint: [azimuth, j1,  j2,   j3,  j4,        j5]
+GEAR_RATIOS = np.array([50, 100, 100, 50, 50*22/9, 1])
+
+# Joint mapping: MoveIt joint name → motor index
+# This maps our 5 MoveIt joints to the 6 motor array
+JOINT_TO_MOTOR_INDEX = {
+    'AB_Rev': 0,   # Base/azimuth
+    'AS1_Rev': 1,  # Shoulder joint 1
+    'AS2_Rev': 2,  # Shoulder joint 2
+    'AW_Rev': 3,   # Elbow
+    'AM_Rev': 4,   # Wrist
 }
 
+JOINT_NAMES = ['AB_Rev', 'AS1_Rev', 'AS2_Rev', 'AW_Rev', 'AM_Rev']
 
-class RoverArmHardware(LifecycleNode):
-    """
-    Hardware interface for the rover arm.
-    
-    This class implements the ROS2 Control hardware interface for the rover
-    arm. It communicates with the actual motor controllers and provides
-    position/velocity feedback to MoveIt.
-    """
+
+class RoverArmHardwareBridge(Node):
+    """Hardware bridge matching old system behavior"""
     
     def __init__(self):
-        super().__init__('rover_arm_hardware')
+        super().__init__('rover_arm_hardware_bridge')
         
-        # Joint configuration (matching URDF - NOW 5-DOF)
-        self.joint_names = ['AB_Rev', 'AS1_Rev', 'AS2_Rev', 'AW_Rev', 'AM_Rev']
-        self.num_joints = len(self.joint_names)
+        # Motor array (6 values as in old system, last one unused)
+        self.motor_positions_ticks = np.zeros(6, dtype=int)
+        self.motor_commands_ticks = np.zeros(6, dtype=int)
         
-        # State vectors (in radians)
-        self.joint_positions = np.zeros(self.num_joints)
-        self.joint_velocities = np.zeros(self.num_joints)
-        self.joint_efforts = np.zeros(self.num_joints)
+        # Joint positions in radians (5 joints for MoveIt)
+        self.joint_positions = np.zeros(5)
+        self.joint_velocities = np.zeros(5)
         
-        # Command vectors (in radians)
-        self.position_commands = np.zeros(self.num_joints)
-        self.velocity_commands = np.zeros(self.num_joints)
+        # === OLD SYSTEM TOPICS (to motor firmware) ===
         
-        # Motor encoder positions (in ticks)
-        self.motor_encoder_ticks = np.zeros(self.num_joints)
+        # Subscribe to encoder feedback from motors
+        self.encoder_sub = self.create_subscription(
+            Int32MultiArray,
+            '/get_arm_position',
+            self.encoder_callback,
+            10
+        )
         
-        # Publishers for motor commands (in ticks)
-        self.motor_command_pub = self.create_publisher(
+        # Publish motor commands to firmware
+        self.motor_cmd_pub = self.create_publisher(
             Int32MultiArray,
             '/arm_target_motor_positions',
             10
         )
         
-        # Subscribers for motor feedback
-        self.motor_feedback_sub = self.create_subscription(
-            Int32MultiArray,
-            '/get_arm_position',
-            self._motor_feedback_callback,
+        # === NEW SYSTEM TOPICS (to/from ros2_control) ===
+        
+        # Subscribe to commands from ros2_control
+        self.joint_cmd_sub = self.create_subscription(
+            JointState,
+            '/arm_joint_commands',
+            self.joint_command_callback,
             10
         )
         
-        # Timing
-        self.last_update_time = time.time()
-        self.control_frequency = 50.0  # Hz
-        
-        # Create timer for periodic updates
-        self.control_timer = self.create_timer(
-            1.0 / self.control_frequency,
-            self._control_loop_callback
+        # Publish joint states to ros2_control
+        self.joint_state_pub = self.create_publisher(
+            JointState,
+            '/arm_joint_states',
+            10
         )
         
-        self.get_logger().info('Rover Arm Hardware Interface initialized')
+        # Publish joint states at 100Hz
+        self.state_timer = self.create_timer(0.01, self.publish_joint_states)
+        
+        # For velocity estimation
+        self.last_time = self.get_clock().now()
+        self.last_positions = np.zeros(5)
+        
+        self.get_logger().info('Rover Arm Hardware Bridge - Old System Compatible')
+        self.get_logger().info(f'Using gear ratios: {GEAR_RATIOS.tolist()}')
+        self.get_logger().info('Waiting for motor encoders on /get_arm_position...')
     
-    def _motor_feedback_callback(self, msg):
+    def encoder_callback(self, msg: Int32MultiArray):
         """
-        Callback for motor encoder feedback.
-        Converts motor ticks to joint angles in radians.
+        Receive encoder feedback from motors (OLD SYSTEM FORMAT)
+        Exactly matches old ros_arm_interface.py line 64-68
         """
-        if len(msg.data) < self.num_joints:
-            self.get_logger().warn('Received incomplete motor feedback')
+        if len(msg.data) < 6:
+            self.get_logger().warn(f'Expected 6 encoder values, got {len(msg.data)}')
             return
         
-        # Store raw encoder ticks
-        self.motor_encoder_ticks = np.array(msg.data[:self.num_joints])
+        # Store raw motor ticks (6 values)
+        inp = np.array(list(msg.data[:6]))
         
-        # Convert ticks to radians
-        for i, joint_name in enumerate(self.joint_names):
-            gear_ratio = GEAR_RATIOS[joint_name]
-            # Ticks to radians: ticks / (TICKS_PER_REV * gear_ratio) * 2π
-            self.joint_positions[i] = (
-                self.motor_encoder_ticks[i] / (TICKS_PER_REV * gear_ratio) * 2 * np.pi
-            )
+        # Convert ticks to radians using OLD SYSTEM formula
+        # From line 66: angles = list(inp*2*np.pi/TICKS_PER_REV/gear_ratios)
+        angles = inp * 2 * np.pi / TICKS_PER_REV / GEAR_RATIOS
         
-        # Estimate velocities using finite differences
-        current_time = time.time()
-        dt = current_time - self.last_update_time
+        # Apply inversion on motor 4 (OLD SYSTEM line 67)
+        angles[4] *= -1
+        
+        # Map motor angles to our 5 joints
+        for i, joint_name in enumerate(JOINT_NAMES):
+            motor_idx = JOINT_TO_MOTOR_INDEX[joint_name]
+            self.joint_positions[i] = angles[motor_idx]
+        
+        # Estimate velocities
+        current_time = self.get_clock().now()
+        dt = (current_time - self.last_time).nanoseconds / 1e9
+        
         if dt > 0:
-            # Simple velocity estimation
-            # In a real system, you might get this from motor controllers
-            pass
+            self.joint_velocities = (self.joint_positions - self.last_positions) / dt
         
-        self.last_update_time = current_time
+        self.last_time = current_time
+        self.last_positions = self.joint_positions.copy()
     
-    def _control_loop_callback(self):
+    def joint_command_callback(self, msg: JointState):
         """
-        Main control loop that sends position commands to motors.
+        Receive joint commands from ros2_control (radians)
+        Convert to motor ticks using OLD SYSTEM formula (inverse)
         """
-        # Convert commanded joint positions (radians) to motor ticks
-        motor_commands_ticks = np.zeros(self.num_joints, dtype=int)
+        # Extract commanded positions for each joint
+        commanded_angles = np.zeros(6)  # 6 motors
         
-        for i, joint_name in enumerate(self.joint_names):
-            gear_ratio = GEAR_RATIOS[joint_name]
-            # Radians to ticks: radians / (2π) * (TICKS_PER_REV * gear_ratio)
-            motor_commands_ticks[i] = int(
-                self.position_commands[i] / (2 * np.pi) * (TICKS_PER_REV * gear_ratio)
-            )
+        for joint_name in msg.name:
+            if joint_name in JOINT_TO_MOTOR_INDEX:
+                joint_idx = msg.name.index(joint_name)
+                motor_idx = JOINT_TO_MOTOR_INDEX[joint_name]
+                commanded_angles[motor_idx] = msg.position[joint_idx]
         
-        # Publish motor commands
-        msg = Int32MultiArray()
-        msg.data = motor_commands_ticks.tolist()
-        self.motor_command_pub.publish(msg)
-    
-    # ROS2 Control Hardware Interface Methods
-    
-    def read(self):
-        """
-        Read current state from hardware.
-        Called by controller manager to get joint states.
-        """
-        # State is updated by _motor_feedback_callback
-        return self.joint_positions, self.joint_velocities, self.joint_efforts
-    
-    def write(self, commands):
-        """
-        Write commands to hardware.
-        Called by controller manager to send joint commands.
+        # Apply inversion on motor 4 BEFORE converting to ticks
+        commanded_angles[4] *= -1
         
-        Args:
-            commands: Dictionary with joint names as keys and position commands as values
-        """
-        for i, joint_name in enumerate(self.joint_names):
-            if joint_name in commands:
-                self.position_commands[i] = commands[joint_name]
-    
-    def get_joint_positions(self):
-        """Get current joint positions in radians"""
-        return self.joint_positions.copy()
-    
-    def get_joint_velocities(self):
-        """Get current joint velocities in rad/s"""
-        return self.joint_velocities.copy()
-    
-    def set_joint_positions(self, positions):
-        """
-        Set commanded joint positions in radians
+        # Convert radians to ticks using OLD SYSTEM formula (inverse)
+        # Original: angles = inp * 2*pi / TICKS_PER_REV / gear_ratios
+        # Inverse:  ticks = angles * TICKS_PER_REV * gear_ratios / (2*pi)
+        self.motor_commands_ticks = (
+            commanded_angles * TICKS_PER_REV * GEAR_RATIOS / (2 * np.pi)
+        ).astype(int)
         
-        Args:
-            positions: numpy array or list of joint positions [AB_Rev, AS1_Rev, AS2_Rev, AW_Rev, AM_Rev]
-        """
-        if len(positions) == self.num_joints:
-            self.position_commands = np.array(positions)
-        else:
-            self.get_logger().error(f'Expected {self.num_joints} positions, got {len(positions)}')
+        # Publish to motor firmware (OLD SYSTEM FORMAT)
+        motor_msg = Int32MultiArray()
+        motor_msg.data = self.motor_commands_ticks.tolist()
+        self.motor_cmd_pub.publish(motor_msg)
+    
+    def publish_joint_states(self):
+        """Publish current joint states for ros2_control"""
+        msg = JointState()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.name = JOINT_NAMES
+        msg.position = self.joint_positions.tolist()
+        msg.velocity = self.joint_velocities.tolist()
+        msg.effort = [0.0] * 5  # No effort feedback
+        
+        self.joint_state_pub.publish(msg)
 
 
 def main(args=None):
-    """Main entry point"""
     rclpy.init(args=args)
     
+    bridge = RoverArmHardwareBridge()
+    
     try:
-        hardware = RoverArmHardware()
-        rclpy.spin(hardware)
+        rclpy.spin(bridge)
     except KeyboardInterrupt:
         pass
-    except Exception as e:
-        print(f'Hardware interface error: {e}')
     finally:
+        bridge.destroy_node()
         rclpy.shutdown()
 
 
 if __name__ == '__main__':
     main()
-
