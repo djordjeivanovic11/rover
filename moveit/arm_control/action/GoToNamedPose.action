@@ -1,39 +1,20 @@
 # =============================================================================
-# GO TO NAMED POSE ACTION
+# GO TO NAMED POSE ACTION (Simplified for URC)
 # =============================================================================
-# Action for moving to pre-defined named poses from arm_params.yaml
-# Provides planning, execution, and safety monitoring in one atomic operation
+# Move arm to a pre-defined named pose from SRDF
 # =============================================================================
 
 # GOAL
-string pose_name                    # Named pose from arm_params.yaml mission_poses
-float32 velocity_scaling 0.1       # Velocity scaling factor [0.0-1.0]
-float32 acceleration_scaling 0.1    # Acceleration scaling factor [0.0-1.0]
-bool plan_only false               # If true, only plan but don't execute
-float32 planning_timeout 5.0       # Planning timeout in seconds
-float32 execution_timeout 30.0     # Execution timeout in seconds
-bool collision_checking true       # Enable collision checking
-string planning_group "arm"        # Planning group to use
+string pose_name                    # Named pose from SRDF (e.g., "home", "es_ready")
+float32 velocity_scaling 0.1        # Velocity scaling factor [0.0-1.0]
 
 ---
 
 # RESULT  
-bool success                       # True if pose reached successfully
-string error_message              # Human-readable error description
-int32 error_code                  # Structured error code from safety_params.yaml
-geometry_msgs/PoseStamped final_pose   # Final end-effector pose achieved
-float32 planning_time             # Time spent planning (seconds)
-float32 execution_time            # Time spent executing (seconds)
-float32 final_position_error      # Final position error (meters)
-float32 final_orientation_error   # Final orientation error (radians)
+bool success                        # True if pose reached successfully
+string message                      # Error or success message
 
 ---
 
 # FEEDBACK
-string current_state              # Current execution state (PLANNING, EXECUTING, etc.)
-float32 progress_percentage       # Execution progress [0.0-100.0]
-geometry_msgs/PoseStamped current_pose # Current end-effector pose
-float32 estimated_time_remaining  # Estimated time to completion (seconds)
-sensor_msgs/JointState current_joint_state # Current joint positions
-bool collision_detected          # True if collision detected
-string status_message            # Human-readable status update 
+string status                       # Current status message

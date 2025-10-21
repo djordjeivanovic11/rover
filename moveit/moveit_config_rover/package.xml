@@ -1,16 +1,55 @@
 <?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypes="xml"?>
 <package format="3">
   <name>moveit_config_rover</name>
-  <version>0.0.0</version>
-  <description>MoveIt configuration for rover arm</description>
-
-  <maintainer email="rover@example.com">rover</maintainer>
-  <license>Apache-2.0</license>
+  <version>1.0.0</version>
+  <description>MoveIt2 configuration for the URC rover arm</description>
+  <maintainer email="dorde_ivanovic@college.harvard.edu">URC Rover Team</maintainer>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
+  <!-- MoveIt2 dependencies -->
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>moveit_ros_move_group</depend>
+  <depend>moveit_kinematics</depend>
+  <depend>moveit_planners</depend>
+  <depend>moveit_simple_controller_manager</depend>
+  <depend>moveit_ros_visualization</depend>
+  
+  <!-- ROS2 Control dependencies -->
+  <depend>ros2_control</depend>
+  <depend>ros2_controllers</depend>
+  <depend>controller_manager</depend>
+  <depend>joint_trajectory_controller</depend>
+  <depend>joint_state_broadcaster</depend>
+  <depend>position_controllers</depend>
+  
+  <!-- Standard ROS2 dependencies -->
+  <depend>rclpy</depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>control_msgs</depend>
+  
+  <!-- Robot description -->
+  <depend>robot_state_publisher</depend>
+  <depend>xacro</depend>
+  <depend>urdf</depend>
+  
+  <!-- Visualization -->
+  <depend>rviz2</depend>
+  <depend>rviz_visual_tools</depend>
+  
+  <!-- Python dependencies -->
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-scipy</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  
+  <!-- Reference to rover description package -->
+  <depend>rover_description</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

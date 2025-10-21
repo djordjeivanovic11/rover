@@ -1,0 +1,22 @@
+# =============================================================================
+# MOVEIT CONTROLLER CONFIGURATION
+# =============================================================================
+# Tells MoveIt which ROS2 Control controllers to use for execution
+# =============================================================================
+
+moveit_simple_controller_manager:
+  ros__parameters:
+    controller_names:
+      - arm_controller
+    
+    arm_controller:
+      type: FollowJointTrajectory
+      action_ns: follow_joint_trajectory
+      default: true
+      joints:
+        - AB_Rev
+        - AS1_Rev
+        - AS2_Rev
+        - AW_Rev
+        - AM_Rev
+

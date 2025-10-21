@@ -25,7 +25,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Fault.msg"
   "action/GoToNamedPose.action"
   "action/PickAndPlace.action"
-  "action/ToolChange.action"
   DEPENDENCIES 
   builtin_interfaces
   std_msgs

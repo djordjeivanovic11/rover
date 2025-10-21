@@ -1,665 +1,302 @@
 #!/usr/bin/env python3
 """
 =============================================================================
-ACTION SERVERS
+MISSION ACTION SERVERS FOR URC ROVER ARM
 =============================================================================
-Implements the three main ROS 2 actions for autonomous operation:
-- GoToNamedPose: Move to predefined poses from arm_params.yaml
-- PickAndPlace: Composite pick and place operations with grasp verification
-- ToolChange: Tool swapping with hot URDF/SRDF reloading
+Provides high-level action servers for URC missions:
+- GoToNamedPose: Move to predefined poses
+- PickAndPlace: Complete pick and place sequences
 
-Provides simple Goal/Feedback/Result interface for behavior trees.
+These integrate with behavior trees and mission planning.
 =============================================================================
 """
 
 import rclpy
 from rclpy.node import Node
-from rclpy.action import ActionServer, ActionClient
-from rclpy.executors import MultiThreadedExecutor
+from rclpy.action import ActionServer, GoalResponse, CancelResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 
-import numpy as np
+# MoveIt
+from moveit.planning import MoveItPy
+from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import Float32, Int32
+
+# Custom actions
+import sys
+import os
+sys.path.append(os.path.dirname(__file__))
+
+# Action definitions will be imported after build
+# from arm_control.action import GoToNamedPose, PickAndPlace
+
 import time
-from typing import Dict, List, Optional, Tuple
-from pathlib import Path
-import yaml
-import threading
-
-from geometry_msgs.msg import PoseStamped, Point, Vector3
-from sensor_msgs.msg import JointState
-from std_msgs.msg import Bool
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from control_msgs.action import FollowJointTrajectory, GripperCommand
-
-from arm_control.action import GoToNamedPose, PickAndPlace, ToolChange
-from arm_control.msg import ArmStatus, Fault
 
 
 class ArmActionServers(Node):
     """
-    Action servers for autonomous arm operation.
-    
-    Exposes three main actions:
-    - GoToNamedPose: Move to predefined poses
-    - PickAndPlace: Composite manipulation operations  
-    - ToolChange: End-effector swapping
-    
-    Each action wraps planning, execution, safety checks, and error recovery.
+    Action servers for high-level arm control in URC missions.
     """
     
     def __init__(self):
-        super().__init__("arm_action_servers")
+        super().__init__('arm_action_servers')
         
-        # Load configuration
-        self._load_configuration()
-        
-        # System state
-        self.arm_status = ArmStatus()
-        self.current_action = "none"
-        self.action_in_progress = False
-        
-        # Callback groups for concurrent actions
-        self.action_callback_group = ReentrantCallbackGroup()
-        self.client_callback_group = ReentrantCallbackGroup()
-        
-        # Action servers
-        self.goto_pose_server = ActionServer(
-            self,
-            GoToNamedPose,
-            "/arm/go_to_named_pose",
-            self._execute_go_to_named_pose,
-            callback_group=self.action_callback_group
-        )
-        
-        self.pick_place_server = ActionServer(
-            self,
-            PickAndPlace,
-            "/arm/pick_and_place",
-            self._execute_pick_and_place,
-            callback_group=self.action_callback_group
-        )
-        
-        self.tool_change_server = ActionServer(
-            self,
-            ToolChange,
-            "/arm/tool_change_action",
-            self._execute_tool_change_action,
-            callback_group=self.action_callback_group
-        )
-        
-        # Action clients for lower-level actions
-        self.trajectory_client = ActionClient(
-            self,
-            FollowJointTrajectory,
-            "/arm_controller/follow_joint_trajectory",
-            callback_group=self.client_callback_group
-        )
-        
-        self.gripper_client = ActionClient(
-            self,
-            GripperCommand,
-            "/arm/gripper_command",
-            callback_group=self.client_callback_group
-        )
-        
-        self.tool_manager_client = ActionClient(
-            self,
-            ToolChange,
-            "/arm/tool_change",
-            callback_group=self.client_callback_group
-        )
-        
-        # Subscribers
-        self.arm_status_sub = self.create_subscription(
-            ArmStatus, "/arm/status", self._arm_status_callback, 10)
-        
-        # Publishers
-        self.fault_pub = self.create_publisher(
-            Fault, "/arm/faults", 10)
-        
-        # Wait for action servers to be available
-        self._wait_for_action_servers()
-        
-        self.get_logger().info("Arm Action Servers initialized and ready")
-    
-    def _load_configuration(self):
-        """Load configuration from YAML files"""
+        # Initialize MoveIt
+        self.get_logger().info('Initializing MoveIt...')
         try:
-            # Load arm parameters
-            arm_params_path = Path(__file__).parent.parent / "config" / "arm_params.yaml"
-            with open(arm_params_path, 'r') as f:
-                config = yaml.safe_load(f)
-            
-            # Extract named poses
-            self.named_poses = config.get('arm', {}).get('mission_poses', {})
-            self.joint_names = config.get('arm', {}).get('joints', [])
-            
-            # Load safety parameters
-            safety_params_path = Path(__file__).parent.parent / "config" / "safety_params.yaml"
-            with open(safety_params_path, 'r') as f:
-                safety_config = yaml.safe_load(f)
-            
-            self.safety_config = safety_config.get('safety_monitor', {}).get('ros__parameters', {})
-            
-            self.get_logger().info(f"Loaded {len(self.named_poses)} named poses")
-            
+            self.moveit = MoveItPy(node_name="arm_action_moveit")
+            self.arm = self.moveit.get_planning_component("arm")
+            self.get_logger().info('MoveIt initialized successfully')
         except Exception as e:
-            self.get_logger().error(f"Failed to load configuration: {e}")
-            # Use minimal defaults
-            self.named_poses = {"home": [0.0] * 6}
-            self.joint_names = ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"]
-            self.safety_config = {}
-    
-    def _wait_for_action_servers(self):
-        """Wait for required action servers to be available"""
-        self.get_logger().info("Waiting for action servers...")
+            self.get_logger().error(f'Failed to initialize MoveIt: {e}')
+            raise
         
-        # Wait for trajectory action server
-        if not self.trajectory_client.wait_for_server(timeout_sec=10.0):
-            self.get_logger().warn("Trajectory action server not available")
+        # Gripper control publisher
+        self.gripper_open_pub = self.create_publisher(Float32, '/gripper/open', 10)
+        self.gripper_close_pub = self.create_publisher(Float32, '/gripper/close', 10)
         
-        # Wait for gripper action server
-        if not self.gripper_client.wait_for_server(timeout_sec=5.0):
-            self.get_logger().warn("Gripper action server not available")
-        
-        # Wait for tool manager action server
-        if not self.tool_manager_client.wait_for_server(timeout_sec=5.0):
-            self.get_logger().warn("Tool manager action server not available")
-        
-        self.get_logger().info("Action servers ready")
-    
-    def _arm_status_callback(self, msg: ArmStatus):
-        """Update arm status"""
-        self.arm_status = msg
-    
-    # =========================================================================
-    # GO TO NAMED POSE ACTION
-    # =========================================================================
-    
-    async def _execute_go_to_named_pose(self, goal_handle):
-        """Execute GoToNamedPose action"""
-        self.get_logger().info(f"GoToNamedPose action requested")
-        
+        # Import actions dynamically (after messages are built)
         try:
-            goal = goal_handle.request
-            pose_name = goal.pose_name
+            from arm_control.action import GoToNamedPose, PickAndPlace
             
-            # Validate pose name
-            if not self._validate_named_pose(pose_name):
-                return self._abort_action(goal_handle, GoToNamedPose.Result(), 
-                                        "Invalid pose name", 603)
-            
-            self.current_action = f"go_to_{pose_name}"
-            self.action_in_progress = True
-            
-            # Get joint positions for named pose
-            target_positions = self.named_poses[pose_name]
-            
-            # Create trajectory
-            trajectory = self._create_trajectory_to_position(
-                target_positions, 
-                goal.velocity_scaling,
-                goal.acceleration_scaling
+            # Action servers
+            self._goto_action_server = ActionServer(
+                self,
+                GoToNamedPose,
+                '/arm/go_to_named_pose',
+                self._execute_goto_named_pose,
+                goal_callback=self._goal_callback,
+                cancel_callback=self._cancel_callback
             )
             
-            if trajectory is None:
-                return self._abort_action(goal_handle, GoToNamedPose.Result(),
-                                        "Failed to create trajectory", 602)
-            
-            # Execute trajectory
-            start_time = time.time()
-            success, final_pose = await self._execute_trajectory(
-                goal_handle, trajectory, GoToNamedPose.Feedback())
-            
-            execution_time = time.time() - start_time
-            
-            # Prepare result
-            result = GoToNamedPose.Result()
-            result.success = success
-            result.planning_time = 0.1  # Mock planning time
-            result.execution_time = execution_time
-            
-            if success:
-                result.error_message = f"Successfully reached pose: {pose_name}"
-                result.error_code = 0
-                # TODO: Calculate actual pose errors
-                result.final_position_error = 0.01
-                result.final_orientation_error = 0.01
-                goal_handle.succeed()
-            else:
-                result.error_message = "Failed to reach target pose"
-                result.error_code = 105  # JOINT_TRACKING_ERROR
-                goal_handle.abort()
-            
-            return result
-            
-        except Exception as e:
-            self.get_logger().error(f"GoToNamedPose action failed: {e}")
-            return self._abort_action(goal_handle, GoToNamedPose.Result(),
-                                    f"Exception: {e}", 602)
-        finally:
-            self.action_in_progress = False
-            self.current_action = "none"
-    
-    def _validate_named_pose(self, pose_name: str) -> bool:
-        """Validate that named pose exists"""
-        if pose_name not in self.named_poses:
-            self.get_logger().error(f"Unknown named pose: {pose_name}")
-            return False
+            self._pick_place_action_server = ActionServer(
+                self,
+                PickAndPlace,
+                '/arm/pick_and_place',
+                self._execute_pick_and_place,
+                goal_callback=self._goal_callback,
+                cancel_callback=self._cancel_callback
+            )
+        except ImportError as e:
+            self.get_logger().error(f'Failed to import action definitions: {e}')
+            self.get_logger().error('Make sure to build the package first: colcon build --packages-select arm_control')
+            raise
         
-        pose_positions = self.named_poses[pose_name]
-        if len(pose_positions) != len(self.joint_names):
-            self.get_logger().error(f"Pose {pose_name} has incorrect number of joints")
-            return False
+        self.get_logger().info('Arm Action Servers ready')
+        self.get_logger().info('  - /arm/go_to_named_pose')
+        self.get_logger().info('  - /arm/pick_and_place')
+    
+    def _goal_callback(self, goal_request):
+        """Accept or reject goals"""
+        self.get_logger().info('Received goal request')
+        return GoalResponse.ACCEPT
+    
+    def _cancel_callback(self, goal_handle):
+        """Accept or reject cancellation requests"""
+        self.get_logger().info('Received cancellation request')
+        return CancelResponse.ACCEPT
+    
+    def _execute_goto_named_pose(self, goal_handle):
+        """
+        Execute GoToNamedPose action.
+        Moves arm to a named pose defined in SRDF.
+        """
+        self.get_logger().info('=== Executing GoToNamedPose ===')
+        request = goal_handle.request
+        feedback = GoToNamedPose.Feedback()
+        result = GoToNamedPose.Result()
         
-        return True
-    
-    # =========================================================================
-    # PICK AND PLACE ACTION
-    # =========================================================================
-    
-    async def _execute_pick_and_place(self, goal_handle):
-        """Execute PickAndPlace action"""
-        self.get_logger().info("PickAndPlace action requested")
+        pose_name = request.pose_name
+        velocity_scaling = request.velocity_scaling if request.velocity_scaling > 0 else 0.1
+        
+        self.get_logger().info(f'Target pose: {pose_name}')
+        self.get_logger().info(f'Velocity scaling: {velocity_scaling}')
         
         try:
-            goal = goal_handle.request
+            # Set target pose
+            feedback.status = f'Planning to {pose_name}...'
+            goal_handle.publish_feedback(feedback)
             
-            self.current_action = "pick_and_place"
-            self.action_in_progress = True
-            start_time = time.time()
+            self.arm.set_goal_state(configuration_name=pose_name)
             
-            # Phase 1: Approach pick pose
-            success = await self._approach_pick_pose(goal_handle, goal)
-            if not success:
-                return self._abort_pick_place(goal_handle, "APPROACH", "Failed to approach pick pose")
+            # Plan
+            feedback.status = 'Planning trajectory...'
+            goal_handle.publish_feedback(feedback)
             
-            # Phase 2: Execute grasp
-            success, grasp_force = await self._execute_grasp(goal_handle, goal)
-            if not success:
-                return self._abort_pick_place(goal_handle, "GRASP", "Failed to grasp object")
+            plan_result = self.arm.plan()
             
-            # Phase 3: Lift object
-            success = await self._lift_object(goal_handle, goal)
-            if not success:
-                return self._abort_pick_place(goal_handle, "LIFT", "Failed to lift object")
+            if not plan_result:
+                self.get_logger().error(f'Planning failed for pose: {pose_name}')
+                result.success = False
+                result.message = f'Planning failed for {pose_name}'
+                goal_handle.abort()
+                return result
             
-            # Phase 4: Transport to place pose
-            success = await self._transport_object(goal_handle, goal)
-            if not success:
-                return self._abort_pick_place(goal_handle, "TRANSPORT", "Failed to transport object")
+            # Execute
+            feedback.status = 'Executing trajectory...'
+            goal_handle.publish_feedback(feedback)
             
-            # Phase 5: Place object
-            success = await self._place_object(goal_handle, goal)
-            if not success:
-                return self._abort_pick_place(goal_handle, "PLACE", "Failed to place object")
+            self.moveit.execute(plan_result.trajectory, blocking=True)
             
-            # Phase 6: Retreat
-            success = await self._retreat_from_place(goal_handle, goal)
-            if not success:
-                return self._abort_pick_place(goal_handle, "RETREAT", "Failed to retreat from place")
-            
-            # Prepare successful result
-            result = PickAndPlace.Result()
+            # Success
+            self.get_logger().info(f'Successfully moved to {pose_name}')
             result.success = True
-            result.grasp_successful = True
-            result.place_successful = True
-            result.grasp_force_achieved = grasp_force
-            result.total_execution_time = time.time() - start_time
-            
+            result.message = f'Reached {pose_name}'
             goal_handle.succeed()
-            return result
             
         except Exception as e:
-            self.get_logger().error(f"PickAndPlace action failed: {e}")
-            return self._abort_pick_place(goal_handle, "EXCEPTION", f"Exception: {e}")
-        finally:
-            self.action_in_progress = False
-            self.current_action = "none"
+            self.get_logger().error(f'Error executing GoToNamedPose: {e}')
+            result.success = False
+            result.message = str(e)
+            goal_handle.abort()
+        
+        return result
     
-    async def _approach_pick_pose(self, goal_handle, goal) -> bool:
-        """Approach the pick pose"""
-        try:
-            # Publish feedback
-            feedback = PickAndPlace.Feedback()
-            feedback.current_phase = "APPROACH"
-            feedback.phase_progress = 0.0
-            feedback.overall_progress = 10.0
-            feedback.status_message = "Approaching pick pose"
-            goal_handle.publish_feedback(feedback)
-            
-            # Calculate approach pose (offset from pick pose)
-            approach_pose = self._calculate_approach_pose(goal.pick_pose, goal.approach_offset)
-            
-            # Move to approach pose
-            # TODO: Convert pose to joint trajectory and execute
-            await rclpy.task.sleep(2.0)  # Simulate approach time
-            
-            feedback.phase_progress = 100.0
-            feedback.overall_progress = 20.0
-            feedback.status_message = "Approach complete"
-            goal_handle.publish_feedback(feedback)
-            
-            return True
-            
-        except Exception as e:
-            self.get_logger().error(f"Approach failed: {e}")
-            return False
-    
-    async def _execute_grasp(self, goal_handle, goal) -> Tuple[bool, float]:
-        """Execute grasping operation"""
-        try:
-            feedback = PickAndPlace.Feedback()
-            feedback.current_phase = "GRASP"
-            feedback.phase_progress = 0.0
-            feedback.overall_progress = 40.0
-            feedback.status_message = "Executing grasp"
-            goal_handle.publish_feedback(feedback)
-            
-            # Move to pick pose
-            # TODO: Execute trajectory to pick pose
-            await rclpy.task.sleep(1.0)
-            
-            # Execute gripper grasp
-            gripper_goal = GripperCommand.Goal()
-            gripper_goal.command.position = 0.02  # Close gripper
-            gripper_goal.command.max_effort = goal.grasp_force
-            
-            gripper_future = self.gripper_client.send_goal_async(gripper_goal)
-            await gripper_future
-            
-            gripper_result = await gripper_future.result().get_result_async()
-            
-            # Check grasp success
-            grasp_successful = gripper_result.result.reached_goal
-            grasp_force = gripper_result.result.effort
-            
-            feedback.current_grasp_force = grasp_force
-            feedback.object_detected = grasp_successful
-            feedback.grasp_status = "SECURE" if grasp_successful else "FAILED"
-            feedback.phase_progress = 100.0
-            feedback.overall_progress = 50.0
-            goal_handle.publish_feedback(feedback)
-            
-            return grasp_successful, grasp_force
-            
-        except Exception as e:
-            self.get_logger().error(f"Grasp failed: {e}")
-            return False, 0.0
-    
-    async def _lift_object(self, goal_handle, goal) -> bool:
-        """Lift the grasped object"""
-        try:
-            feedback = PickAndPlace.Feedback()
-            feedback.current_phase = "LIFT"
-            feedback.phase_progress = 0.0
-            feedback.overall_progress = 60.0
-            feedback.status_message = f"Lifting object {goal.lift_height}m"
-            goal_handle.publish_feedback(feedback)
-            
-            # TODO: Execute lift motion (move up by lift_height)
-            await rclpy.task.sleep(1.5)
-            
-            feedback.phase_progress = 100.0
-            feedback.overall_progress = 70.0
-            feedback.status_message = "Lift complete"
-            goal_handle.publish_feedback(feedback)
-            
-            return True
-            
-        except Exception as e:
-            self.get_logger().error(f"Lift failed: {e}")
-            return False
-    
-    async def _transport_object(self, goal_handle, goal) -> bool:
-        """Transport object to place pose"""
-        try:
-            feedback = PickAndPlace.Feedback()
-            feedback.current_phase = "TRANSPORT"
-            feedback.phase_progress = 0.0
-            feedback.overall_progress = 80.0
-            feedback.status_message = "Transporting object"
-            goal_handle.publish_feedback(feedback)
-            
-            # TODO: Plan and execute trajectory to place pose approach
-            await rclpy.task.sleep(3.0)
-            
-            feedback.phase_progress = 100.0
-            feedback.overall_progress = 85.0
-            feedback.status_message = "Transport complete"
-            goal_handle.publish_feedback(feedback)
-            
-            return True
-            
-        except Exception as e:
-            self.get_logger().error(f"Transport failed: {e}")
-            return False
-    
-    async def _place_object(self, goal_handle, goal) -> bool:
-        """Place the object at target location"""
-        try:
-            feedback = PickAndPlace.Feedback()
-            feedback.current_phase = "PLACE"
-            feedback.phase_progress = 0.0
-            feedback.overall_progress = 90.0
-            feedback.status_message = "Placing object"
-            goal_handle.publish_feedback(feedback)
-            
-            # Move to place pose
-            # TODO: Execute trajectory to place pose
-            await rclpy.task.sleep(1.0)
-            
-            # Open gripper to release object
-            gripper_goal = GripperCommand.Goal()
-            gripper_goal.command.position = 0.1  # Open gripper
-            gripper_goal.command.max_effort = goal.place_force
-            
-            gripper_future = self.gripper_client.send_goal_async(gripper_goal)
-            await gripper_future
-            
-            await gripper_future.result().get_result_async()
-            
-            feedback.phase_progress = 100.0
-            feedback.overall_progress = 95.0
-            feedback.status_message = "Object placed"
-            goal_handle.publish_feedback(feedback)
-            
-            return True
-            
-        except Exception as e:
-            self.get_logger().error(f"Place failed: {e}")
-            return False
-    
-    async def _retreat_from_place(self, goal_handle, goal) -> bool:
-        """Retreat from place position"""
-        try:
-            feedback = PickAndPlace.Feedback()
-            feedback.current_phase = "RETREAT"
-            feedback.phase_progress = 0.0
-            feedback.overall_progress = 98.0
-            feedback.status_message = "Retreating from place"
-            goal_handle.publish_feedback(feedback)
-            
-            # TODO: Execute retreat motion
-            await rclpy.task.sleep(1.0)
-            
-            feedback.phase_progress = 100.0
-            feedback.overall_progress = 100.0
-            feedback.status_message = "Pick and place complete"
-            goal_handle.publish_feedback(feedback)
-            
-            return True
-            
-        except Exception as e:
-            self.get_logger().error(f"Retreat failed: {e}")
-            return False
-    
-    def _calculate_approach_pose(self, target_pose: PoseStamped, offset: Vector3) -> PoseStamped:
-        """Calculate approach pose with offset"""
-        approach_pose = PoseStamped()
-        approach_pose.header = target_pose.header
-        approach_pose.pose.position.x = target_pose.pose.position.x + offset.x
-        approach_pose.pose.position.y = target_pose.pose.position.y + offset.y
-        approach_pose.pose.position.z = target_pose.pose.position.z + offset.z
-        approach_pose.pose.orientation = target_pose.pose.orientation
-        return approach_pose
-    
-    def _abort_pick_place(self, goal_handle, phase: str, error_msg: str):
-        """Abort pick and place action"""
+    def _execute_pick_and_place(self, goal_handle):
+        """
+        Execute PickAndPlace action.
+        Complete sequence: approach -> grasp -> lift -> move -> place -> release
+        """
+        self.get_logger().info('=== Executing PickAndPlace ===')
+        request = goal_handle.request
+        feedback = PickAndPlace.Feedback()
         result = PickAndPlace.Result()
-        result.success = False
-        result.failure_phase = phase
-        result.error_message = error_msg
-        result.error_code = 602
-        goal_handle.abort()
-        return result
-    
-    # =========================================================================
-    # TOOL CHANGE ACTION
-    # =========================================================================
-    
-    async def _execute_tool_change_action(self, goal_handle):
-        """Execute ToolChange action (wrapper for tool manager)"""
-        self.get_logger().info(f"ToolChange action requested: {goal_handle.request.new_tool_name}")
         
         try:
-            # Forward request to tool manager
-            tool_change_future = self.tool_manager_client.send_goal_async(goal_handle.request)
-            await tool_change_future
+            # Phase 1: Approach pick position
+            feedback.phase = 'approaching'
+            goal_handle.publish_feedback(feedback)
+            self.get_logger().info('Phase 1: Approaching pick position')
             
-            tool_change_handle = tool_change_future.result()
-            if not tool_change_handle.accepted:
-                return self._abort_action(goal_handle, ToolChange.Result(),
-                                        "Tool manager rejected request", 603)
+            # Add small offset above pick pose for approach
+            approach_pose = PoseStamped()
+            approach_pose.header = request.pick_pose.header
+            approach_pose.pose = request.pick_pose.pose
+            approach_pose.pose.position.z += 0.1  # 10cm above
             
-            # Wait for result and forward feedback
-            while not tool_change_handle.done():
-                await rclpy.task.sleep(0.1)
-                # TODO: Forward feedback from tool manager
+            if not self._move_to_pose(approach_pose):
+                raise Exception("Failed to reach approach position")
             
-            result = await tool_change_handle.get_result_async()
+            # Phase 2: Move to pick position
+            feedback.phase = 'picking'
+            goal_handle.publish_feedback(feedback)
+            self.get_logger().info('Phase 2: Moving to pick position')
             
-            if result.result.success:
-                goal_handle.succeed()
+            if not self._move_to_pose(request.pick_pose):
+                raise Exception("Failed to reach pick position")
+            
+            # Phase 3: Close gripper
+            self.get_logger().info('Phase 3: Closing gripper')
+            self._close_gripper(request.grasp_effort)
+            time.sleep(1.0)  # Wait for grasp
+            
+            # Phase 4: Lift object
+            feedback.phase = 'lifting'
+            goal_handle.publish_feedback(feedback)
+            self.get_logger().info('Phase 4: Lifting object')
+            
+            lift_pose = PoseStamped()
+            lift_pose.header = request.pick_pose.header
+            lift_pose.pose = request.pick_pose.pose
+            lift_pose.pose.position.z += 0.15  # Lift 15cm
+            
+            if not self._move_to_pose(lift_pose):
+                raise Exception("Failed to lift object")
+            
+            # Phase 5: Move to place approach
+            feedback.phase = 'moving'
+            goal_handle.publish_feedback(feedback)
+            self.get_logger().info('Phase 5: Moving to place position')
+            
+            place_approach_pose = PoseStamped()
+            place_approach_pose.header = request.place_pose.header
+            place_approach_pose.pose = request.place_pose.pose
+            place_approach_pose.pose.position.z += 0.1  # 10cm above
+            
+            if not self._move_to_pose(place_approach_pose):
+                raise Exception("Failed to reach place approach")
+            
+            # Phase 6: Lower to place position
+            feedback.phase = 'placing'
+            goal_handle.publish_feedback(feedback)
+            self.get_logger().info('Phase 6: Placing object')
+            
+            if not self._move_to_pose(request.place_pose):
+                raise Exception("Failed to reach place position")
+            
+            # Phase 7: Release gripper
+            self.get_logger().info('Phase 7: Releasing gripper')
+            self._open_gripper()
+            time.sleep(0.5)  # Wait for release
+            
+            # Phase 8: Retract
+            feedback.phase = 'retracting'
+            goal_handle.publish_feedback(feedback)
+            self.get_logger().info('Phase 8: Retracting')
+            
+            retract_pose = PoseStamped()
+            retract_pose.header = request.place_pose.header
+            retract_pose.pose = request.place_pose.pose
+            retract_pose.pose.position.z += 0.1  # Retract 10cm
+            
+            if not self._move_to_pose(retract_pose):
+                self.get_logger().warn("Retract failed, but pick-and-place succeeded")
+            
+            # Success!
+            self.get_logger().info('PickAndPlace completed successfully')
+            result.success = True
+            result.message = 'Pick and place completed'
+            goal_handle.succeed()
+            
+        except Exception as e:
+            self.get_logger().error(f'PickAndPlace failed: {e}')
+            result.success = False
+            result.message = str(e)
+            goal_handle.abort()
+        
+        return result
+    
+    def _move_to_pose(self, pose_stamped):
+        """Helper: Move to a Cartesian pose"""
+        try:
+            self.arm.set_goal_state(pose_stamped_msg=pose_stamped)
+            plan_result = self.arm.plan()
+            
+            if plan_result:
+                self.moveit.execute(plan_result.trajectory, blocking=True)
+                return True
             else:
-                goal_handle.abort()
-            
-            return result.result
-            
-        except Exception as e:
-            self.get_logger().error(f"ToolChange action failed: {e}")
-            return self._abort_action(goal_handle, ToolChange.Result(),
-                                    f"Exception: {e}", 602)
-    
-    # =========================================================================
-    # UTILITY METHODS
-    # =========================================================================
-    
-    def _create_trajectory_to_position(self, target_positions: List[float], 
-                                     velocity_scaling: float = 0.1,
-                                     acceleration_scaling: float = 0.1) -> Optional[JointTrajectory]:
-        """Create trajectory to target joint positions"""
-        try:
-            trajectory = JointTrajectory()
-            trajectory.header.stamp = self.get_clock().now().to_msg()
-            trajectory.joint_names = self.joint_names
-            
-            # Create single point trajectory
-            point = JointTrajectoryPoint()
-            point.positions = target_positions
-            point.velocities = [0.0] * len(target_positions)
-            point.accelerations = [0.0] * len(target_positions)
-            point.time_from_start.sec = int(5.0 / velocity_scaling)  # Scale time
-            point.time_from_start.nanosec = 0
-            
-            trajectory.points = [point]
-            
-            return trajectory
-            
-        except Exception as e:
-            self.get_logger().error(f"Failed to create trajectory: {e}")
-            return None
-    
-    async def _execute_trajectory(self, goal_handle, trajectory: JointTrajectory, 
-                                feedback_type) -> Tuple[bool, Optional[PoseStamped]]:
-        """Execute trajectory and monitor progress"""
-        try:
-            # Send trajectory to trajectory executor
-            traj_goal = FollowJointTrajectory.Goal()
-            traj_goal.trajectory = trajectory
-            
-            traj_future = self.trajectory_client.send_goal_async(traj_goal)
-            await traj_future
-            
-            traj_handle = traj_future.result()
-            if not traj_handle.accepted:
-                self.get_logger().error("Trajectory execution rejected")
-                return False, None
-            
-            # Monitor execution and forward feedback
-            while not traj_handle.done():
-                if goal_handle.is_cancel_requested:
-                    await traj_handle.cancel_goal_async()
-                    goal_handle.canceled()
-                    return False, None
+                return False
                 
-                # Forward progress feedback
-                feedback = feedback_type
-                feedback.status_message = "Executing trajectory"
-                feedback.progress_percentage = 50.0  # TODO: Calculate actual progress
-                goal_handle.publish_feedback(feedback)
-                
-                await rclpy.task.sleep(0.1)
-            
-            # Get result
-            traj_result = await traj_handle.get_result_async()
-            success = traj_result.result.error_code == FollowJointTrajectory.Result.SUCCESSFUL
-            
-            return success, None
-            
         except Exception as e:
-            self.get_logger().error(f"Trajectory execution failed: {e}")
-            return False, None
+            self.get_logger().error(f'Move to pose failed: {e}')
+            return False
     
-    def _abort_action(self, goal_handle, result_type, error_msg: str, error_code: int):
-        """Abort action with structured error"""
-        result = result_type
-        result.success = False
-        result.error_message = error_msg
-        result.error_code = error_code
-        
-        # Publish fault
-        fault = Fault()
-        fault.header.stamp = self.get_clock().now().to_msg()
-        fault.severity = Fault.ERROR
-        fault.fault_code = error_code
-        fault.fault_category = "ACTION"
-        fault.fault_description = error_msg
-        fault.component_name = "action_servers"
-        fault.auto_recoverable = True
-        
-        self.fault_pub.publish(fault)
-        
-        goal_handle.abort()
-        return result
+    def _open_gripper(self):
+        """Helper: Open gripper"""
+        msg = Float32()
+        msg.data = 1.0  # Fully open
+        self.gripper_open_pub.publish(msg)
+    
+    def _close_gripper(self, effort=1.0):
+        """Helper: Close gripper with specified effort"""
+        msg = Float32()
+        msg.data = min(1.0, max(0.0, effort))
+        self.gripper_close_pub.publish(msg)
 
 
-def main():
-    """Main entry point"""
-    rclpy.init()
+def main(args=None):
+    rclpy.init(args=args)
     
     try:
-        executor = MultiThreadedExecutor()
         action_servers = ArmActionServers()
-        executor.add_node(action_servers)
-        executor.spin()
+        rclpy.spin(action_servers)
     except KeyboardInterrupt:
         pass
     except Exception as e:
-        print(f"Action servers failed: {e}")
+        print(f'Action servers failed: {e}')
     finally:
         rclpy.shutdown()
 
 
-if __name__ == "__main__":
-    main() 
+if __name__ == '__main__':
+    main()

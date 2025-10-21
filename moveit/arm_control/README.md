@@ -1,290 +1,311 @@
-# ARM CONTROL
+# ARM CONTROL - URC Mission Layer
 
-**Runtime control layer for URC rover arm - bridges MoveIt planning to hardware execution**
+**Mission-focused control layer for the URC rover arm - lean and purpose-built for competition.**
 
-⚠️ **CRITICAL: DO NOT RUN WITH REAL HARDWARE UNTIL ALL COMPONENTS TESTED** ⚠️
+## What This Package Does
 
-## Overview
+Provides **essential** high-level control for URC missions:
 
-Arm Control is the rover's high-reliability execution layer that transforms MoveIt's collision-free plans into real torque, current, and motion on the URC field. It provides a complete manipulation subsystem with mission-critical safety monitoring and structured error reporting.
+✅ **Gripper Control** - Simple open/close/position control  
+✅ **Mission Actions** - GoToNamedPose and PickAndPlace action servers  
+✅ **Safety Monitoring** - E-stop and joint limit checking  
 
-### Key Features
+That's it. No bloat. No over-engineering. Just what you need for URC.
 
-- **250 Hz Hardware Interface**: Real-time position/velocity control with soft limit enforcement
-- **<150ms Safety Response**: Comprehensive monitoring with immediate fault response
-- **Latency-Aware Trajectory Execution**: Streams goals with real-time tracking error monitoring
-- **Force-Based Gripper Control**: Adaptive grasping with slip detection and grasp verification
-- **Hot Tool Swapping**: Dynamic URDF/SRDF reloading without system restart
-- **Mission Integration**: Three atomic actions for behavior tree integration
-
-## Architecture
+## Package Contents
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  Behavior Tree  │    │   MoveIt Plan   │    │  Manual Control │
-│    Actions      │    │   Execution     │    │    Interface    │
-└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
-          │                      │                      │
-          └──────────────────────┼──────────────────────┘
-                                 │
-          ┌─────────────────────────────────────────────────┐
-          │              ACTION SERVERS                     │
-          │  • GoToNamedPose  • PickAndPlace  • ToolChange │
-          └─────────────────────┬───────────────────────────┘
-                                │
-          ┌─────────────────────────────────────────────────┐
-          │            TRAJECTORY EXECUTOR                  │
-          │     Streams goals + monitors execution          │
-          └─────────────────────┬───────────────────────────┘
-                                │
-  ┌─────────────────┐          │          ┌─────────────────┐
-  │ GRIPPER CONTROL │          │          │  TOOL MANAGER   │
-  │ Force feedback  │          │          │ Hot URDF reload │
-  │ Grasp security  │          │          │ Coupling control│
-  └─────────┬───────┘          │          └─────────┬───────┘
-            │                  │                    │
-            └──────────────────┼────────────────────┘
-                               │
-          ┌─────────────────────────────────────────────────┐
-          │          HARDWARE INTERFACE (250 Hz)            │
-          │     Position/Velocity commands + Sensor data    │
-          └─────────────────────┬───────────────────────────┘
-                                │
-          ┌─────────────────────────────────────────────────┐
-          │             SAFETY MONITOR (<150ms)             │
-          │   Current/Temp/Force/E-stop + Fault Response    │
-          └─────────────────────────────────────────────────┘
-```
-
-## Components
-
-### Hardware Interface (`hardware_interface.py`)
-- **Purpose**: 250 Hz control loop bridging ROS 2 Control to hardware
-- **Features**: Mock mode for testing, soft limit enforcement, sensor monitoring
-- **Outputs**: Joint commands, current/temperature data, E-stop status
-
-### Safety Monitor (`safety_monitor.py`)  
-- **Purpose**: <150ms fault detection and emergency response
-- **Monitors**: Joint limits, currents, temperatures, F/T sensors, communication
-- **Outputs**: Fault messages, emergency stop signals, diagnostic status
-
-### Trajectory Executor (`trajectory_executor.py`)
-- **Purpose**: Latency-aware trajectory streaming with real-time monitoring
-- **Features**: Tracking error detection, velocity limiting, immediate halt capability
-- **Integration**: Receives from MoveIt, sends to hardware interface
-
-### Gripper Controller (`gripper_controller.py`)
-- **Purpose**: Force-based grasping with slip detection
-- **Strategies**: Position-based, force-based, adaptive grasping
-- **Outputs**: Grasp status (SECURE/SOFT/FAILED), force feedback
-
-### Tool Manager (`tool_manager.py`)
-- **Purpose**: Automated tool changes with kinematics updates
-- **Features**: Coupling control, URDF/SRDF hot-reload, MoveIt reconfiguration
-- **Safety**: Motion pausing, verification, structured error reporting
-
-### Action Servers (`action_servers.py`)
-- **Purpose**: High-level mission interface for behavior trees
-- **Actions**: GoToNamedPose, PickAndPlace, ToolChange
-- **Integration**: Wraps planning, execution, safety, and recovery
-
-## Configuration
-
-### Primary Configuration Files
-
-- **`arm_params.yaml`**: Complete arm specification (inherited from arm_template)
-- **`controller_config.yaml`**: Runtime controller settings with stubs
-- **`safety_params.yaml`**: Safety limits, thresholds, and fault codes
-
-### Key Parameters
-
-```yaml
-# Hardware interface
-hardware_interface:
-  update_rate: 250.0          # 250 Hz control loop
-  mock_mode: true             # Start in mock mode
-  
-# Safety monitoring  
-safety_monitor:
-  fault_response_timeout: 0.15 # 150ms max response time
-  update_rate: 100.0          # 100 Hz monitoring
-  
-# Named poses (from arm_params.yaml)
-mission_poses:
-  es_ready: [0.0, -1.5708, 0.0, -1.5708, 0.0, 0.0]
-  sc_sample_collect: [0.0, -0.8, 0.0, -0.8, 0.0, 0.0]
-  # ... more mission-specific poses
+arm_control/
+├── arm_control/
+│   ├── gripper_controller.py      # Simple gripper control
+│   ├── action_servers.py          # GoToNamedPose & PickAndPlace
+│   └── safety_monitor.py          # E-stop & fault monitoring
+├── action/
+│   ├── GoToNamedPose.action       # Named pose action definition
+│   └── PickAndPlace.action        # Pick and place action definition
+├── msg/
+│   └── Fault.msg                  # Fault message definition
+├── old_arm/                       # Legacy system (reference only)
+└── launch/
+    └── arm_control.launch.py      # Launch all nodes
 ```
 
 ## Usage
 
-### Launch System
-```bash
-# Full system launch (MOCK MODE - safe for testing)
-ros2 launch arm_control arm_control.launch.py
+### Launch with MoveIt
 
-# Individual components for testing
-ros2 run arm_control safety_monitor
-ros2 run arm_control hardware_interface  
-ros2 run arm_control trajectory_executor
+```bash
+# Terminal 1: Launch MoveIt (main arm control)
+ros2 launch moveit_config_rover demo.launch.py
+
+# Terminal 2: Launch mission control layer
+ros2 launch arm_control arm_control.launch.py
 ```
 
-### Mission Integration
-```python
-# Behavior tree action calls
-client = ActionClient(self, GoToNamedPose, '/arm/go_to_named_pose')
+### Gripper Control
 
+**Simple topics:**
+```bash
+# Open gripper (0.0 = closed, 1.0 = fully open)
+ros2 topic pub --once /gripper/open std_msgs/Float32 "data: 1.0"
+
+# Close gripper (0.0 = no force, 1.0 = maximum grip)
+ros2 topic pub --once /gripper/close std_msgs/Float32 "data: 0.8"
+
+# Set specific position (0-1000)
+ros2 topic pub --once /gripper/set_position std_msgs/Int32 "data: 500"
+```
+
+**In Python:**
+```python
+from std_msgs.msg import Float32
+
+# Open gripper
+self.gripper_open_pub = self.create_publisher(Float32, '/gripper/open', 10)
+msg = Float32()
+msg.data = 1.0  # Fully open
+self.gripper_open_pub.publish(msg)
+
+# Close gripper
+self.gripper_close_pub = self.create_publisher(Float32, '/gripper/close', 10)
+msg = Float32()
+msg.data = 0.8  # 80% grip force
+self.gripper_close_pub.publish(msg)
+```
+
+### Action Servers
+
+#### GoToNamedPose Action
+
+```python
+from rclpy.action import ActionClient
+from arm_control.action import GoToNamedPose
+
+# Create action client
+client = ActionClient(self, GoToNamedPose, '/arm/go_to_named_pose')
+client.wait_for_server()
+
+# Send goal
 goal = GoToNamedPose.Goal()
 goal.pose_name = 'es_ready'
-goal.velocity_scaling = 0.1
-goal.collision_checking = True
+goal.velocity_scaling = 0.1  # 10% of max speed
 
 future = client.send_goal_async(goal)
 ```
 
-### Direct Control
+**Available named poses** (from SRDF):
+- `home`, `stow` - Basic positions
+- `es_ready`, `es_panel_approach`, `es_fine_position` - Equipment Servicing
+- `sc_ready`, `sc_ground_survey`, `sc_sample_collect` - Science Mission
+- `dm_ready`, `dm_pickup_approach`, `dm_pickup_grasp` - Delivery Mission
+
+#### PickAndPlace Action
+
 ```python
-# Pick and place operation
-client = ActionClient(self, PickAndPlace, '/arm/pick_and_place')
+from arm_control.action import PickAndPlace
+from geometry_msgs.msg import PoseStamped
 
+# Create action client
+client = ActionClient(self, PickAndPlace, '/arm/pick_and_place')
+client.wait_for_server()
+
+# Define pick and place poses
+pick_pose = PoseStamped()
+pick_pose.header.frame_id = 'base_link'
+pick_pose.pose.position.x = 0.3
+pick_pose.pose.position.y = 0.2
+pick_pose.pose.position.z = 0.1
+pick_pose.pose.orientation.w = 1.0
+
+place_pose = PoseStamped()
+place_pose.header.frame_id = 'base_link'
+place_pose.pose.position.x = 0.3
+place_pose.pose.position.y = -0.2
+place_pose.pose.position.z = 0.1
+place_pose.pose.orientation.w = 1.0
+
+# Send goal
 goal = PickAndPlace.Goal()
-goal.pick_pose = target_pose
-goal.place_pose = destination_pose
-goal.grasp_force = 50.0
-goal.verify_grasp = True
+goal.pick_pose = pick_pose
+goal.place_pose = place_pose
+goal.grasp_effort = 0.8  # 80% grip force
 
 future = client.send_goal_async(goal)
 ```
 
-## Safety Features
+The PickAndPlace action automatically:
+1. Approaches pick position (10cm above)
+2. Moves down to pick
+3. Closes gripper
+4. Lifts object (15cm)
+5. Moves to place approach
+6. Places object
+7. Opens gripper
+8. Retracts
 
-### Multi-Layer Safety
-1. **Hardware Interface**: Soft limit enforcement at 250 Hz
-2. **Safety Monitor**: Comprehensive monitoring at 100 Hz  
-3. **Trajectory Executor**: Real-time tracking error detection
-4. **Action Servers**: High-level fault handling and recovery
+### Safety Monitoring
 
-### Emergency Response
-- **E-Stop Integration**: Hardware and software emergency stops
-- **Immediate Halt**: Motion stopping within 150ms of fault detection
-- **Structured Faults**: Detailed error codes and recovery guidance
-- **Automatic Recovery**: Self-recovery for non-critical faults
+**Monitor topics:**
+```bash
+# Check if arm is safe
+ros2 topic echo /arm/is_safe
 
-### Fault Codes
+# Watch for faults
+ros2 topic echo /arm/faults
+
+# Trigger emergency stop
+ros2 topic pub /emergency_stop std_msgs/Bool "data: true"
+
+# Release emergency stop
+ros2 topic pub /emergency_stop std_msgs/Bool "data: false"
+```
+
+## Integration with Behavior Trees
+
+Perfect for py_trees or BehaviorTree.CPP:
+
+```python
+# In your behavior tree node
+class PickUpSample(py_trees.behaviour.Behaviour):
+    def setup(self):
+        self.action_client = ActionClient(
+            rclpy.create_node('pick_sample'),
+            PickAndPlace,
+            '/arm/pick_and_place'
+        )
+    
+    def update(self):
+        # Send pick and place goal
+        goal = PickAndPlace.Goal()
+        goal.pick_pose = self.detect_sample_pose()
+        goal.place_pose = self.cache_pose
+        
+        result = self.action_client.send_goal(goal)
+        
+        if result.success:
+            return py_trees.common.Status.SUCCESS
+        else:
+            return py_trees.common.Status.FAILURE
+```
+
+## Configuration
+
+Edit `config/safety_params.yaml` for safety thresholds:
+
 ```yaml
-# Joint faults (1xx)
-JOINT_OVERCURRENT: 101
-JOINT_OVERTEMP: 102
-JOINT_POSITION_LIMIT: 103
+safety_monitor:
+  joint_limits:
+    AB_Rev:
+      min: -3.1416
+      max: 3.1416
+      velocity: 1.0
+    # ... etc
+```
 
-# Force/Torque faults (2xx)  
-FORCE_LIMIT_EXCEEDED: 201
-TORQUE_LIMIT_EXCEEDED: 202
+## URC Mission Examples
 
-# E-stop faults (3xx)
-ESTOP_ACTIVATED: 301
+### Equipment Servicing
+
+```python
+# Move to panel
+client.send_goal_async(GoToNamedPose.Goal(pose_name='es_panel_approach'))
+
+# Fine adjust with MoveIt
+# (use moveit_config_rover's teleoperation or Cartesian commands)
+
+# Operate switch/button
+gripper_pub.publish(Float32(data=0.5))  # Partial close
+time.sleep(2.0)
+gripper_pub.publish(Float32(data=0.0))  # Release
+```
+
+### Science Mission
+
+```python
+# Go to sampling position
+client.send_goal_async(GoToNamedPose.Goal(pose_name='sc_ground_survey'))
+
+# Pick up sample
+pick_goal = PickAndPlace.Goal()
+pick_goal.pick_pose = sample_detector.get_sample_pose()
+pick_goal.place_pose = cache_location
+client.send_goal_async(pick_goal)
+```
+
+### Delivery Mission
+
+```python
+# Pick up object
+pick_goal = PickAndPlace.Goal()
+pick_goal.pick_pose = object_detector.get_object_pose()
+pick_goal.place_pose = delivery_location
+pick_goal.grasp_effort = 0.9  # Firm grip
+
+result = client.send_goal_async(pick_goal)
+```
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────┐
+│         Mission Planning / Behavior Tree     │
+└────────────────┬────────────────────────────┘
+                 │
+      ┌──────────┴──────────┐
+      │                     │
+┌─────▼──────┐   ┌─────────▼────────┐
+│ Action     │   │    Gripper       │
+│ Servers    │   │   Controller     │
+└─────┬──────┘   └──────────────────┘
+      │
+      │ Uses MoveIt for planning
+      ▼
+┌──────────────────────────────────┐
+│   moveit_config_rover            │
+│   (Motion Planning & Execution)  │
+└──────────────────────────────────┘
+```
+
+This package sits **on top of** `moveit_config_rover`, providing mission-level abstractions.
+
+## What About old_arm/?
+
+The `old_arm/` folder contains your previous working system. It's kept for:
+- Reference for motor control logic
+- Fallback if needed
+- Understanding gear ratios and encoder mappings
+
+**Don't delete it**, but don't use it - the new MoveIt system is better.
+
+## Dependencies
+
+- `moveit_config_rover` - Core MoveIt setup (required)
+- MoveIt2 - Motion planning
+- ROS2 Control - Trajectory execution
+- Standard ROS2 messages
+
+## Building
+
+```bash
+cd /home/rover/workspaces/rover
+colcon build --packages-select arm_control
+source install/setup.bash
 ```
 
 ## Testing
 
-### Phase-Gated Testing
-Tests are organized by implementation phase to prevent running incomplete code:
-
 ```bash
-# Phase 1: Safe component tests (✅ READY)
-python3 -m pytest test/test_configuration.py -v
-python3 -m pytest test/test_hardware_interface.py::TestMockHardware -v
+# Test gripper (with demo running)
+ros2 topic pub --once /gripper/open std_msgs/Float32 "data: 1.0"
+ros2 topic pub --once /gripper/close std_msgs/Float32 "data: 0.5"
 
-# Phase 2: Integration tests (🚫 DO NOT RUN YET)
-# python3 -m pytest test/test_integration.py -v
+# Test named pose action
+ros2 action send_goal /arm/go_to_named_pose arm_control/action/GoToNamedPose "{pose_name: 'home'}"
 
-# Phase 3: System tests (🚫 DO NOT RUN YET)  
-# python3 -m pytest test/test_system.py -v
+# Monitor safety
+ros2 topic echo /arm/is_safe
 ```
-
-See `test/README.md` for detailed testing procedures and safety notes.
-
-## Development Workflow
-
-### Implementation Phases
-
-1. **✅ Phase 1 Complete**: Individual components with mock hardware
-2. **🚧 Phase 2**: Integration testing and component communication  
-3. **⏳ Phase 3**: Hardware-in-the-loop and system validation
-4. **⏳ Phase 4**: Performance optimization and mission testing
-
-### Adding Hardware Support
-
-1. **Modify Hardware Interface**: Replace mock methods with real hardware protocols
-2. **Update Configuration**: Set `mock_mode: false` in controller_config.yaml
-3. **Test Incrementally**: Start with single joints, build up to full system
-4. **Validate Safety**: Verify all fault detection and emergency stop functions
-
-## Integration Points
-
-### MoveIt Integration
-- Receives planning results via FollowJointTrajectory action
-- Updates URDF/SRDF for tool changes via parameter reload
-- Publishes joint states for move_group state monitoring
-
-### Behavior Tree Integration  
-- Exposes three atomic actions: GoToNamedPose, PickAndPlace, ToolChange
-- Provides structured feedback and error reporting
-- Supports mission-specific named poses from configuration
-
-### Hardware Integration
-- CAN bus communication for motor control (TODO: implement)
-- GPIO for emergency stop monitoring (TODO: implement)  
-- Force/torque sensor integration (TODO: implement)
-- Tool coupling mechanism control (TODO: implement)
-
-## Monitoring and Diagnostics
-
-### Status Topics
-- `/arm/status`: Real-time arm status and metrics
-- `/arm/safety_status`: Safety system diagnostics
-- `/arm/faults`: Structured fault reporting
-
-### Visualization
-- RViz integration for real-time arm state
-- Joint state publishing for transform tree
-- Tool change visualization (planned)
-
-## Future Enhancements
-
-### Planned Features
-- **Adaptive Control**: Dynamic parameter adjustment based on load
-- **Predictive Maintenance**: Wear monitoring and component lifetime tracking
-- **Advanced Grasping**: Multi-finger coordination and tactile feedback
-- **Learning Integration**: Performance optimization through mission data
-
-### Hardware Additions
-- **Force/Torque Sensing**: 6-DOF F/T sensor at wrist
-- **Vision Integration**: Eye-in-hand camera for fine manipulation
-- **Tactile Feedback**: Pressure-sensitive gripper fingers
-- **Tool Recognition**: Automatic tool type detection
-
-## Contributing
-
-### Code Standards
-- Follow ROS 2 naming conventions
-- Include comprehensive docstrings  
-- Add safety checks for all hardware interactions
-- Write phase-gated tests for new features
-
-### Safety Requirements
-- All hardware interactions must include fault detection
-- Motion commands must respect safety limits
-- New features require safety analysis and testing
-- Emergency stop must be testable and verifiable
-
-## Support
-
-**Documentation**: See individual component docstrings and `test/README.md`
-**Configuration**: Check YAML files in `config/` directory  
-**Issues**: Review fault codes in `safety_params.yaml`
-**Team Contact**: urc-arm-team@rover.com
 
 ---
 
-**⚠️ SAFETY REMINDER**: This system controls a physical robotic arm. Always verify safety systems, use emergency stops, and test thoroughly before deployment. Start with mock mode and simulated data before attempting hardware operation. 
+**This is everything you need for URC. Simple. Focused. Competition-ready.** 🏆
