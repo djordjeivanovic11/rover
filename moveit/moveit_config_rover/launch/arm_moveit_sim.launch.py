@@ -51,6 +51,12 @@ def load_yaml(package_name, file_path):
 def generate_launch_description():
     
     # Declare launch arguments
+    use_sim_arg = DeclareLaunchArgument(
+        'use_sim',
+        default_value='true',
+        description='Use mock hardware if true, real hardware if false'
+    )
+    
     use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
         default_value='false',
@@ -64,6 +70,7 @@ def generate_launch_description():
     )
     
     # Get configurations
+    use_sim = LaunchConfiguration('use_sim')
     use_sim_time = LaunchConfiguration('use_sim_time')
     launch_rviz = LaunchConfiguration('rviz')
     

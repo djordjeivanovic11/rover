@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Full localisation launch:
-  ▸ GNSS driver            → /gnss/fix
-  ▸ ZED 2i wrapper         → /zed2i/odom  /zed2i/imu/data
-  ▸ ekf_local              → /odometry/filtered  + odom→base_link
-  ▸ navsat_transform       → /odom/gps
-  ▸ ekf_global             → map→odom  + /odometry/global
+Full localization launch - GPS + ZED fusion
+  ▸ GPS driver             → /gps/fix
+  ▸ ZED 2i                 → /zed2i/odom, /zed2i/imu/data
+  ▸ ekf_local              → /odometry/filtered (odom→base_link)
+  ▸ navsat_transform       → /odom/gps (GPS in odom frame)
+  ▸ ekf_global             → /odometry/global (map→odom)
 """
 
 import os
@@ -22,7 +22,7 @@ def generate_launch_description():
 
     gnss_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            share('gnss_launch', 'launch/gnss_driver.launch.py'))
+            share('gnss_launch', 'launch/gnss.launch.py'))
     )
 
     zed_launch = IncludeLaunchDescription(
@@ -42,7 +42,7 @@ def generate_launch_description():
         parameters=[share('loc_fusion', 'config/navsat_transform.yaml')],
         remappings=[
             ('imu',      '/zed2i/imu/data'),
-            ('gps/fix',  '/gnss/fix'),
+            ('gps/fix',  '/gps/fix'),
             ('odom',     '/odometry/filtered'),
             ('filtered', '/odom/gps')
         ]

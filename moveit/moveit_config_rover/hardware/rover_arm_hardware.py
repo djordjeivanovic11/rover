@@ -74,7 +74,6 @@ class RoverArmHardwareBridge(Node):
         )
         
         # === NEW SYSTEM TOPICS (to/from ros2_control) ===
-        
         # Subscribe to commands from ros2_control
         self.joint_cmd_sub = self.create_subscription(
             JointState,

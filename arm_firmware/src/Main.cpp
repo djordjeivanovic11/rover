@@ -15,6 +15,7 @@
 #define SUBSCRIPTION_NAME "arm_target_motor_positions"
 #define PUBLISHER_NAME "get_arm_position"
 
+
 rcl_allocator_t allocator;
 rclc_support_t support;
 rcl_node_t node;

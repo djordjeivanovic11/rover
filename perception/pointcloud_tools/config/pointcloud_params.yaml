@@ -15,5 +15,5 @@ grid_builder:
   size_xy:    20.0
   z_thresh:   0.15          # points above this are obstacles
   range_max:  15.0
-  cloud_topic: /rtabmap/cloud_map
+  cloud_topic: /zed2i/zed2i_camera/point_cloud/cloud_registered
   grid_topic: /local_map
