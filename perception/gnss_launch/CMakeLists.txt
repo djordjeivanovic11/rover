@@ -3,9 +3,9 @@ project(gnss_launch)
 
 find_package(ament_cmake REQUIRED)
 
-# Install launch and config files
+# Install launch files
 install(
-  DIRECTORY launch params
+  DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -13,7 +13,6 @@ install(
 install(PROGRAMS
   launch/gnss_health_monitor.py
   launch/gnss_validator.py
-  launch/gnss_setup.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

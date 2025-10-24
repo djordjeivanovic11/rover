@@ -1,130 +1,108 @@
-# GNSS Launch Package
+# GNSS Launch
 
-**Plug-and-play GNSS driver setup with health monitoring and ZED integration**
+GPS driver and monitoring system for ZED-F9P RTK GNSS module.
 
-## 🚀 Quick Start
+## What's Inside
 
-### **1. Connect GNSS Hardware**
+**GPS Driver** - ublox_gps_node configured for ZED-F9P in rover mode  
+**Health Monitor** - Tracks signal quality, satellite count, fix status  
+**Validator** - Verifies GPS stability and fusion readiness  
+
+**Topics Published:**
+- `/gps/fix` - GPS position (sensor_msgs/NavSatFix)
+- `/gps/velocity` - GPS velocity
+- `/gnss/health_status` - "excellent", "good", "fair", "poor", "no_fix"
+- `/gnss/signal_quality` - Quality score 0.0-1.0
+- `/gnss/satellite_count` - Number of satellites
+- `/gnss/ready_for_fusion` - Ready for robot_localization fusion
+
+## Quick Start
+
 ```bash
-# Most common: USB connection shows as /dev/ttyACM0
-# Check connected devices
-ls /dev/ttyACM* /dev/ttyUSB*
+# Launch GPS system
+~/workspaces/rover/src/perception/gnss_launch/launch_gps.sh
 
-# Test hardware detection
-ros2 service call /gnss/detect_hardware std_srvs/srv/Trigger
-```
+# Or after sourcing workspaces:
+source ~/workspaces/ros2-ublox-zedf9p/install/setup.bash
+source ~/workspaces/rover/install/setup.bash
+ros2 launch ~/workspaces/rover/install/gnss_launch/share/gnss_launch/launch/gnss.launch.py
 
-### **2. Launch GNSS Driver**
-```bash
-# Auto-detect and launch (recommended)
-ros2 launch gnss_launch gnss_complete.launch.py
+# Check topics
+ros2 topic list | grep gps
 
-# Specify device manually
-ros2 launch gnss_launch gnss_complete.launch.py gnss_device:=/dev/ttyACM0
-
-# Use different driver (ublox, nmea, septentrio)
-ros2 launch gnss_launch gnss_complete.launch.py gnss_driver_type:=nmea
-```
-
-### **3. Verify GNSS Operation**
-```bash
-# Check fix data
+# Monitor GPS fix
 ros2 topic echo /gps/fix
 
-# Monitor health status
+# Check health
 ros2 topic echo /gnss/health_status
-ros2 topic echo /gnss/ready_for_fusion
-
-# Check diagnostics
-ros2 topic echo /gnss/diagnostics
 ```
 
-## 📡 Supported Hardware
+## What It's Used For
 
-| Driver | Hardware | Protocol | Use Case |
-|--------|----------|----------|----------|
-| **ublox** | u-blox M8/M9/F9 | UBX + NMEA | **Recommended** - High accuracy, RTK support |
-| **nmea** | Generic GNSS | NMEA-0183 | Basic GPS receivers |
-| **septentrio** | Septentrio | SBF + NMEA | High-end RTK systems |
+**Navigation** - Provides global position for waypoint navigation with Nav2  
+**Localization** - Fuses with robot_localization for drift-free odometry  
+**RTK Mode** - Supports centimeter-level accuracy with RTK base station  
+**Mapping** - Geo-references maps with GPS coordinates  
 
-## 🔧 Configuration
+## Integration
 
-### **Hardware Settings** (`params/gnss_config.yaml`):
-```yaml
-gnss_driver:
-  device: /dev/ttyACM0        # Serial device
-  baudrate: 115200           # Communication rate
-  measurement_rate: 10       # GNSS update rate (Hz)
-  min_satellites: 4          # Minimum satellites for valid fix
-  max_hdop: 5.0             # Maximum dilution of precision
-```
-
-### **ZED Integration** (Automatic):
-- Publishes to `/gps/fix` (ZED fusion compatible)
-- Monitors signal quality for fusion readiness
-- Provides health status for system monitoring
-
-## 🎯 Usage Examples
-
-### **Basic GNSS Operation:**
+**With robot_localization:**
 ```bash
-# Launch with u-blox receiver
-ros2 launch gnss_launch gnss_complete.launch.py gnss_driver_type:=ublox
-
-# Launch with generic NMEA receiver  
-ros2 launch gnss_launch gnss_complete.launch.py gnss_driver_type:=nmea
+# Full localization stack (GPS + ZED + EKFs)
+ros2 launch loc_fusion loc_fusion.launch.py
 ```
 
-### **With ZED Global Localization:**
-```bash
-# Complete perception with GNSS fusion
-ros2 launch slam_launch perception_complete.launch.py \
-    enable_global_localization:=true
+**With Nav2:**
+- Provides `/gps/fix` for GPS waypoint navigation
+- Converts GPS coordinates to map frame via navsat_transform
+- Enables autonomous navigation to lat/lon coordinates
 
-# Monitor fusion status
-ros2 topic echo /localization/global_ready
-ros2 topic echo /localization/mode
+## Requirements
+
+- ZED-F9P GPS module connected to `/dev/ttyACM0`
+- Clear outdoor sky view for satellite lock
+- ublox_gps driver (installed at `~/workspaces/ros2-ublox-zedf9p`)
+- First fix takes 30-60 seconds (cold start)
+
+## Configuration
+
+GPS is configured for:
+- **Rover mode** (tmode3=0, not base station)
+- **Automotive model** (optimized for ground vehicles)
+- **10Hz update rate** with 1Hz navigation rate
+- **Auto fix mode** (GPS/GLONASS/Galileo/BeiDou)
+
+## Status Indoors/Underground
+
+✗ No GPS fix (expected - needs outdoor sky view)  
+✓ Driver runs and creates topics  
+✓ Health monitor shows "no_signal" or "no_fix"  
+✓ Go outside for satellite lock  
+
+## RTK Setup
+
+For centimeter accuracy, use second ZED-F9P as base station:
+1. Configure base in survey-in mode (u-center software)
+2. Stream RTCM corrections to rover via radio or network
+3. Rover achieves RTK FIX (1-2cm horizontal accuracy)
+
+## Files
+
+```
+gnss_launch/
+├── launch/
+│   ├── gnss.launch.py         # Main launch file
+│   ├── gnss_health_monitor.py # Health monitoring node
+│   └── gnss_validator.py      # Signal validation node
+├── launch_gps.sh              # Simple launch script
+├── CMakeLists.txt
+└── package.xml
 ```
 
-### **Hardware Troubleshooting:**
-```bash
-# Detect GNSS hardware
-ros2 service call /gnss/detect_hardware std_srvs/srv/Trigger
+## Troubleshooting
 
-# Test connection
-ros2 service call /gnss/test_connection std_srvs/srv/Trigger
+**No topics** - Source both workspaces (ublox + rover)  
+**No fix indoors** - Normal, GPS needs outdoor sky view  
+**Permission denied** - Add user to dialout group  
+**Wrong device** - GPS is on `/dev/ttyACM0`, adjust in launch file if different  
 
-# Check signal quality
-ros2 topic echo /gnss/signal_quality
-ros2 topic echo /gnss/satellite_count
-```
-
-## 📊 Health Monitoring
-
-The system provides comprehensive GNSS health monitoring:
-
-### **Health States:**
-- **🟢 excellent** - RTK fix, high accuracy
-- **🟡 good** - 3D fix, good accuracy  
-- **🟠 fair** - 3D fix, moderate accuracy
-- **🔴 poor** - 2D fix or high uncertainty
-- **❌ no_fix** - No valid position
-- **📵 no_signal** - No data received
-
-### **Topics:**
-```bash
-/gnss/health_status        # Current health state
-/gnss/signal_quality       # Quality score (0-1)
-/gnss/satellite_count      # Number of satellites
-/gnss/ready_for_fusion     # Ready for ZED fusion
-/gnss/diagnostics          # Detailed diagnostics
-```
-
-## ⚡ Performance
-
-- **Update Rate:** 5-10 Hz (configurable)
-- **Latency:** <100ms from hardware to ROS topic
-- **Accuracy:** Depends on receiver (1-5m typical, <10cm with RTK)
-- **Startup Time:** 30-60 seconds for first fix (cold start)
-
-**Ready to plug in your GNSS receiver and get global navigation!** 🌍
