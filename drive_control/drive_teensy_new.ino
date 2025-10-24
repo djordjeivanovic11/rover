@@ -7,14 +7,14 @@ int16_t joy_y = 0;
 
 const int MAX_SPEED = 15000;
 const int MAX_LINE  = 30;
-const uint32_t READ_TIMEOUT_MS = 20; //50 Hz
+const uint32_t READ_TIMEOUT_MS = 20;
 
 void setup() {
-  Serial.begin(115200);   
-  Serial1.begin(115200);    
-  Serial2.begin(115200);     
+  Serial.begin(115200);
+  Serial1.begin(115200);
+  Serial2.begin(115200);
   vesc.setSerialPort(&Serial2);
-  vesc.setSendCan(true); 
+  vesc.setSendCan(true);
   delay(100);
 }
 
@@ -30,17 +30,15 @@ bool read_line_from_serial(char* out, size_t out_cap) {
         else out[out_cap - 1] = '\0';
         return true;
       }
-      if (i < out_cap - 1) out[i++] = c; 
+      if (i < out_cap - 1) out[i++] = c;
     }
-
     delayMicroseconds(200);
   }
-  return false; 
+  return false;
 }
 
 void loop() {
   char line[MAX_LINE];
-  uint8_t nb = 0
   if (read_line_from_serial(line, sizeof(line))) {
     if (line[0] == 'x') {
       joy_x = (int16_t)atoi(line + 1);
@@ -62,6 +60,16 @@ void loop() {
   vesc.setRPM(ml_rpm, 3);
   vesc.setRPM(mr_rpm, 4);
   vesc.setRPM(mr_rpm, 6);
+
+  int left_meas = 0, right_meas = 0;
+  if (vesc.getVescValues()) left_meas = (int)vesc.data.rpm;
+  if (vesc.getVescValues(4)) right_meas = (int)vesc.data.rpm;
+
+  Serial.print("RPM L=");
+  Serial.print(left_meas);
+  Serial.print(" R=");
+  Serial.print(right_meas);
+  Serial.print("\n");
 
   delay(50);
 }
