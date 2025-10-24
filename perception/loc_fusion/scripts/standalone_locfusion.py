@@ -30,18 +30,12 @@ import numpy as np
 import cv2
 import pyzed.sl as sl
 
-# Optional Mesh Visualizer (OpenGL)
 try:
     import ogl_viewer.viewer as gl
-    HAS_GL_VIEWER = False  # set True if your environment supports OpenGL viewer
+    HAS_GL_VIEWER = False
 except ImportError:
     print("⚠️ OpenGL viewer not available. Install PyOpenGL and ZED samples.")
     HAS_GL_VIEWER = False
-
-
-# ---------------------------
-# Utility: Axis transforms
-# ---------------------------
 
 def zed_right_handed_y_up_to_ros_enu(points_xyz: np.ndarray) -> np.ndarray:
     """Convert points from ZED RIGHT_HANDED_Y_UP (X right, Y up, Z forward)
@@ -67,9 +61,6 @@ def rot2d(theta: float) -> np.ndarray:
     return np.array([[c, -s], [s, c]], dtype=np.float32)
 
 
-# ---------------------------
-# Lightweight 2D EKF for loc fusion
-# ---------------------------
 @dataclass
 class EKFConfig:
     dt_min: float = 1e-3
@@ -147,16 +138,12 @@ class LocFusionEKF2D:
         return float(x), float(y), float(yaw)
 
 
-# ---------------------------
-# Point cloud helpers
-# ---------------------------
 
 def mat_to_numpy_xyzrgba(pc_mat: sl.Mat) -> Tuple[np.ndarray, np.ndarray]:
     """Return (points Nx3 float32 in meters, colors Nx3 uint8)."""
-    data = pc_mat.get_data()  # (H, W, 4) float32; last channel packs RGBA
+    data = pc_mat.get_data() 
     xyz = data[..., :3].reshape(-1, 3).copy()
     rgba_f32 = data[..., 3].reshape(-1).copy()
-    # reinterpret last float channel as uint32 to unpack RGBA
     rgba_u32 = rgba_f32.view(np.uint32)
     r = ((rgba_u32 >> 16) & 255).astype(np.uint8)
     g = ((rgba_u32 >> 8) & 255).astype(np.uint8)
@@ -229,10 +216,6 @@ def occupancy_slice(points_xyz: np.ndarray, res: float, z_min: float, z_max: flo
     return img, (float(xmin), float(xmax), float(ymin), float(ymax))
 
 
-# ---------------------------
-# Main
-# ---------------------------
-
 def main():
     ap = argparse.ArgumentParser(description="ZED point cloud → OpenGL buffer + 2D EKF loc fusion (ENU)")
     ap.add_argument('--svo', type=str, default=None, help='Path to SVO file')
@@ -240,7 +223,6 @@ def main():
     ap.add_argument('--depth-max', type=float, default=20.0, help='Max depth range (m)')
     ap.add_argument('--frames', type=int, default=0, help='If >0, process this many frames then exit (0 = run forever)')
 
-    # Exports
     ap.add_argument('--save-ply', type=str, help='Write one PLY of the point cloud and exit after frames')
     ap.add_argument('--save-vbo', type=str, help='Write raw float32 interleaved VBO [x y z r g b] to .bin')
     ap.add_argument('--save-occ', type=str, help='Write occupancy PNG (with --z-min/--z-max/--occ-res)')
@@ -283,14 +265,13 @@ def main():
     runtime_params = sl.RuntimeParameters()
     cam_info = zed.get_camera_information()
     point_cloud_res = cam_info.camera_configuration.resolution
-    # downscale for lighter clouds
+
     point_cloud_res = sl.Resolution(min(point_cloud_res.width, 720), min(point_cloud_res.height, 404))
 
     pc_mat = sl.Mat()
     zed_pose = sl.Pose()
     sensors_data = sl.SensorsData()
 
-    # Optional OpenGL viewer
     viewer = None
     if HAS_GL_VIEWER:
         viewer = gl.GLViewer()
@@ -318,13 +299,13 @@ def main():
             zed.get_position(zed_pose, sl.REFERENCE_FRAME.WORLD)
 
             if HAS_GL_VIEWER and viewer and viewer.is_available():
-                viewer.updateData(pc_mat, None)  # No object list → just point cloud + pose
+                viewer.updateData(pc_mat, None) 
 
             # Sensors (IMU)
             zed.get_sensors_data(sensors_data, sl.TIME_REFERENCE.CURRENT)
             imu = sensors_data.get_imu_data()
-            ang_vel = imu.get_angular_velocity()       # rad/s in camera frame
-            lin_acc = imu.get_linear_acceleration()    # m/s^2 in camera frame
+            ang_vel = imu.get_angular_velocity()  
+            lin_acc = imu.get_linear_acceleration()  
 
             # Convert point cloud to numpy (always ENU for Nav2)
             xyz, rgb = mat_to_numpy_xyzrgba(pc_mat)
@@ -345,39 +326,32 @@ def main():
                 cv2.imwrite(args.save_occ, occ)
                 print(f"Saved occupancy PNG: {args.save_occ}  bounds={bounds}")
 
-            # --------------- Localization fusion (ENU) ---------------
-            # ZED VIO pose (WORLD→CAM). Extract translation and yaw; convert to ENU.
             T_wc = zed_pose.pose_data()
             T_wc_np = np.array(T_wc.m, dtype=np.float32).reshape((4, 4))
             t = T_wc_np[:3, 3]
             R_wc = T_wc_np[:3, :3]
 
-            # ENU translation (x=fwd, y=left, z=up)
             t_enu = zed_right_handed_y_up_to_ros_enu(t.reshape(1, 3))[0]
             x_meas, y_meas = float(t_enu[0]), float(t_enu[1])
 
-            # ENU yaw from forward axis (Zed forward = +Zr)
             forward_zed = (R_wc @ np.array([0, 0, -1.0], dtype=np.float32))
             f_enu = zed_right_handed_y_up_to_ros_enu(forward_zed.reshape(1, 3))[0]
-            yaw_meas = float(np.arctan2(f_enu[1], f_enu[0]))  # atan2(Yenu, Xenu)
+            yaw_meas = float(np.arctan2(f_enu[1], f_enu[0])) 
             
             if not align_ready:
                 yaw0 = yaw_meas
-                # If initial forward points toward -X, flip by pi so +X is robot-forward
                 if np.cos(yaw0) < 0.0:
                     yaw0 = (yaw0 + np.pi) % (2*np.pi)
-                c, s = np.cos(-yaw0), np.sin(-yaw0)   # rotate world by -yaw0
+                c, s = np.cos(-yaw0), np.sin(-yaw0) 
                 R_align = np.array([[c, -s], [s, c]], dtype=np.float32)
                 align_ready = True
 
-            # rotate position and yaw into the aligned nav frame
             x_meas, y_meas = (R_align @ np.array([x_meas, y_meas], dtype=np.float32)).tolist()
             yaw_meas = (yaw_meas - yaw0 + np.pi) % (2*np.pi) - np.pi
 
-            # IMU mapping to ENU body frame
-            gyro_z = float(ang_vel[2])     # yaw rate about +Zenu
-            ax_body = -float(lin_acc[2])    # forward (Xenu)
-            ay_body = float(-lin_acc[0])   # left (Yenu)
+            gyro_z = float(ang_vel[2])  
+            ax_body = -float(lin_acc[2])  
+            ay_body = float(-lin_acc[0]) 
 
             now = time.time()
             dt = now - last_t
@@ -393,8 +367,7 @@ def main():
             frame += 1
             if args.frames > 0 and frame >= args.frames:
                 break
-
-        # Write VBO at end if requested
+    
         if args.save_vbo and 'vbo' in locals():
             with open(args.save_vbo, 'wb') as f:
                 f.write(vbo.tobytes())
