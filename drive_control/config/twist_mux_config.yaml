@@ -1,0 +1,34 @@
+# twist_mux configuration
+# Allows multiple sources to publish cmd_vel with priorities
+#
+# Priority order: e_stop > joystick > nav2
+# Higher priority number = takes control
+#
+# Usage with twist_mux package:
+#   ros2 run twist_mux twist_mux --ros-args --params-file twist_mux_config.yaml
+
+topics:
+  # Emergency stop - highest priority
+  - name: e_stop
+    topic: /cmd_vel/stop
+    timeout: 0.1
+    priority: 100
+  
+  # Joystick / manual teleop
+  - name: joystick  
+    topic: /cmd_vel/joy
+    timeout: 0.5
+    priority: 80
+  
+  # Autonomous navigation
+  - name: navigation
+    topic: /cmd_vel/nav
+    timeout: 0.5
+    priority: 50
+
+# Output combined cmd_vel
+output: /cmd_vel
+
+# How fast to check for priority changes
+rate: 50.0
+
