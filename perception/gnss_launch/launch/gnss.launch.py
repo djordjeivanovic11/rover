@@ -23,12 +23,13 @@ def generate_launch_description():
         parameters=[{
             'device': '/dev/ttyACM0',
             'frame_id': 'gps_link',
-            'rate': 10.0,
+            'baudrate': 38400,
+            'rate': 1.0,
             'nav_rate': 1,
             'enable_ppp': False,
-            'fix_mode': 'auto',
-            'dynamic_model': 'automotive',
             'tmode3': 0,
+            'debug': 2,
+            'dgnss_mode': 3,  # RTK Fixed mode
         }],
         remappings=[
             ('fix', '/gps/fix'),
