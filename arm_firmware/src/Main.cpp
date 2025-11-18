@@ -10,7 +10,7 @@
 #include <std_msgs/msg/int32_multi_array.h>
 
 
-#define NODE_NAME "robotteensy"
+#define NODE_NAME "arm"
 #define NAMESPACE ""
 #define SUBSCRIPTION_NAME "arm_target_motor_positions"
 #define PUBLISHER_NAME "get_arm_position"

@@ -15,6 +15,10 @@ ADD --chown=rover https://github.com/micro-ROS/micro_ros_arduino/archive/refs/ta
 RUN tar -xzf micro_ros_arduino.tar.gz
 RUN mv micro_ros_arduino-2.0.7-humble /home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/libraries/micro_ros_arduino
 
+ADD --chown=rover https://github.com/SolidGeek/VescUart/archive/refs/heads/master.tar.gz /tmp/vesc_uart.tar.gz
+RUN tar -xzf vesc_uart.tar.gz
+RUN mv VescUart-master /home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/libraries/VescUart
+
 RUN sudo rm -rf /tmp/*
 
 WORKDIR /home/rover/ros_ws

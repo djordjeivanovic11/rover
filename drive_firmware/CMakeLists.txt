@@ -3,6 +3,7 @@ project(drive_firmware)
 
 # Find ament (ROS 2 build system)
 find_package(ament_cmake REQUIRED)
+# find_package(urc_msgs REQUIRED)
 
 # Path to Teensyduino install
 set(TEENSYDUINO_VER 1.57.3)
@@ -19,6 +20,7 @@ set(TEENSY_LIBS
   micro_ros_arduino
   NativeEthernet
   FNET
+  VescUart
 )
 
 # Toolchain (override compiler for this target)
@@ -50,6 +52,7 @@ include_directories(
   include
   ${TEENSY_BASE}/cores/teensy4
   ${TEENSY_BASE}/variants/teensy41
+  # ${urc_msgs_INCLUDE_DIRS}
 )
 
 # Gather sources
@@ -70,11 +73,18 @@ foreach(LIB ${TEENSY_LIBS})
   set(TEENSY_LIB_SRC ${TEENSY_LIB_SRC} ${LIB_SRC})
 endforeach()
 
+set(URC_MSGS_TYPESUPPORT_DIR "${CMAKE_BINARY_DIR}/../urc_msgs/rosidl_typesupport_c")
+file(GLOB_RECURSE URC_MSGS_TYPESUPPORT
+  "${URC_MSGS_TYPESUPPORT_DIR}/*.c"
+  "${URC_MSGS_TYPESUPPORT_DIR}/*.cpp"
+)
+
 # Build firmware
 add_executable(${PROJECT_NAME}.elf
   ${APP_SRC}
   ${TEENSY_CORE_SRC}
   ${TEENSY_LIB_SRC}
+  ${URC_MSGS_TYPESUPPORT}
 )
 
 # Linker script

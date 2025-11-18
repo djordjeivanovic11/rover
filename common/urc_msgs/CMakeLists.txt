@@ -17,6 +17,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/GapDiag.msg"
   "msg/ScienceData.msg"
   "msg/GapCmd.msg"
+  "msg/TankDriveTarget.msg"
   DEPENDENCIES std_msgs geometry_msgs sensor_msgs
 )
 

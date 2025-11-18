@@ -1,15 +1,20 @@
 #pragma once
 
 #include <micro_ros_arduino.h>
+
 #include <rcl/rcl.h>
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 
 #include <type_traits>
+#include <functional>
 
 namespace uROS {
-    void Init_MicroROS(const char* node_name, const char* node_namespace);
+    extern rcl_allocator_t allocator;
 
+    void Init_MicroROS(const char* node_name, const char* node_namespace);
+    void Spin(int ms);
+    
     struct Msg {
         const virtual rosidl_message_type_support_t* GetTypeSupport();
         virtual void Init();
@@ -19,8 +24,8 @@ namespace uROS {
     class Publisher {
     public:
         template<typename MsgType>
-        Publisher(const char* name, MsgType* msg) {
-            _name = name;
+        Publisher(const char* name, MsgType* msg)
+            : _name(name) {
             static_assert(std::is_convertible<MsgType, Msg>::value, "");
             _msg = msg;
         };
@@ -34,5 +39,59 @@ namespace uROS {
         // std_msgs__msg__Int32 _out_msg;
     };
 
+    class Subscriber {
+    public:
+        template<typename MsgType>
+        Subscriber(const char* name, MsgType &msg)
+            : _name(name), _msg(msg), _callback(nullptr) {
+            static_assert(std::is_convertible<MsgType, Msg>::value, "");
+            _callback = [](const void* msgin){};
+            extern int registered_handles;
+            registered_handles++;
+        };
+        template<typename MsgType>
+        Subscriber(const char* name, MsgType &msg, rclc_subscription_callback_t callback)
+            : _name(name), _msg(msg), _callback(callback) {
+            static_assert(std::is_convertible<MsgType, Msg>::value, "");
+            // _msg = msg;
+            extern int registered_handles;
+            registered_handles++;
+        };
+        void Init();
+
+    private:
+        const char* _name;
+        rcl_subscription_t _subscriber;
+        Msg &_msg;
+        rclc_subscription_callback_t _callback;
+
+        // void _Internal_Callback(const void*);
+    };
+
 }
 // #endif
+
+// #pragma once
+
+// #include <micro_ros_arduino.h>
+
+// #include <rcl/rcl.h>
+// #include <rclc/rclc.h>
+// #include <rclc/executor.h>
+
+// namespace uROS {
+//     void Init_MicroROS(const char* node_name, const char* node_namespace);
+
+//     class Publisher {
+//     public:
+//         // Publisher(const char* name);
+//         void Init(const char* name);
+//         bool PublishRaw(void* out_msg);
+
+//     private:
+//         rcl_publisher_t _publisher;
+//         // std_msgs__msg__Int32 _out_msg;
+//     };
+
+// }
+// // #endif
