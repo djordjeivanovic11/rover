@@ -73,18 +73,18 @@ foreach(LIB ${TEENSY_LIBS})
   set(TEENSY_LIB_SRC ${TEENSY_LIB_SRC} ${LIB_SRC})
 endforeach()
 
-set(URC_MSGS_TYPESUPPORT_DIR "${CMAKE_BINARY_DIR}/../urc_msgs/rosidl_typesupport_c")
-file(GLOB_RECURSE URC_MSGS_TYPESUPPORT
-  "${URC_MSGS_TYPESUPPORT_DIR}/*.c"
-  "${URC_MSGS_TYPESUPPORT_DIR}/*.cpp"
-)
+# set(URC_MSGS_TYPESUPPORT_DIR "${CMAKE_BINARY_DIR}/../urc_msgs/rosidl_typesupport_c")
+# file(GLOB_RECURSE URC_MSGS_TYPESUPPORT
+#   "${URC_MSGS_TYPESUPPORT_DIR}/*.c"
+#   "${URC_MSGS_TYPESUPPORT_DIR}/*.cpp"
+# )
 
 # Build firmware
 add_executable(${PROJECT_NAME}.elf
   ${APP_SRC}
   ${TEENSY_CORE_SRC}
   ${TEENSY_LIB_SRC}
-  ${URC_MSGS_TYPESUPPORT}
+  # ${URC_MSGS_TYPESUPPORT}
 )
 
 # Linker script
