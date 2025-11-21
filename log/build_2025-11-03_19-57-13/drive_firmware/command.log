@@ -1,0 +1,4 @@
+Invoking command in '/home/rover/workspaces/rover/src/build/drive_firmware': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/rover/workspaces/rover/src/build/drive_firmware -- -j6 -l6
+Invoked command in '/home/rover/workspaces/rover/src/build/drive_firmware' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/rover/workspaces/rover/src/build/drive_firmware -- -j6 -l6
+Invoking command in '/home/rover/workspaces/rover/src/build/drive_firmware': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/rover/workspaces/rover/src/build/drive_firmware
+Invoked command in '/home/rover/workspaces/rover/src/build/drive_firmware' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/rover/workspaces/rover/src/build/drive_firmware

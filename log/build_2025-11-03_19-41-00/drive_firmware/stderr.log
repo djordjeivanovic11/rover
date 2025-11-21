@@ -1,0 +1,6 @@
+[01m[K/home/rover/workspaces/rover/src/drive_firmware/src/Main.cpp:4:22:[m[K [01;31m[Kfatal error: [m[KVescUart.h: No such file or directory
+compilation terminated.
+gmake[2]: *** [CMakeFiles/drive_firmware.elf.dir/build.make:76: CMakeFiles/drive_firmware.elf.dir/src/Main.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/drive_firmware.elf.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

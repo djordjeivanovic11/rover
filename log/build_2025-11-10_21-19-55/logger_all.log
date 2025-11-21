@@ -1,0 +1,92 @@
+[0.336s] colcon DEBUG Command line arguments: ['/usr/bin/colcon', 'build', '--base-paths', 'navigation/nav2_launch', '--symlink-install']
+[0.336s] colcon DEBUG Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=6, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['navigation/nav2_launch'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffffb34a8e20>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffb35c9de0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffb35c9de0>>, mixin_verb=('build',))
+[0.827s] colcon.colcon_core.package_discovery Level 1 discover_packages(colcon_meta) check parameters
+[0.827s] colcon.colcon_core.package_discovery Level 1 discover_packages(recursive) check parameters
+[0.827s] colcon.colcon_core.package_discovery Level 1 discover_packages(ignore) check parameters
+[0.827s] colcon.colcon_core.package_discovery Level 1 discover_packages(path) check parameters
+[0.827s] colcon.colcon_core.package_discovery Level 1 discover_packages(recursive) discover
+[0.828s] colcon.colcon_core.package_discovery INFO Crawling recursively for packages in '/home/rover/workspaces/rover/src/navigation/nav2_launch'
+[0.828s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extensions ['ignore', 'ignore_ament_install']
+[0.829s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extension 'ignore'
+[0.829s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extension 'ignore_ament_install'
+[0.829s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extensions ['colcon_pkg']
+[0.829s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extension 'colcon_pkg'
+[0.829s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extensions ['colcon_meta']
+[0.830s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extension 'colcon_meta'
+[0.830s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extensions ['ros']
+[0.830s] colcon.colcon_core.package_identification Level 1 _identify(navigation/nav2_launch) by extension 'ros'
+[0.909s] colcon.colcon_core.package_identification DEBUG Package 'navigation/nav2_launch' with type 'ros.catkin' and name 'nav2_launch'
+[0.909s] colcon.colcon_core.package_discovery Level 1 discover_packages(recursive) using defaults
+[0.948s] colcon.colcon_core.package_discovery Level 1 discover_packages(prefix_path) check parameters
+[0.948s] colcon.colcon_core.package_discovery Level 1 discover_packages(prefix_path) discover
+[0.953s] colcon.colcon_installed_package_information.package_discovery DEBUG Found 1 installed packages in /home/rover/workspaces/urc_prod/custom_msgs/install
+[0.954s] colcon.colcon_installed_package_information.package_discovery DEBUG Found 2 installed packages in /home/rover/workspaces/micro_ros/install
+[0.958s] colcon.colcon_installed_package_information.package_discovery DEBUG Found 384 installed packages in /opt/ros/humble
+[0.965s] colcon.colcon_core.package_discovery Level 1 discover_packages(prefix_path) using defaults
+[1.076s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'cmake_args' from command line to 'None'
+[1.076s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'cmake_target' from command line to 'None'
+[1.076s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.076s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'cmake_clean_cache' from command line to 'False'
+[1.076s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'cmake_clean_first' from command line to 'False'
+[1.076s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'cmake_force_configure' from command line to 'False'
+[1.077s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'ament_cmake_args' from command line to 'None'
+[1.077s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'catkin_cmake_args' from command line to 'None'
+[1.077s] colcon.colcon_core.verb Level 5 set package 'nav2_launch' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.077s] colcon.colcon_core.verb DEBUG Building package 'nav2_launch' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/rover/workspaces/rover/src/build/nav2_launch', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/rover/workspaces/rover/src/install/nav2_launch', 'merge_install': False, 'path': '/home/rover/workspaces/rover/src/navigation/nav2_launch', 'symlink_install': True, 'test_result_base': None}
+[1.077s] colcon.colcon_core.executor INFO Executing jobs using 'parallel' executor
+[1.080s] colcon.colcon_parallel_executor.executor.parallel DEBUG run_until_complete
+[1.081s] colcon.colcon_ros.task.catkin.build INFO Building ROS package in '/home/rover/workspaces/rover/src/navigation/nav2_launch' with build type 'catkin'
+[1.081s] colcon.colcon_cmake.task.cmake.build INFO Building CMake package in '/home/rover/workspaces/rover/src/navigation/nav2_launch'
+[1.086s] colcon.colcon_core.plugin_system INFO Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.086s] colcon.colcon_core.shell INFO Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.087s] colcon.colcon_core.shell DEBUG Skip shell extension 'dsv' for command environment
+[1.108s] colcon.colcon_core.event_handler.log_command DEBUG Invoking command in '/home/rover/workspaces/rover/src/build/nav2_launch': /usr/bin/cmake /home/rover/workspaces/rover/src/navigation/nav2_launch -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCATKIN_SYMLINK_INSTALL=ON -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover/src/install/nav2_launch
+[1.130s] colcon.colcon_core.event_handler.log_command DEBUG Invoked command in '/home/rover/workspaces/rover/src/build/nav2_launch' returned '1': /usr/bin/cmake /home/rover/workspaces/rover/src/navigation/nav2_launch -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCATKIN_SYMLINK_INSTALL=ON -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover/src/install/nav2_launch
+[1.135s] colcon.colcon_core.shell Level 1 create_environment_hook('nav2_launch', 'ros_package_path')
+[1.136s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/ros_package_path.ps1'
+[1.138s] colcon.colcon_core.shell INFO Creating environment descriptor '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/ros_package_path.dsv'
+[1.139s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/ros_package_path.sh'
+[1.141s] colcon.colcon_core.shell Level 1 create_environment_hook('nav2_launch', 'pkg_config_path')
+[1.142s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/pkg_config_path.ps1'
+[1.143s] colcon.colcon_core.shell INFO Creating environment descriptor '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/pkg_config_path.dsv'
+[1.144s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/pkg_config_path.sh'
+[1.149s] colcon.colcon_core.shell Level 1 create_environment_hook('nav2_launch', 'pkg_config_path_multiarch')
+[1.150s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/pkg_config_path_multiarch.ps1'
+[1.151s] colcon.colcon_core.shell INFO Creating environment descriptor '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/pkg_config_path_multiarch.dsv'
+[1.152s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/pkg_config_path_multiarch.sh'
+[1.155s] colcon.colcon_core.environment Level 1 create_environment_scripts_only(nav2_launch)
+[1.160s] colcon.colcon_core.environment Level 1 checking '/home/rover/workspaces/rover/src/install/nav2_launch' for CMake module files
+[1.162s] colcon.colcon_core.environment Level 1 checking '/home/rover/workspaces/rover/src/install/nav2_launch' for CMake config files
+[1.162s] colcon.colcon_core.shell Level 1 create_environment_hook('nav2_launch', 'cmake_prefix_path')
+[1.163s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/cmake_prefix_path.ps1'
+[1.164s] colcon.colcon_core.shell INFO Creating environment descriptor '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/cmake_prefix_path.dsv'
+[1.165s] colcon.colcon_core.shell INFO Creating environment hook '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/hook/cmake_prefix_path.sh'
+[1.166s] colcon.colcon_core.environment Level 1 checking '/home/rover/workspaces/rover/src/install/nav2_launch/bin'
+[1.167s] colcon.colcon_core.environment Level 1 checking '/home/rover/workspaces/rover/src/install/nav2_launch/lib/pkgconfig/nav2_launch.pc'
+[1.167s] colcon.colcon_core.environment Level 1 checking '/home/rover/workspaces/rover/src/install/nav2_launch/lib/python3.10/site-packages'
+[1.168s] colcon.colcon_core.environment Level 1 checking '/home/rover/workspaces/rover/src/install/nav2_launch/bin'
+[1.169s] colcon.colcon_core.shell INFO Creating package script '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/package.ps1'
+[1.171s] colcon.colcon_core.shell INFO Creating package descriptor '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/package.dsv'
+[1.172s] colcon.colcon_core.shell INFO Creating package script '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/package.sh'
+[1.174s] colcon.colcon_core.shell INFO Creating package script '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/package.bash'
+[1.176s] colcon.colcon_core.shell INFO Creating package script '/home/rover/workspaces/rover/src/install/nav2_launch/share/nav2_launch/package.zsh'
+[1.177s] colcon.colcon_core.environment Level 1 create_file_with_runtime_dependencies(/home/rover/workspaces/rover/src/install/nav2_launch/share/colcon-core/packages/nav2_launch)
+[1.189s] colcon.colcon_parallel_executor.executor.parallel DEBUG closing loop
+[1.189s] colcon.colcon_parallel_executor.executor.parallel DEBUG loop closed
+[1.189s] colcon.colcon_parallel_executor.executor.parallel DEBUG run_until_complete finished with '1'
+[1.189s] colcon.colcon_core.event_reactor DEBUG joining thread
+[1.204s] colcon.colcon_core.plugin_system INFO Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[1.204s] colcon.colcon_core.plugin_system INFO Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[1.204s] colcon.colcon_notification.desktop_notification INFO Sending desktop notification using 'notify2'
+[26.216s] colcon.colcon_notification.desktop_notification.notify2 DEBUG Failed to initialize notify2: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
+[26.219s] colcon.colcon_core.event_reactor DEBUG joined thread
+[26.221s] colcon.colcon_core.shell INFO Creating prefix script '/home/rover/workspaces/rover/src/install/local_setup.ps1'
+[26.227s] colcon.colcon_core.shell INFO Creating prefix util module '/home/rover/workspaces/rover/src/install/_local_setup_util_ps1.py'
+[26.230s] colcon.colcon_core.shell INFO Creating prefix chain script '/home/rover/workspaces/rover/src/install/setup.ps1'
+[26.233s] colcon.colcon_core.shell INFO Creating prefix script '/home/rover/workspaces/rover/src/install/local_setup.sh'
+[26.235s] colcon.colcon_core.shell INFO Creating prefix util module '/home/rover/workspaces/rover/src/install/_local_setup_util_sh.py'
+[26.236s] colcon.colcon_core.shell INFO Creating prefix chain script '/home/rover/workspaces/rover/src/install/setup.sh'
+[26.239s] colcon.colcon_core.shell INFO Creating prefix script '/home/rover/workspaces/rover/src/install/local_setup.bash'
+[26.240s] colcon.colcon_core.shell INFO Creating prefix chain script '/home/rover/workspaces/rover/src/install/setup.bash'
+[26.243s] colcon.colcon_core.shell INFO Creating prefix script '/home/rover/workspaces/rover/src/install/local_setup.zsh'
+[26.244s] colcon.colcon_core.shell INFO Creating prefix chain script '/home/rover/workspaces/rover/src/install/setup.zsh'

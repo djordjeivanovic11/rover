@@ -1,0 +1,24 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/rover/workspaces/rover/src/build/drive_firmware
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/CrashReport.cpp.o[0m
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/src/Main.cpp.o[0m
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/src/MicroROS.cpp.o[0m
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/DMAChannel.cpp.o[0m
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/AudioStream.cpp.o[0m
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/EventResponder.cpp.o[0m
+[  2%] [32mBuilding CXX object CMakeFiles/drive_firmware.elf.dir/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/HardwareSerial.cpp.o[0m

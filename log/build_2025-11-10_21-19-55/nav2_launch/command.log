@@ -1,0 +1,2 @@
+Invoking command in '/home/rover/workspaces/rover/src/build/nav2_launch': /usr/bin/cmake /home/rover/workspaces/rover/src/navigation/nav2_launch -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCATKIN_SYMLINK_INSTALL=ON -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover/src/install/nav2_launch
+Invoked command in '/home/rover/workspaces/rover/src/build/nav2_launch' returned '1': /usr/bin/cmake /home/rover/workspaces/rover/src/navigation/nav2_launch -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCATKIN_SYMLINK_INSTALL=ON -DCMAKE_INSTALL_PREFIX=/home/rover/workspaces/rover/src/install/nav2_launch
