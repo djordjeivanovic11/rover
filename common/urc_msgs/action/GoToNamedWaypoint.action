@@ -1,0 +1,11 @@
+string waypoint_name
+int32 max_retries
+---
+bool success
+string message
+float64 final_distance_error
+---
+string status              # e.g. NAVIGATING, SUCCESS, FAILED
+float64 distance_remaining
+
+

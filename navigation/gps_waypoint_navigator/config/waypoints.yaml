@@ -1,0 +1,9 @@
+waypoints:
+  start_zone:
+    latitude: 0.0
+    longitude: 0.0
+  example_science_site:
+    latitude: 0.0
+    longitude: 0.0
+
+

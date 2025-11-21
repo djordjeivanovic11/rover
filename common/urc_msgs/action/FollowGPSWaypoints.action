@@ -1,0 +1,17 @@
+float64[] latitudes
+float64[] longitudes
+string[] waypoint_names
+int32 max_retries
+bool skip_on_failure
+bool abort_on_first_failure
+---
+bool success
+string message
+int32 waypoints_completed
+---
+string status          # e.g. NAVIGATING, RETRYING, SUCCESS, FAILED
+int32 current_index
+string current_name
+float64 distance_remaining
+
+

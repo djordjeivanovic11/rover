@@ -11,6 +11,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(action_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/RoverStatus.msg"
@@ -18,7 +19,10 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ScienceData.msg"
   "msg/GapCmd.msg"
   "msg/TankDriveTarget.msg"
-  DEPENDENCIES std_msgs geometry_msgs sensor_msgs
+  "action/NavigateToGPS.action"
+  "action/FollowGPSWaypoints.action"
+  "action/GoToNamedWaypoint.action"
+  DEPENDENCIES std_msgs geometry_msgs sensor_msgs action_msgs
 )
 
 if(BUILD_TESTING)

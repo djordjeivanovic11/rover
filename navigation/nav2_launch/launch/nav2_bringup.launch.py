@@ -13,8 +13,9 @@ import os
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
@@ -41,6 +42,32 @@ def generate_launch_description():
         'autostart', default_value='true',
         description='Automatically start all nav2 nodes'
     )
+    
+    # Drive control arguments
+    declare_track_width = DeclareLaunchArgument(
+        'track_width', default_value='0.42',
+        description='Track width in meters (wheel center to wheel center)'
+    )
+    declare_wheel_radius = DeclareLaunchArgument(
+        'wheel_radius', default_value='0.105',
+        description='Wheel radius in meters'
+    )
+
+    # Include drive_control (converts /cmd_vel to motor commands)
+    drive_control_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('drive_control'),
+                'launch',
+                'wheel_drive.launch.py'
+            ])
+        ]),
+        launch_arguments={
+            'transport':      'ros',  # Use micro-ROS firmware
+            'track_width':    LaunchConfiguration('track_width'),
+            'wheel_radius':   LaunchConfiguration('wheel_radius'),
+        }.items()
+    )
 
     # Include the standard nav2 launch file
     nav2_launch = IncludeLaunchDescription(
@@ -55,10 +82,25 @@ def generate_launch_description():
         }.items()
     )
 
+    # Include GPS navigator (depends on Nav2 + localization being up)
+    gps_navigator_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('gps_waypoint_navigator'),
+                'launch',
+                'gps_navigator.launch.py'
+            ])
+        ])
+    )
+
     return LaunchDescription([
         declare_map_yaml,
         declare_params_file,
         declare_use_sim_time,
         declare_autostart,
-        nav2_launch
+        declare_track_width,
+        declare_wheel_radius,
+        drive_control_launch,  # Motor control (converts Nav2 /cmd_vel to wheel RPM)
+        nav2_launch,          # Nav2 stack (planning, control, costmaps)
+        gps_navigator_launch  # GPS waypoint navigation bridge
     ])
