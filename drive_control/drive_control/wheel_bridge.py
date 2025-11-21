@@ -26,13 +26,15 @@ try:
 except ImportError:
     HAS_SERIAL = False
 
+from std_msgs.msg import Int32
+
 
 class WheelBridge(Node):
     def __init__(self):
         super().__init__('wheel_bridge')
         
         # Transport parameters
-        self.declare_parameter('transport', 'serial')  # 'serial' or 'udp'
+        self.declare_parameter('transport', 'serial')  # 'serial', 'udp', or 'ros'
         self.declare_parameter('serial_port', '/dev/ttyACM1')
         self.declare_parameter('baudrate', 115200)
         self.declare_parameter('udp_host', '192.168.0.10')
@@ -65,9 +67,18 @@ class WheelBridge(Node):
         self.invert_right = self.get_parameter('invert_right').value
         self.max_step = self.get_parameter('max_rpm_step').value
         
-        # Connection
+        # Connection (None for ROS mode)
         self.conn = None
-        self._connect()
+        
+        # ROS publishers (only used in 'ros' transport mode)
+        self.pub_left = None
+        self.pub_right = None
+        
+        if self.transport == 'ros':
+            self.pub_left = self.create_publisher(Int32, '/drive/left_rpm', 10)
+            self.pub_right = self.create_publisher(Int32, '/drive/right_rpm', 10)
+        else:
+            self._connect()
         
         # State
         self.last_msg = None
@@ -100,8 +111,10 @@ class WheelBridge(Node):
         self.get_logger().info(f'Wheel Bridge: {self.transport.upper()}')
         if self.transport == 'serial':
             self.get_logger().info(f'  Port: {self.serial_port} @ {self.baudrate} baud')
-        else:
+        elif self.transport == 'udp':
             self.get_logger().info(f'  UDP: {self.udp_host}:{self.udp_port}')
+        elif self.transport == 'ros':
+            self.get_logger().info(f'  Publishing to: /drive/left_rpm, /drive/right_rpm')
         self.get_logger().info(f'  Wheel radius: {self.wheel_radius:.3f} m')
         self.get_logger().info(f'  Max RPM: {self.max_rpm}')
         self.get_logger().info(f'  Update rate: {self.rate:.0f} Hz')
@@ -146,23 +159,36 @@ class WheelBridge(Node):
         return current + delta
     
     def send_to_teensy(self, rpm_left, rpm_right):
-        """Send L/R RPM commands to Teensy (atomic single message)"""
-        if self.conn is None:
-            return
+        """Send L/R RPM commands to Teensy or publish to ROS topics"""
         
-        try:
-            # Send both wheels in single atomic message
-            cmd = f"L{rpm_left} R{rpm_right}\r\n".encode('ascii')
+        if self.transport == 'ros':
+            # Publish to ROS topics for micro-ROS firmware to subscribe
+            msg_left = Int32()
+            msg_left.data = rpm_left
+            self.pub_left.publish(msg_left)
             
-            if self.transport == 'serial':
-                self.conn.write(cmd)
-            else:  # UDP
-                self.conn.sendto(cmd, (self.udp_host, self.udp_port))
-        except Exception as e:
-            now_sec = self.get_clock().now().nanoseconds / 1e9
-            if now_sec - self.last_warn_time > 1.0:
-                self.get_logger().warn(f'Send failed: {e}')
-                self.last_warn_time = now_sec
+            msg_right = Int32()
+            msg_right.data = rpm_right
+            self.pub_right.publish(msg_right)
+            
+        else:
+            # Send via Serial or UDP
+            if self.conn is None:
+                return
+            
+            try:
+                # Send both wheels in single atomic message
+                cmd = f"L{rpm_left} R{rpm_right}\r\n".encode('ascii')
+                
+                if self.transport == 'serial':
+                    self.conn.write(cmd)
+                else:  # UDP
+                    self.conn.sendto(cmd, (self.udp_host, self.udp_port))
+            except Exception as e:
+                now_sec = self.get_clock().now().nanoseconds / 1e9
+                if now_sec - self.last_warn_time > 1.0:
+                    self.get_logger().warn(f'Send failed: {e}')
+                    self.last_warn_time = now_sec
     
     def update_timer(self):
         """Periodic update: check timeout and send wheel commands"""
@@ -214,7 +240,7 @@ class WheelBridge(Node):
         """Clean shutdown - send stop"""
         self.get_logger().info('Shutting down - sending STOP')
         self.send_to_teensy(0, 0)
-        if self.conn and self.transport == 'serial':
+        if self.conn and self.transport == 'serial' and self.conn.is_open:
             self.conn.close()
 
 

@@ -1,100 +1,156 @@
 # Drive Control
 
-Motor control for URC rover with Nav2 integration.
+**Converts Nav2 velocity commands to wheel RPM for differential drive rovers.**
 
-## Overview
-
-Converts Nav2 `/cmd_vel` commands to precise left/right wheel speeds for the Teensy motor controller.
+## How It Works
 
 ```
-Nav2 → /cmd_vel → twist_to_wheels → /cmd_wheels → wheel_bridge → Teensy → Motors
-         Twist      (kinematics)     TankDrive      (UDP/Serial)   L/R RPM
+/cmd_vel  →  twist_to_wheels  →  /cmd_wheels  →  wheel_bridge  →  /drive/left_rpm, /drive/right_rpm
+(Twist)      (diff. drive)        (TankDrive)     (m/s→RPM)        (std_msgs/Int32)
+                                                                              ↓
+                                                                    Teensy micro-ROS firmware
+                                                                              ↓
+                                                                    VESCs → Motors
 ```
+
+**Three-step pipeline:**
+
+1. **twist_to_wheels** - Differential drive kinematics
+   - Input: `/cmd_vel` (linear.x, angular.z)
+   - Math: `v_left = v - ω*(track/2)`, `v_right = v + ω*(track/2)`
+   - Output: `/cmd_wheels` (left_speed, right_speed in m/s)
+
+2. **wheel_bridge** - Speed to RPM conversion
+   - Input: `/cmd_wheels` (m/s)
+   - Math: `rpm = (v / (2π * radius)) * 60`
+   - Output: `/drive/left_rpm`, `/drive/right_rpm` (Int32)
+
+3. **Firmware** (drive_firmware on Teensy)
+   - Subscribes: `/drive/left_rpm`, `/drive/right_rpm`
+   - Sends RPM to VESCs over CAN: IDs 0,2 (left) | 3,4 (right)
 
 ## Quick Start
 
-### 1. Build
-
 ```bash
+# 1. Build
 cd ~/workspaces/rover
 colcon build --packages-select drive_control
 source install/setup.bash
+
+# 2. Launch (uses micro-ROS firmware by default)
+ros2 launch drive_control wheel_drive.launch.py \
+  track_width:=0.42 \
+  wheel_radius:=0.105
+
+# 3. Test
+ros2 topic pub /cmd_vel geometry_msgs/Twist "{linear: {x: 0.3}}" -r 10
 ```
 
-### 2. Flash Firmware
+**Requirements:**
+- Teensy running `drive_firmware` (micro-ROS) flashed and connected
+- Measure your rover's track width (wheel center-to-center distance)
+- Measure wheel radius (diameter / 2)
 
-Upload `drive_teensy_wheels.ino` to Teensy. Adds L/R wheel commands while keeping joystick compatibility.
+## Parameters
 
-### 3. Measure Robot
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `transport` | `ros` | Communication mode: `ros` (micro-ROS), `serial` (Arduino), or `udp` |
+| `track_width` | `0.42` | Distance between wheel centers (meters) |
+| `wheel_radius` | `0.105` | Wheel radius (meters) |
+| `max_wheel_speed` | `2.0` | Max wheel rim speed (m/s) |
+| `max_rpm` | `15000` | VESC motor RPM limit |
+| `invert_left` | `False` | Reverse left motor direction |
+| `invert_right` | `False` | Reverse right motor direction |
 
+**Example:**
 ```bash
-# Wheel radius (meters) - measure diameter and divide by 2
-WHEEL_RADIUS=0.105
-
-# Track width (meters) - center-to-center distance between wheels
-TRACK_WIDTH=0.42
+ros2 launch drive_control wheel_drive.launch.py \
+  transport:=ros \
+  track_width:=0.45 \
+  wheel_radius:=0.110 \
+  invert_left:=True
 ```
 
-### 4. Launch
+## Firmware Modes
 
+### micro-ROS (Default - `transport:=ros`)
+- **Firmware:** `drive_firmware` (micro-ROS on Teensy)
+- **Topics:** Publishes to `/drive/left_rpm`, `/drive/right_rpm` (std_msgs/Int32)
+- **VESCs:** IDs 0,2 (left) | 3,4 (right)
+- **Pros:** Native ROS2, lower latency
+
+### Arduino Serial (`transport:=serial`)
+- **Firmware:** `drive_teensy_wheels.ino` (Arduino on Teensy)
+- **Protocol:** ASCII over Serial: `L<rpm> R<rpm>\r\n`
+- **VESCs:** IDs 0,3 (left) | 4,6 (right)
+- **Pros:** Simpler, includes joystick mode
+
+### UDP (`transport:=udp`)
+- **Protocol:** Same ASCII as Serial, over network
+- **Use case:** Remote testing or networked control
+
+## Tuning & Testing
+
+**Verify wheel_radius:**
 ```bash
-ros2 launch drive_control wheel_drive.launch.py
+ros2 topic pub /cmd_vel geometry_msgs/Twist "{linear: {x: 1.0}}" -r 10
+# Should travel 1 m/s. Measure actual speed and adjust radius.
 ```
 
-### 5. Test
-
+**Verify track_width:**
 ```bash
-# Send forward command
-ros2 topic pub /cmd_vel geometry_msgs/Twist \
-  "{linear: {x: 0.3}, angular: {z: 0.0}}" -r 10
+ros2 topic pub /cmd_vel geometry_msgs/Twist "{angular: {z: 1.0}}" -r 10
+# Should rotate in place. If drifts, adjust track_width.
 ```
 
-## Configuration
+**Adjust acceleration:**
+- Jerky motion? → Decrease `max_rpm_step` (default: 500)
+- Too slow? → Increase `max_rpm_step` or `rate_hz` (default: 30 Hz)
 
-Edit `launch/wheel_drive.launch.py`:
+## Troubleshooting
 
-```python
-# Robot geometry (MEASURE THESE!)
-TRACK_WIDTH_M = 0.42      # Distance between wheel centers
-WHEEL_RADIUS_M = 0.105    # Wheel radius
-MAX_WHEEL_SPEED = 2.0     # Max rim speed (m/s)
-MAX_RPM = 15000           # VESC limit
+| Issue | Solution |
+|-------|----------|
+| Motors don't move | Check nodes: `ros2 node list \| grep wheel`<br>Check topics: `ros2 topic hz /cmd_vel /cmd_wheels` |
+| Wrong speed | Remeasure `wheel_radius` accurately |
+| Wrong direction | Set `invert_left:=True` or `invert_right:=True` |
+| Timeout warnings | Ensure `/cmd_vel` publishes at 10+ Hz |
+| Connection errors | Check Teensy connected and micro-ROS agent running |
+
+**Debug commands:**
+```bash
+# Monitor pipeline
+ros2 topic echo /cmd_vel        # Nav2 input
+ros2 topic echo /cmd_wheels     # Converted to tank drive
+ros2 topic echo /drive/left_rpm # Output to firmware
+
+# Check nodes
+ros2 node list | grep -E 'twist_to_wheels|wheel_bridge'
 ```
 
-### Transport
+## Package Structure
 
-Serial (default - recommended):
-```python
-# In wheel_drive.launch.py:
-TRANSPORT = 'serial'
-SERIAL_PORT = '/dev/ttyACM1'  # NOT same as GPS!
+```
+drive_control/
+├── drive_control/
+│   ├── twist_to_wheels.py       # Differential drive kinematics
+│   └── wheel_bridge.py          # m/s → RPM conversion + transport
+├── launch/
+│   └── wheel_drive.launch.py   # Main launch file
+└── drive_teensy_wheels.ino      # Optional Arduino firmware
 ```
 
-UDP (if you have network bridge):
-```python
-# In wheel_drive.launch.py:
-TRANSPORT = 'udp'
-UDP_HOST = '192.168.0.10'
-UDP_PORT = 3000
-```
+## Integration with Nav2
 
-### Motor Direction
-
-If motors spin backwards:
-```python
-# In wheel_drive.launch.py:
-'invert_left': True,   # or
-'invert_right': True,
-```
-
-## Integration with Navigation
-
-Your Nav2 stack publishes `/cmd_vel` → this package converts it to wheel commands automatically.
-
-Replace `nav2_teensy_bridge` in your navigation launch:
+Include in your navigation stack:
 
 ```python
-# Instead of nav2_teensy_bridge, use:
+from launch.actions import IncludeLaunchDescription
+from launch_ros.substitutions import FindPackageShare
+from launch.substitutions import PathJoinSubstitution
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+
 IncludeLaunchDescription(
     PythonLaunchDescriptionSource([
         PathJoinSubstitution([
@@ -106,132 +162,4 @@ IncludeLaunchDescription(
 )
 ```
 
-## Firmware Protocol
-
-Teensy receives ASCII commands via Serial (default) or UDP:
-
-**Atomic (preferred):**
-```
-L<rpm> R<rpm>\r\n    # Both wheels in one message
-```
-
-**Individual (backwards compatible):**
-```
-L<rpm>\r\n    # Left wheels RPM
-R<rpm>\r\n    # Right wheels RPM
-```
-
-Examples:
-```
-L1500 R1500\r\n   # Both forward 1500 RPM (atomic)
-L-800 R800\r\n    # Turn left (atomic)
-L0 R0\r\n         # Stop (atomic)
-```
-
-Legacy `x`/`y` joystick commands still work.
-
-## Tuning
-
-### Verify Geometry
-
-**Test 1: Forward speed**
-```bash
-ros2 topic pub /cmd_vel geometry_msgs/Twist "{linear: {x: 1.0}}" -r 10
-# Measure time to travel 5 meters
-# Should take 5 seconds if wheel_radius is correct
-```
-
-**Test 2: Rotation**
-```bash
-ros2 topic pub /cmd_vel geometry_msgs/Twist "{angular: {z: 1.0}}" -r 10
-# Should rotate in place without drifting
-# If drifts, adjust track_width
-```
-
-### Performance
-
-**Too jerky?**
-```python
-'max_rpm_step': 300,  # Decrease (slower accel)
-```
-
-**Too slow to respond?**
-```python
-'rate_hz': 50.0,      # Increase update rate
-'max_rpm_step': 800,  # Increase (faster accel)
-```
-
-## Troubleshooting
-
-**Motors don't move:**
-```bash
-# Check nodes running
-ros2 node list | grep -E 'twist_to_wheels|wheel_bridge'
-
-# Check topics
-ros2 topic hz /cmd_vel
-ros2 topic hz /cmd_wheels
-
-# Test firmware directly
-screen /dev/ttyACM1 115200
-# Type: L1000 then R1000
-```
-
-**Wrong speed:**
-- Remeasure wheel_radius accurately
-- Test with known distance
-
-**Wrong direction:**
-- Set invert_left or invert_right to true
-- Or swap L/R motor IDs in firmware
-
-**Timeout warnings:**
-- Check /cmd_vel publishing rate (needs 10+ Hz)
-- Check serial connection
-- Verify Teensy port is correct
-
-## Files
-
-```
-drive_control/
-├── README.md
-├── package.xml
-├── setup.py
-├── drive_control/
-│   ├── twist_to_wheels.py       # Converts Twist → wheel speeds
-│   └── wheel_bridge.py           # Sends wheel speeds to Teensy
-├── launch/
-│   └── wheel_drive.launch.py    # Main launch file
-└── drive_teensy_wheels.ino       # Teensy firmware
-```
-
-## How It Works
-
-**twist_to_wheels.py** - Differential drive kinematics:
-```python
-v_left  = linear_vel - angular_vel * (track_width / 2)
-v_right = linear_vel + angular_vel * (track_width / 2)
-```
-
-**wheel_bridge.py** - Converts m/s to RPM:
-```python
-rpm = (wheel_speed_mps / (2 * π * wheel_radius)) * 60
-```
-
-Then sends `L{rpm}` and `R{rpm}` to Teensy via UDP or Serial.
-
-**Teensy firmware** - Applies RPM directly to VESC controllers:
-```cpp
-vesc.setRPM(rpm_left);   // Left motors (IDs 0, 3)
-vesc.setRPM(rpm_right);  // Right motors (IDs 4, 6)
-```
-
-## Next Steps
-
-1. ✅ Build package
-2. ✅ Flash firmware  
-3. ✅ Measure robot
-4. ✅ Test motor control
-5. ⏳ Integrate with Nav2
-6. ⏳ Field test and tune
-7. ⏳ Add odometry feedback
+Nav2 will automatically publish `/cmd_vel` → motors will respond.

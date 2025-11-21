@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
 Complete URC Rover Navigation Launch
-Brings up Nav2 stack + Teensy bridge
+Brings up Nav2 stack + motor control bridge
 Expects perception stack (loc_fusion, pointcloud_tools) to be running separately
 """
 
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
@@ -46,10 +46,28 @@ def generate_launch_description():
         description='Use composed bringup (faster but harder to debug)'
     )
     
+    declare_transport = DeclareLaunchArgument(
+        'transport',
+        default_value='ros',
+        description='Transport mode: ros (micro-ROS topics), serial, or udp'
+    )
+    
     declare_teensy_port = DeclareLaunchArgument(
         'teensy_port',
         default_value='/dev/ttyACM1',
-        description='Serial port for Teensy motor controller'
+        description='Serial port for Teensy motor controller (serial mode only)'
+    )
+    
+    declare_track_width = DeclareLaunchArgument(
+        'track_width',
+        default_value='0.42',
+        description='Track width in meters'
+    )
+    
+    declare_wheel_radius = DeclareLaunchArgument(
+        'wheel_radius',
+        default_value='0.105',
+        description='Wheel radius in meters'
     )
     
     # Nav2 bringup (without localization - we use loc_fusion)
@@ -65,20 +83,21 @@ def generate_launch_description():
         }.items()
     )
     
-    # Teensy bridge for motor control
-    teensy_bridge = Node(
-        package='nav2_teensy_bridge',
-        executable='bridge',
-        name='nav2_teensy_bridge',
-        output='screen',
-        parameters=[{
+    # Motor control bridge (uses drive_control package)
+    motor_control = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([
+                FindPackageShare('drive_control'),
+                'launch',
+                'wheel_drive.launch.py'
+            ])
+        ]),
+        launch_arguments={
+            'transport': LaunchConfiguration('transport'),
             'serial_port': LaunchConfiguration('teensy_port'),
-            'baudrate': 115200,
-            'max_linear_vel': 0.6,
-            'max_angular_vel': 1.8,
-            'cmd_timeout': 1.0,
-            'retry_connection': True,
-        }]
+            'track_width': LaunchConfiguration('track_width'),
+            'wheel_radius': LaunchConfiguration('wheel_radius'),
+        }.items()
     )
     
     return LaunchDescription([
@@ -86,9 +105,12 @@ def generate_launch_description():
         declare_use_sim_time,
         declare_autostart,
         declare_use_composition,
+        declare_transport,
         declare_teensy_port,
+        declare_track_width,
+        declare_wheel_radius,
         
         nav2_bringup,
-        teensy_bridge,
+        motor_control,
     ])
 

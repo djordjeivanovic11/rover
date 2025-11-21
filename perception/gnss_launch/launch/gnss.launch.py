@@ -28,8 +28,9 @@ def generate_launch_description():
             'nav_rate': 1,
             'enable_ppp': False,
             'tmode3': 0,
-            'debug': 2,
+            'debug': 1,
             'dgnss_mode': 3,  # RTK Fixed mode
+            'configure_gps': False,  # Don't reconfigure GPS
         }],
         remappings=[
             ('fix', '/gps/fix'),

@@ -377,6 +377,61 @@ def generate_launch_description():
 
 ---
 
+## 🗺️ Visualizing GPS on Live Map
+
+### See Your Rover's Position in Real-Time
+
+Once GPS is running and publishing to `/gps/fix`, you can visualize the rover's position on an interactive web map.
+
+**Quick Start:**
+```bash
+# 1. Make sure GPS is running (Terminal 1)
+cd ~/workspaces/rover/src/perception/gnss_launch/
+./launch_gps.sh
+
+# 2. Start map server (Terminal 2)
+source /opt/ros/humble/setup.bash
+source ~/workspaces/rover/install/setup.bash
+ros2 run zed_gps_integration map_server
+
+# 3. Start web server (Terminal 3)
+cd ~/zed_map_data
+python3 -m http.server 8000
+
+# 4. Open in browser
+firefox http://localhost:8000/
+```
+
+**What You See on the Map:**
+- 🟡 **Yellow marker**: Current GPS position
+- 📊 **Real-time updates**: Position updates every second
+- 📍 **Status panel**: Shows lat/lon, altitude, satellites, fix status
+- 🗺️ **Interactive map**: Zoom, pan, switch between street/satellite view
+- 🛤️ **Trail**: Path history showing where you've traveled
+
+**GPS Fix Status Colors:**
+- **Red**: NO_FIX (no satellites, indoors)
+- **Yellow**: SINGLE (basic GPS, ~2-5m accuracy)
+- **Green**: DGPS (differential GPS, ~1-3m)
+- **Blue**: RTK (RTK FIX, ~1-2cm accuracy!) 🎯
+
+**Example - Watch RTK Upgrade:**
+```bash
+# Monitor GPS status while map is running
+watch -n 1 'cat ~/zed_map_data/raw_data.txt'
+
+# You'll see status change:
+# NO_FIX → SINGLE → RTK
+# Accuracy improves: 5m → 1cm!
+```
+
+**Files Location:**
+- Map HTML: `~/zed_map_data/index.html`
+- GPS data: `~/zed_map_data/raw_data.txt` (updates every second)
+- Map server: `zed_gps_integration` package
+
+---
+
 ## 🔧 Scripts in This Directory
 
 | Script | Purpose | When to Use |

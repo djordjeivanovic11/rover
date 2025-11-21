@@ -89,6 +89,54 @@ colcon build --packages-select gnss_launch
 
 ---
 
+## 🗺️ GPS Visualization (Live Web Map)
+
+### View Real-Time GPS Position on Interactive Map
+
+**Quick Start:**
+```bash
+# Terminal 1: Start GPS driver (if not already running)
+cd ~/workspaces/rover/src/perception/gnss_launch/
+./launch_gps.sh
+
+# Terminal 2: Start map server
+source /opt/ros/humble/setup.bash
+source ~/workspaces/rover/install/setup.bash
+python3 ~/workspaces/rover/install/zed_gps_integration/lib/python3.10/site-packages/zed_gps_integration/map_server.py &
+
+# Terminal 3: Start web server
+cd ~/zed_map_data
+python3 -m http.server 8000 &
+
+# Open browser
+firefox http://localhost:8000/ &
+```
+
+**What You'll See:**
+- 🟡 Yellow marker at current GPS position
+- 📊 Real-time position updates every second
+- 📍 Latitude, longitude, altitude display
+- 🛰️ Satellite count and fix status
+- 🗺️ Interactive map (zoom, pan, switch layers)
+
+**GPS Status on Map:**
+- **NO_FIX**: No GPS signal (red, indoors)
+- **SINGLE**: Basic GPS (yellow, ~2-5m accuracy)
+- **DGPS**: Differential GPS (green, ~1-3m)
+- **RTK**: RTK FIX (blue, ~1-2cm accuracy!) 🎯
+
+**One-Liner Launch (Everything Together):**
+```bash
+source /opt/ros/humble/setup.bash && \
+source ~/workspaces/rover/install/setup.bash && \
+ros2 launch zed_gps_integration zed_gnss_fusion.launch.py \
+  launch_gnss:=true enable_map:=true
+```
+
+Then open: `http://localhost:8000/`
+
+---
+
 ## 🔍 Checking GPS Status
 
 ### Quick Status Check

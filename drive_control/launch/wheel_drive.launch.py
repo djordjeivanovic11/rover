@@ -3,13 +3,18 @@
 Wheel-Speed Based Drive Control Launch File
 
 Launches the complete wheel-speed control pipeline:
-  Nav2 → /cmd_vel → twist_to_wheels → /cmd_wheels → wheel_bridge → UDP → Teensy
+  Nav2 → /cmd_vel → twist_to_wheels → /cmd_wheels → wheel_bridge → ROS Topics → micro-ROS Firmware
 
 This replaces cmd_vel_bridge.launch.py with a cleaner architecture
 that gives firmware explicit left/right wheel speeds.
 
 Usage:
   ros2 launch drive_control wheel_drive.launch.py
+  
+Transport Modes:
+  - ros (default): Publishes to /drive/left_rpm and /drive/right_rpm for micro-ROS firmware
+  - serial: Direct Serial communication with Arduino firmware
+  - udp: UDP communication (network bridge)
 """
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -29,16 +34,16 @@ def generate_launch_description():
                              description='Wheel radius in meters'),
         DeclareLaunchArgument('max_wheel_speed', default_value='2.0',
                              description='Max wheel speed in m/s'),
-        DeclareLaunchArgument('max_rpm', default_value='15000',
+        DeclareLaunchArgument('max_rpm', default_value='15009',
                              description='Max motor RPM'),
-        DeclareLaunchArgument('transport', default_value='serial',
-                             description='Transport: serial or udp'),
-        DeclareLaunchArgument('serial_port', default_value='/dev/ttyACM1',
-                             description='Serial port for Teensy'),
-        DeclareLaunchArgument('udp_host', default_value='192.168.0.10',
-                             description='UDP host address'),
+        DeclareLaunchArgument('transport', default_value='ros',
+                             description='Transport: ros (micro-ROS firmware), serial (Arduino), or udp'),
+        DeclareLaunchArgument('serial_port', default_value='/dev/ttyACM0',
+                             description='Serial port for Teensy (Arduino mode only)'),
+        DeclareLaunchArgument('udp_host', default_value='10.242.187.175',
+                             description='UDP host address (UDP mode only)'),
         DeclareLaunchArgument('udp_port', default_value='3000',
-                             description='UDP port'),
+                             description='UDP port (UDP mode only)'),
         
         
         # Node 1: Convert Twist (body velocities) to wheel speeds
