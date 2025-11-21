@@ -14,9 +14,63 @@ Every other perception component consumes these topics instead of talking to the
 
 ---
 
-#### **`gnss_launch/` ― global position source**
+#### **`gnss_launch/` ― RTK GPS for centimeter-level positioning**
 
-`gnss_launch` is the symmetric twin of `zed2i_launch`: a **launch-only helper** that starts u-blox GNSS driver with the parameters in `params/ublox.yaml`. The node is remapped so its `fix` output lands on the canonical `/gnss/fix` topic. In other words, this folder injects one message into the graph—`sensor_msgs/NavSatFix`—and leaves all fusion logic to the next layer.
+`gnss_launch` manages the **u-blox ZED-F9P GPS receiver** with full RTK (Real-Time Kinematic) support for **1-2cm accuracy**. Unlike a basic launch wrapper, this package provides:
+
+* **GPS driver** – u-blox ROS2 driver configured for RTK rover mode
+* **Health monitoring** – Validates satellite count, HDOP, and fix quality
+* **RTK setup scripts** – Configure base station + rover for differential GPS
+* **Web visualization** – Real-time GPS position on interactive map (via `zed_gps_integration`)
+
+**Quick Start:**
+```bash
+cd ~/workspaces/rover/src/perception/gnss_launch/
+./launch_gps.sh  # Starts driver + health monitor
+```
+
+The node publishes `sensor_msgs/NavSatFix` on `/gps/fix` with status indicating fix quality:
+- `status: 0` = SINGLE (basic GPS, ~2-5m)
+- `status: 2` = RTK_FIX (~1-2cm) ✨
+
+For RTK setup (base station + corrections), see: `gnss_launch/scripts/README.md`
+
+---
+
+#### **`zed_gps_integration/` ― GPS visualization & ZED+GNSS fusion**
+
+This package provides **two independent capabilities** for working with GPS data:
+
+**1. GPS Visualization (Simple - Works Now!)** 🗺️
+* Real-time GPS position on interactive web map
+* Subscribe to `/gps/fix` and display on OpenStreetMap/Satellite view
+* Color-coded by fix quality (RED=no fix, YELLOW=GPS, BLUE=RTK)
+* **No ZED camera required** – works with GPS only!
+
+**Quick Visualization:**
+```bash
+source ~/workspaces/rover/install/setup.bash
+ros2 launch zed_gps_integration zed_gnss_fusion.launch.py \
+  launch_gnss:=true enable_map:=true
+# Open: http://localhost:8000/
+```
+
+**2. ZED + GNSS Fusion (Advanced)** 🎯
+* Fuses ZED camera VIO with GPS using ZED SDK Fusion API
+* Combines best of both: GPS global position + ZED local precision
+* Outputs fused odometry with centimeter-level global accuracy
+* Requires ZED camera + GPS with good fix
+
+**Architecture:**
+```
+GPS (/gps/fix) ──┬──► map_server ──► Web visualization
+                  │
+                  └──► zed_gnss_fusion ──► Fused odometry
+                           ▲
+                     ZED Camera VIO
+```
+
+The `map_server` node bridges ROS topics to file format (polling by JavaScript), while `zed_gnss_fusion` uses ZED SDK's internal fusion module to merge visual-inertial odometry with GPS corrections. See `zed_gps_integration/README.md` for full details.
 
 ---
 
