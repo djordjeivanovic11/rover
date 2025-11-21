@@ -17,12 +17,17 @@ handle the motion, with retries and clean mission-level interfaces.
   - `FollowGPSWaypoints` – follow a sequence of GPS coordinates.
   - `GoToNamedWaypoint` – go to a named waypoint from a YAML file.
 
-- **Node**:
-  - `gps_navigator_node` – single ROS2 node that:
-    - Hosts the `NavigateToGPS` action (and is the natural place to add the other two).
+- **Nodes**:
+  - `gps_navigator_node` – Hosts the `NavigateToGPS` action server:
     - Converts GPS targets → `geometry_msgs/PoseStamped` in `map` frame.
-    - Calls Nav2’s `NavigateToPose` action.
+    - Calls Nav2's `NavigateToPose` action.
     - Monitors result and retries on failure.
+  - `waypoint_sequencer` – Hosts the `FollowGPSWaypoints` action server:
+    - Navigates through a sequence of GPS waypoints.
+    - Handles skip-on-failure and abort-on-first-failure logic.
+  - `named_waypoint_node` – Hosts the `GoToNamedWaypoint` action server:
+    - Looks up named waypoints from YAML configuration.
+    - Calls `NavigateToGPS` with the looked-up coordinates.
 
 - **Utilities**:
   - `gps_converter.py` – small helper to convert (lat, lon) offsets into map-frame positions.
@@ -86,6 +91,20 @@ drive_firmware:
   - Uses `GPSConverter` to turn (lat, lon) into a `PoseStamped` goal in `map`.
   - Uses `NavigateToPose` action client to send that goal to Nav2.
   - Exposes basic retry logic and publishes status on `/gps_navigator/status`.
+
+- `waypoint_sequencer.py`
+  - Node name: `waypoint_sequencer`
+  - Action server: `follow_gps_waypoints` (`urc_msgs/FollowGPSWaypoints`)
+  - Accepts a list of GPS coordinates and navigates to each in sequence.
+  - Configurable behavior for handling failures (skip, abort, retry).
+  - Uses `NavigateToGPS` action client for individual waypoint navigation.
+
+- `named_waypoint_node.py`
+  - Node name: `named_waypoint_node`
+  - Action server: `go_to_named_waypoint` (`urc_msgs/GoToNamedWaypoint`)
+  - Loads waypoints from `config/waypoints.yaml`.
+  - Looks up waypoint coordinates by name and calls `NavigateToGPS`.
+  - Provides mission-friendly interface for named waypoints.
 
 - `gps_converter.py`
   - Stores a reference GPS position `(lat0, lon0)` and the corresponding map pose `(x0, y0)`.
@@ -217,9 +236,7 @@ ros2 action send_goal /navigate_to_gps urc_msgs/action/NavigateToGPS \
   "{latitude: 38.4063, longitude: -110.7918, waypoint_name: 'test', max_retries: 1}"
 ```
 
-### Navigate to a Named Waypoint (once added)
-
-Once you hook up `GoToNamedWaypoint` in `gps_navigator_node.py`, your mission/BT can call:
+### Navigate to a Named Waypoint
 
 ```bash
 ros2 action send_goal /go_to_named_waypoint urc_msgs/action/GoToNamedWaypoint \
@@ -233,16 +250,47 @@ Internally that will:
 3. Call Nav2 `NavigateToPose`.
 4. Let `drive_control` and `drive_firmware` execute the motion.
 
+### Follow a Sequence of GPS Waypoints
+
+```bash
+ros2 action send_goal /follow_gps_waypoints urc_msgs/action/FollowGPSWaypoints \
+  "{latitudes: [38.4063, 38.4070, 38.4075], longitudes: [-110.7918, -110.7920, -110.7925], \
+    waypoint_names: ['start', 'science_1', 'science_2'], max_retries: 2, \
+    skip_on_failure: true, abort_on_first_failure: false}"
+```
+
+This will:
+1. Navigate to each waypoint in sequence.
+2. Skip failed waypoints if `skip_on_failure: true`.
+3. Continue until all waypoints are processed or an error occurs.
+
 ---
+
+## Integration with Mission/Behavior Trees
+
+From a mission behavior tree or mission node, you can now:
+
+```python
+from rclpy.action import ActionClient
+from urc_msgs.action import GoToNamedWaypoint
+
+# In your mission node
+self.waypoint_client = ActionClient(self, GoToNamedWaypoint, '/go_to_named_waypoint')
+
+# Usage
+goal = GoToNamedWaypoint.Goal()
+goal.waypoint_name = "science_1"
+goal.max_retries = 2
+future = self.waypoint_client.send_goal_async(goal)
+```
 
 ## Next Steps (Optional Enhancements)
 
-- Implement the remaining two actions fully in `gps_navigator_node.py`:
-  - `FollowGPSWaypoints` – multi-waypoint missions.
-  - `GoToNamedWaypoint` – mission-friendly interface.
 - Add more robust GPS quality checks (covariance / HDOP thresholds).
-- Expose a simple BT/mission node that wraps `GoToNamedWaypoint` for URC tasks.
+- Add diagnostics publishing for GPS fix quality and navigation status.
+- Add backup/recovery behaviors on navigation failure.
+- Create behavior tree nodes that wrap these action servers for mission integration.
 
-The core plumbing – **GPS → Nav2 → drive_control → motors** – is now in place. This package is the adapter layer that makes GPS waypoints usable by your existing navigation stack.
+The core plumbing – **GPS → Nav2 → drive_control → motors** – is now fully implemented. This package is the adapter layer that makes GPS waypoints usable by your existing navigation stack.
 
 

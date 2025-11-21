@@ -2,7 +2,7 @@
 <package format="3">
   <name>mission_bt</name>
   <version>0.0.0</version>
-  <description>Mission behavior tree package for rover autonomous operations</description>
+  <description>Minimal mission executor for GPS waypoint navigation</description>
 
   <maintainer email="rover@example.com">rover</maintainer>
   <license>Apache-2.0</license>
@@ -10,9 +10,8 @@
   <buildtool_depend>ament_python</buildtool_depend>
 
   <depend>rclpy</depend>
-  <depend>std_msgs</depend>
-  <depend>geometry_msgs</depend>
-  <depend>nav_msgs</depend>
+  <depend>action_msgs</depend>
+  <depend>urc_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

@@ -23,6 +23,8 @@ setup(
     entry_points={
         'console_scripts': [
             'gps_navigator_node = gps_waypoint_navigator.gps_navigator_node:main',
+            'waypoint_sequencer = gps_waypoint_navigator.waypoint_sequencer:main',
+            'named_waypoint_node = gps_waypoint_navigator.named_waypoint_node:main',
             'record_waypoint = gps_waypoint_navigator.record_waypoint:main',
         ],
     },

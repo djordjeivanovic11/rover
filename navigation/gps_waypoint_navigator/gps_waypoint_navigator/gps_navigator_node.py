@@ -20,7 +20,7 @@ from nav2_msgs.action import NavigateToPose
 from sensor_msgs.msg import NavSatFix
 from tf2_ros import Buffer, TransformListener
 
-from urc_msgs.action import NavigateToGPS
+from urc_msgs.action import NavigateToGPS  # type: ignore
 
 from .gps_converter import GPSConverter
 
