@@ -1,8 +1,21 @@
-### Docker setup
-To quickly open the repo in a ROS2 docker image with a similar environment to the rover's jetson, run:
+### Development Setup
+When you first clone the repo, you need to build the base docker image. This will install ROS, the ZED SDK, the Teensy build system, and all of the current package dependencies:
 ```bash
-docker run --rm -it $(docker build -q .) /bin/bash
+make image
 ```
-**Be careful**, any changes you make to the repo from inside the docker container will not be reflected on your host filesystem and any changes made to the container will be lost as soon as you exit the container.
+This command takes a while, so you should only re-run it whenever new dependencies or setup commands are added to the project that would be annoying to re-run often. You can also run `make update` from inside the container to install/update any ros package dependencies without rebuilding the whole image (but these will not persist across creating new containers).
 
-You can also build and tag the image to create a more customized container that persists or mounts the host filesystem if needed, but I think it's safer to treat the container as something you reset each time you want to test new changes, not a permanent development environment (unless you know what you're doing).
+Once the image is built, you can run the following command to open a shell in the development environment:
+```bash
+make ros
+```
+Any changes made to the container's filesystem will be saved until you run either `make stop` or `make restart`.
+
+Once the container is running, you can access any GUI apps by opening http://localhost:8080/vnc.html in a browser.
+
+### Building
+Inside the container or on the jetson, you can use the following commands to build and use ros packages:
+```bash
+make build # or build-package-name
+source install/local_setup.bash
+```

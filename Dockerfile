@@ -4,6 +4,7 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN useradd -m -s /bin/bash -G sudo rover
 
 USER rover
+ENV USER=rover
 
 WORKDIR /home/rover
 RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh -s 1.3.1
@@ -19,13 +20,21 @@ ADD --chown=rover https://github.com/SolidGeek/VescUart/archive/refs/heads/maste
 RUN tar -xzf vesc_uart.tar.gz
 RUN mv VescUart-master /home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/libraries/VescUart
 
-RUN sudo rm -rf /tmp/*
+RUN sudo apt-get update && sudo apt-get install -y zstd
+ADD --chown=rover https://download.stereolabs.com/zedsdk/5.1/cu13/ubuntu22 /tmp/zed_sdk_installer.run
+RUN chmod +x zed_sdk_installer.run
+RUN sudo mkdir -p /etc/udev/rules.d/
+RUN ./zed_sdk_installer.run -- silent skip_cuda
+
+# RUN sudo rm -rf /tmp/*
 
 WORKDIR /home/rover/ros_ws
 COPY --chown=rover . ./src
+RUN ln -s src/Makefile Makefile
 
-RUN /ros_entrypoint.sh rosdep update
-RUN /ros_entrypoint.sh rosdep install --from-paths src -y -r --ignore-src; exit 0
+RUN make update
+# RUN /ros_entrypoint.sh rosdep update
+# RUN /ros_entrypoint.sh rosdep install --from-paths src -y -r --ignore-src
 # RUN /ros_entrypoint.sh colcon build --continue-on-error; exit 0
 
 ENTRYPOINT [ "/ros_entrypoint.sh" ]
