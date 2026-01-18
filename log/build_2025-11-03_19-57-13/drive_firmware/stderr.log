@@ -1,6 +1,0 @@
-[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/new.cpp:48:6:[m[K [01;35m[Kwarning: [m[K'[01m[Kvoid operator delete(void*, size_t)[m[K' is a usual (non-placement) deallocation function in C++14 (or with -fsized-deallocation) [-Wc++14-compat]
- void operator delete(void * ptr, size_t size)
-[01;32m[K      ^[m[K
-[01m[K/home/rover/.arduino15/packages/teensy/hardware/avr/1.57.3/cores/teensy4/new.cpp:53:6:[m[K [01;35m[Kwarning: [m[K'[01m[Kvoid operator delete [](void*, size_t)[m[K' is a usual (non-placement) deallocation function in C++14 (or with -fsized-deallocation) [-Wc++14-compat]
- void operator delete[](void * ptr, size_t size)
-[01;32m[K      ^[m[K

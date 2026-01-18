@@ -1,6 +1,8 @@
 devel/
+log/
 logs/
 build/
+install/
 bin/
 lib/
 msg_gen/
@@ -53,3 +55,5 @@ cli/.*
 CATKIN_IGNORE
 
 .DS_Store
+
+.idea/

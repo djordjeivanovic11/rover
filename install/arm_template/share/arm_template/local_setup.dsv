@@ -1,3 +1,0 @@
-source;share/arm_template/environment/ament_prefix_path.sh
-source;share/arm_template/environment/path.sh
-source;share/arm_template/environment/pythonpath.sh
