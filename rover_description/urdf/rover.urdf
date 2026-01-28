@@ -82,7 +82,7 @@
   </link>
   <joint
     name="RR-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="-0.22229 0 0.0380999999999983"
       rpy="1.49865675355737 0 0" />
@@ -133,7 +133,7 @@
   </link>
   <joint
     name="BR-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 -0.222249999999999 -0.22225"
       rpy="0.0721395732375216 0 0" />
@@ -337,7 +337,7 @@
   </link>
   <joint
     name="RL-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0.222289999999999 0 0.0380999999999982"
       rpy="1.64292278947683 0 0" />
@@ -388,7 +388,7 @@
   </link>
   <joint
     name="BL-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 -0.22225 -0.22225"
       rpy="-2.95746867352226 0 3.14159265358979" />
@@ -592,7 +592,7 @@
   </link>
   <joint
     name="AB-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 -0.425450000000004 0"
       rpy="1.5707963267949 0 -1.85545129341016" />
@@ -643,7 +643,7 @@
   </link>
   <joint
     name="AS1-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 -0.032925 0"
       rpy="-3.1243 0 -3.1416" />
@@ -694,7 +694,7 @@
   </link>
   <joint
     name="AS2-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 0.44841 0"
       rpy="0.69182 0 0" />
@@ -745,7 +745,7 @@
   </link>
   <joint
     name="AW-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 0.24374 0"
       rpy="3.1416 -0.95883 3.1416" />
@@ -796,7 +796,7 @@
   </link>
   <joint
     name="AM-Rev"
-    type="continuous">
+    type="fixed">
     <origin
       xyz="0 0.15939 0"
       rpy="3.1416 0 2.6752" />
@@ -919,35 +919,51 @@
     <mu2>0.2</mu2>
   </gazebo>
 
-  <!-- Gazebo Plugin for Joint State Control -->
   <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/rover</robotNamespace>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <robot_param_node>robot_state_publisher</robot_param_node>
+      <parameters>/home/rover/ros_ws/src/rover_description/config/rover_controller.yaml</parameters>
     </plugin>
   </gazebo>
 
-  <!-- Ignition Gazebo Differential Drive Plugin -->
-  <gazebo>
-    <plugin
-      filename="libignition-gazebo-diff-drive-system.so"
-      name="ignition::gazebo::systems::DiffDrive">
-      <left_joint>WFL-Rev</left_joint>
-      <left_joint>WML-Rev</left_joint>
-      <left_joint>WRL-Rev</left_joint>
-      <right_joint>WFR-Rev</right_joint>
-      <right_joint>WMR-Rev</right_joint>
-      <right_joint>WRR-Rev</right_joint>
-      <wheel_separation>0.435</wheel_separation>
-      <wheel_radius>0.095</wheel_radius>
-      <max_linear_acceleration>1.0</max_linear_acceleration>
-      <max_angular_acceleration>2.0</max_angular_acceleration>
-      <odom_publish_frequency>50</odom_publish_frequency>
-      <topic>cmd_vel</topic>
-      <odom_topic>odom</odom_topic>
-      <tf_topic>tf</tf_topic>
-      <frame_id>odom</frame_id>
-      <child_frame_id>Chassis</child_frame_id>
-    </plugin>
-  </gazebo>
+  <ros2_control name="RoverSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <!-- Wheels (controlled) -->
+    <joint name="WFL-Rev">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="WML-Rev">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="WRL-Rev">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="WFR-Rev">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="WMR-Rev">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="WRR-Rev">
+      <command_interface name="velocity"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+
 
 </robot>
