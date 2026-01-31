@@ -15,18 +15,41 @@
       <joint name="FL_Drive">
         <command_interface name="velocity"/>
         <state_interface name="velocity"/>
+        <state_interface name="position"/>
       </joint>
       <joint name="FR_Drive">
         <command_interface name="velocity"/>
         <state_interface name="velocity"/>
+        <state_interface name="position"/>
       </joint>
       <joint name="BL_Drive">
         <command_interface name="velocity"/>
         <state_interface name="velocity"/>
+        <state_interface name="position"/>
       </joint>
       <joint name="BR_Drive">
         <command_interface name="velocity"/>
         <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+
+      <joint name="Arm_Base_Rotate">
+        <state_interface name="position"/>
+      </joint>
+      <joint name="Arm_Shoulder">
+        <state_interface name="position"/>
+      </joint>
+      <joint name="Arm_Elbow_Tilt">
+        <state_interface name="position"/>
+      </joint>
+      <joint name="Arm_Elbow_Rotate">
+        <state_interface name="position"/>
+      </joint>
+      <joint name="Arm_Wrist_Tilt">
+        <state_interface name="position"/>
+      </joint>
+      <joint name="Arm_Wrist_Rotate">
+        <state_interface name="position"/>
       </joint>
     </ros2_control>
 

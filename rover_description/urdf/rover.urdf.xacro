@@ -561,8 +561,11 @@
     <!-- ros_control plugin -->
     <gazebo>
       <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-        <parameters>../config/rover_controllers.yaml</parameters>
+        <parameters>$(find rover_description)/config/rover_controllers.yaml</parameters>
       </plugin>
+
+      <!-- Should probably optimize the collision shapes in the future -->
+      <self_collide>true</self_collide>
     </gazebo>
   </xacro:if>
 </robot>

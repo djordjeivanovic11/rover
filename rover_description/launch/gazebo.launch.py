@@ -1,7 +1,8 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable
+from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, PathJoinSubstitution, FindExecutable
+from launch.event_handlers import OnProcessExit
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -16,7 +17,9 @@ def generate_launch_description():
         " ",
         PathJoinSubstitution([
             FindPackageShare("rover_description"), "urdf", "rover.urdf.xacro"
-        ])
+        ]),
+        " ",
+        "use_gazebo:=true",
     ])
 
     gz_resource_path = SetEnvironmentVariable(
@@ -31,7 +34,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
-        launch_arguments=[("ign_args", " -r -v 3 empty.sdf")],
+        launch_arguments=[("ign_args", " -r -v 4 empty.sdf")],
     )
 
     gazebo_bridge = Node(
@@ -51,6 +54,7 @@ def generate_launch_description():
             "-topic", "robot_description",
             "-name", "rover",
             "-allow_renaming", "true",
+            "-z", "2.0"
         ],
     )
 
@@ -63,6 +67,31 @@ def generate_launch_description():
             {"use_sim_time": True},
         ],
     )
+
+    joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster'],
+        output='screen',
+    )
+
+    drive_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['rover_drive_controller'],
+        output='screen',
+    )
+
+    spawn_controllers = RegisterEventHandler(
+        OnProcessExit(
+            target_action=gazebo_spawn_rover,
+            on_exit=[
+                joint_state_broadcaster,
+                drive_controller,
+            ],
+        )
+    )
+
     rviz = Node(
         package="rviz2",
         executable="rviz2",
@@ -78,5 +107,6 @@ def generate_launch_description():
         gazebo_bridge,
         gazebo_spawn_rover,
         robot_state_publisher,
+        spawn_controllers,
         rviz,
     ])
