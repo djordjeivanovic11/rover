@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 10  # Hz
+    update_rate: 1000  # Hz
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -14,16 +14,20 @@ rover_drive_controller:
     right_wheel_names: ["FR_Drive", "BR_Drive"]
 
     wheel_separation: 0.10
-    #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
+    wheels_per_side: 2  # combined by the hardware plugin
     wheel_radius: 0.015
 
     # wheel_separation_multiplier: 1.0
     # left_wheel_radius_multiplier: 1.0
     # right_wheel_radius_multiplier: 1.0
 
+    use_stamped_vel: false
+
     publish_rate: 50.0
     odom_frame_id: odom
-    base_frame_id: Chassis
+    base_frame_id: base_link
+
+    position_feedback: false
     # pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
     # twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 

@@ -5,6 +5,13 @@
   <!-- Import RRBot ros2_control description -->
   <xacro:include filename="rover.control.xacro" />
 
+  <link name="base_link"/>
+  <joint name="base_to_chassis" type="fixed">
+    <parent link="base_link"/>
+    <child link="Chassis"/>
+    <!-- Orient rover to face along +X axis -->
+    <origin xyz="0 0 0" rpy="0 0 -1.5708"/>
+  </joint>
   <link name="Chassis">
     <inertial>
       <origin
@@ -93,7 +100,7 @@
     <child
       link="FL_Wheel" />
     <axis
-      xyz="0 0 1" />
+      xyz="0 0 -1" />
   </joint>
   <link name="FR_Wheel">
     <inertial>
@@ -195,7 +202,7 @@
     <child
       link="BL_Wheel" />
     <axis
-      xyz="0 0 1" />
+      xyz="0 0 -1" />
   </joint>
   <link name="BR_Wheel">
     <inertial>

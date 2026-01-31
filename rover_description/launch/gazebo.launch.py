@@ -97,7 +97,10 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        arguments=["-d", rviz_config_file],
+        arguments=[
+            "--display-config", rviz_config_file,
+            "--fixed-frame", "odom"
+        ],
         parameters=[{"use_sim_time": True}],
     )
 

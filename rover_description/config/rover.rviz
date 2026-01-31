@@ -62,27 +62,42 @@ Visualization Manager:
       Enabled: true
       Links:
         All Links Enabled: true
-        Arm-Base:
+        Arm_Base:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        Arm-Manip:
+        Arm_Gripper:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        Arm-Stage1:
+        Arm_Stage_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        Arm-Stage2:
+        Arm_Stage_2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        Arm-Wrist:
+        Arm_Stage_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Arm_Stage_4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        BL_Wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        BR_Wheel:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -95,57 +110,21 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        FL_Wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        FR_Wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Link Tree Style: Links in Alphabetic Order
-        Susp-Bogie-Left:
+        base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        Susp-Bogie-Right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Rocker-Left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Rocker-Right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Wheel-Front-Left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Wheel-Front-Right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Wheel-Mid-Left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Wheel-Mid-Right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Wheel-Rear-Left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        Susp-Wheel-Rear-Right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Mass Properties:
         Inertia: false
         Mass: false
@@ -157,7 +136,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: Chassis
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -200,7 +179,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 10
+      Distance: 5.277319431304932
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
