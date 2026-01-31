@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<sdf version="1.7">
-  <model name="rover_description">
-    <!-- This file only exists so Gazebo considers this a valid model directory.
-         We actually spawn from URDF; meshes/materials are referenced via model:// -->
-    <static>true</static>
-  </model>
-</sdf>
-
