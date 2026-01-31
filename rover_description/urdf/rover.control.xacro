@@ -9,6 +9,7 @@
           <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </xacro:if>
         <xacro:unless value="${use_gazebo}">
+          <plugin>rover_hardware/TopicDriveSystem</plugin>
         </xacro:unless>
       </hardware>
 

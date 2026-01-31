@@ -1,0 +1,9 @@
+<library path="rover_hardware">
+
+    <class name="rover_hardware/TopicDriveSystem" type="rover_hardware::TopicDriveSystemHardware" base_class_type="hardware_interface::SystemInterface">
+    <description>
+        HURC Rover custom hardware interfaces
+    </description>
+    </class>
+
+</library>
