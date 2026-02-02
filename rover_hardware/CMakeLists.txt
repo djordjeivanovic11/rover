@@ -13,6 +13,8 @@ find_package(rclcpp_lifecycle REQUIRED)
 
 add_library(rover_hardware SHARED
   src/TopicDriveSystem.cpp
+  src/HybridArmSystem.cpp
+  src/EPOS.cpp
 )
 
 target_include_directories(rover_hardware PUBLIC
@@ -27,8 +29,11 @@ ament_target_dependencies(rover_hardware
   rclcpp_lifecycle
 )
 
+link_directories(EPOS_Linux_Library/lib/intel/x86_64)
+
 target_link_libraries(rover_hardware
   pluginlib::pluginlib
+  EposCmd
 )
 
 pluginlib_export_plugin_description_file(

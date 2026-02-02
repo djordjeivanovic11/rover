@@ -82,12 +82,20 @@ def generate_launch_description():
         output='screen',
     )
 
+    arm_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['rover_arm_controller'],
+        output='screen',
+    )
+
     spawn_controllers = RegisterEventHandler(
         OnProcessExit(
             target_action=gazebo_spawn_rover,
             on_exit=[
                 joint_state_broadcaster,
                 drive_controller,
+                arm_controller,
             ],
         )
     )

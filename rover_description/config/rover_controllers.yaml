@@ -7,6 +7,9 @@ controller_manager:
 
     rover_drive_controller:
       type: diff_drive_controller/DiffDriveController
+    
+    rover_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
 rover_drive_controller:
   ros__parameters:
@@ -58,3 +61,21 @@ rover_drive_controller:
     # angular.z.min_acceleration: -1.0
     # angular.z.max_jerk: 0.0
     # angular.z.min_jerk: 0.0
+
+rover_arm_controller:
+  ros__parameters:
+    joints:
+      - Arm_Base_Rotate
+      - Arm_Shoulder
+      - Arm_Elbow_Tilt
+      - Arm_Elbow_Rotate
+      - Arm_Wrist_Tilt
+      - Arm_Wrist_Rotate
+    
+    command_interfaces:
+      - position
+      # - velocity
+    
+    state_interfaces:
+      - position
+      - velocity
