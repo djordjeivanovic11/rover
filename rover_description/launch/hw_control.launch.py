@@ -31,6 +31,16 @@ def generate_launch_description():
         ],
     )
 
+    drive_pdb_uros_agent = Node(
+        package="micro_ros_agent",
+        executable="micro_ros_agent",
+        output="both",
+        arguments=[
+            'serial',
+            '--dev', '/dev/teensy_drive'
+        ]
+    )
+
     controller_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
@@ -91,6 +101,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_state_publisher,
+        drive_pdb_uros_agent,
         controller_manager,
         spawn_controllers,
         rviz,

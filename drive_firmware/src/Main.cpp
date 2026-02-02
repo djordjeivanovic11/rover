@@ -1,57 +1,246 @@
 #include <Arduino.h>
 #include <VescUart.h>
+#include <Wire.h>
 
 #include "MicroROS.h"
 #include "Messages.h"
 
 // #include <urc_msgs/msg/tank_drive_target.h>
 
-#define NODE_NAME "drive"
-#define NAMESPACE "drive"
+#define NODE_NAME "pdb_teensy"
+#define NAMESPACE ""
 
 #define MAX_RPM 15000
 
-VescUart VESC;
+VescUart VESC1; // Port 1 - left side
+VescUart VESC2; // Port 2 - right side
 
-// struct TankDriveTargetMsg: uROS::Msg {
-//   urc_msgs__msg__TankDriveTarget _msg;
-//   const rosidl_message_type_support_t* GetTypeSupport() {
-//     return ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_c, urc_msgs, msg, TankDriveTarget)();
-//   }
-//   void Init() {
-//     _msg.left_speed = 0.0;
-//     _msg.right_speed = 0.0;
-//   }
-//   void Set(float left, float right) {
-//     _msg.left_speed = left;
-//     _msg.right_speed = right;
-//   }
-//   void* GetRawMsg() {
-//     return &_msg;
-//   }
-// };
+// ----------------------- MCP9801 -----------------------
+static constexpr uint8_t MCP9801_ADDR   = 0x48;
+static constexpr uint8_t MCP9801_REG_TA = 0x00;
 
-// TankDriveTargetMsg subMsg;
-// uROS::Subscriber Sub("drive_target", subMsg, [](const void * msgin) {
-//   tone(13, 1, 1000 * subMsg._msg.data);
-//   i = subMsg._msg.data;
-//   logMsg.Set("Got sub!");
-//   LogPub.Publish();
-// });
-// uROS::Subscriber Sub("drive_target", subMsg);
+// ----------------------- ADC ---------------------------
+static constexpr float ADC_VREF = 3.3f;
+static constexpr int   ADC_BITS = 12;
+static constexpr float ADC_MAX  = (1 << ADC_BITS) - 1;
+
+// NOTE: Set these to match your *actual* divider.
+// Your earlier schematic (250k/50k) will overdrive A0 at 25V.
+// Keep these as the "safe" example until hardware is corrected.
+static constexpr float R_TOP = 330000.0f; // example safe choice
+static constexpr float R_BOT = 50000.0f;
+
+// ----------------------- INA240 ------------------------
+// If you keep INA240A3 with both refs to GND:
+static constexpr float INA_GAIN = 100.0f; // A3
+static constexpr float INA_VREF = 0.0f;   // refs to GND
+static constexpr float R_SHUNT  = 0.001f; // 1 mΩ
+
+// ----------------------- RGB LED pins ------------------
+// MOSFET gates
+static constexpr int LED_R_PIN = 33;
+static constexpr int LED_G_PIN = 36;
+static constexpr int LED_B_PIN = 37;
+
+// ----------------------- Fan pin -----------------------
+static constexpr int FAN_PIN = 13;        // FAN MOSFET gate
+
+// PWM resolution for LED/Fan control
+static constexpr int PWM_BITS = 12;
+static constexpr int PWM_MAX  = (1 << PWM_BITS) - 1;
+
+
+// ----------------------- Fan control curve --------------
+// Tune these:
+static constexpr float FAN_OFF_C  = 10.0f;  // <= this: fan off
+static constexpr float FAN_FULL_C = 28.0f;  // >= this: fan full
+static constexpr float FAN_MIN_PWM = 0.20f; // when "on", minimum duty to overcome stall (tune or set 0)
+
+// Optional: limit update jitter
+static constexpr float FAN_SLEW_PER_SEC = 1.5f; // max change in PWM per second (0..1). Set 0 to disable.
+
+
+// ----------------------- ROS messages/pubs --------------
+int i = 0;
+
+FloatMsg testMsg;
+uROS::Publisher p("drive_test", &testMsg);
+
+StringMsg logMsg;
+uROS::Publisher LogPub("/pdb_teensy/log", &logMsg);
+
+FloatMsg tempMsg;
+uROS::Publisher TempPub("mcp9801_temp_c", &tempMsg);
+
+FloatMsg battVMsg, currAMsg;
+uROS::Publisher BattVPub("battery_voltage_v", &battVMsg);
+uROS::Publisher CurrPub("battery_current_a", &currAMsg);
+
+uROS::Publisher TestPub("drive_echo", &testMsg);
+
+// ----------------------- LED control state --------------
+volatile float led_r = 0.0f; // 0..1
+volatile float led_g = 0.0f; // 0..1
+volatile float led_b = 0.0f; // 0..1
+
+// ----------------------- Fan control state --------------
+// Fan state
+static float fan_pwm = 0.0f;          // applied (0..1)
+static float fan_pwm_target = 0.0f;   // desired (0..1)
+static uint32_t last_fan_update_ms = 0;
+
+static inline float clamp01(float x) {
+  if (x < 0.0f) return 0.0f;
+  if (x > 1.0f) return 1.0f;
+  return x;
+}
+
+static inline int pwmFrom01(float x) {
+  return (int)(clamp01(x) * PWM_MAX + 0.5f);
+}
+
+static void ApplyLedPWM() {
+  analogWrite(LED_R_PIN, pwmFrom01(led_r));
+  analogWrite(LED_G_PIN, pwmFrom01(led_g));
+  analogWrite(LED_B_PIN, pwmFrom01(led_b));
+}
+
+static void ApplyFanPWM(float duty01) {
+  analogWrite(FAN_PIN, pwmFrom01(duty01));
+}
+
+static float FanTargetFromTemp(float tempC) {
+  if (tempC <= FAN_OFF_C) return 0.0f;
+  if (tempC >= FAN_FULL_C) return 1.0f;
+
+  float t = (tempC - FAN_OFF_C) / (FAN_FULL_C - FAN_OFF_C); // 0..1
+  float out = t;
+
+  // Ensure we don't command a too-low duty that stalls the fan
+  if (out > 0.0f && out < FAN_MIN_PWM) out = FAN_MIN_PWM;
+  return clamp01(out);
+}
+
+
+static void UpdateFanFromTarget(float target01) {
+  uint32_t now = millis();
+  float dt = (now - last_fan_update_ms) / 1000.0f;
+  if (last_fan_update_ms == 0) dt = 0.0f;
+  last_fan_update_ms = now;
+
+  fan_pwm_target = clamp01(target01);
+
+  if (FAN_SLEW_PER_SEC <= 0.0f || dt <= 0.0f) {
+    fan_pwm = fan_pwm_target;
+  } else {
+    float max_step = FAN_SLEW_PER_SEC * dt;
+    float diff = fan_pwm_target - fan_pwm;
+    if (diff >  max_step) diff =  max_step;
+    if (diff < -max_step) diff = -max_step;
+    fan_pwm = clamp01(fan_pwm + diff);
+  }
+
+  ApplyFanPWM(fan_pwm);
+}
+
+// Subscribers for LED channels (Float32 0..1)
+FloatMsg ledRMsg, ledGMsg, ledBMsg;
+
+uROS::Subscriber LedRSub("led_r", ledRMsg, [](const void*) {
+  led_r = clamp01(ledRMsg._msg.data);
+  ApplyLedPWM();
+});
+
+uROS::Subscriber LedGSub("led_g", ledGMsg, [](const void*) {
+  led_g = clamp01(ledGMsg._msg.data);
+  ApplyLedPWM();
+});
+
+uROS::Subscriber LedBSub("led_b", ledBMsg, [](const void*) {
+  led_b = clamp01(ledBMsg._msg.data);
+  ApplyLedPWM();
+});
+
+// ----------------------- Helpers ------------------------
+static inline float adcVolts(int pin) {
+  int raw = analogRead(pin);
+  return (raw * ADC_VREF) / ADC_MAX;
+}
+
+static bool ReadMCP9801TempC(float &out_c) {
+  Wire.beginTransmission(MCP9801_ADDR);
+  Wire.write(MCP9801_REG_TA);
+  if (Wire.endTransmission(false) != 0) return false;
+
+  int n = Wire.requestFrom((int)MCP9801_ADDR, 2);
+  if (n != 2) return false;
+
+  uint8_t msb = Wire.read();
+  uint8_t lsb = Wire.read();
+
+  int16_t raw = (int16_t)((msb << 8) | lsb);
+  out_c = (float)raw / 16.0f;
+  return true;
+}
+
+static void StartupLedSequence() {
+  // 3 red flashes
+  for (int k = 0; k < 3; k++) {
+    led_r = 1.0f; led_g = 0.0f; led_b = 0.0f;
+    ApplyLedPWM();
+    delay(250);
+
+    led_r = 0.0f; led_g = 0.0f; led_b = 0.0f;
+    ApplyLedPWM();
+    delay(250);
+  }
+
+  // Solid green after startup
+  led_r = 0.0f;
+  led_g = 1.0f;
+  led_b = 0.0f;
+  ApplyLedPWM();
+}
 
 bool update = false;
 
 IntMsg leftDriveMsg;
-uROS::Subscriber LeftDriveSub("left_rpm", leftDriveMsg);
+uROS::Subscriber LeftDriveSub("/drive/left_rpm", leftDriveMsg);
 
 IntMsg rightDriveMsg;
-uROS::Subscriber RightDriveSub("right_rpm", rightDriveMsg);
+uROS::Subscriber RightDriveSub("/drive/right_rpm", rightDriveMsg);
 
 void setup() {
-  // Configure LED pin
-  pinMode(13, OUTPUT);
-  tone(13, 1, 3000);
+
+  // ADC read resolution
+  analogReadResolution(ADC_BITS);
+
+  // PWM resolution (shared for LED + fan)
+  analogWriteResolution(PWM_BITS);
+
+  // MOSFET gate pins
+  pinMode(LED_R_PIN, OUTPUT);
+  pinMode(LED_G_PIN, OUTPUT);
+  pinMode(LED_B_PIN, OUTPUT);
+  pinMode(FAN_PIN, OUTPUT);
+
+  // Start with LED + fan off
+  led_r = led_g = led_b = 0.0f;
+  ApplyLedPWM();
+  ApplyFanPWM(0.0f);
+
+  StartupLedSequence();
+
+  while (rmw_uros_ping_agent(100, 1) != RMW_RET_OK) {
+    float tempC;
+    if (ReadMCP9801TempC(tempC)) {
+      float target = FanTargetFromTemp(tempC);
+      UpdateFanFromTarget(target);
+    } else {
+      UpdateFanFromTarget(1.0f);
+    }
+    delay(500);
+  }
 
   uROS::Init_MicroROS(NODE_NAME, NAMESPACE);
 
@@ -62,7 +251,53 @@ void setup() {
   RightDriveSub.Init();
 
   Serial1.begin(115200, SERIAL_8N1);
-  VESC.setSerialPort(&Serial1);
+  Serial2.begin(115200, SERIAL_8N1);
+  VESC1.setSerialPort(&Serial1);
+  VESC2.setSerialPort(&Serial2);
+
+  // IMPORTANT: removed tone(13, ...) because pin 13 is FAN gate now.
+
+  // I2C init
+  Wire.begin();
+  Wire.setClock(400000);
+
+  // uROS::Init_MicroROS(NODE_NAME, NAMESPACE);
+
+  p.Init();
+  logMsg.Init();
+  LogPub.Init();
+
+  TempPub.Init();
+  BattVPub.Init();
+  CurrPub.Init();
+  TestPub.Init();
+
+  // Subscribers
+  ledRMsg.Init();
+  ledGMsg.Init();
+  ledBMsg.Init();
+
+  LedRSub.Init();
+  LedGSub.Init();
+  LedBSub.Init();
+
+  delay(250);
+  logMsg.Set("[INFO] uROS initialized");
+  LogPub.Publish();
+
+  float t;
+  if (ReadMCP9801TempC(t)) {
+    logMsg.Set("[INFO] MCP9801 read OK");
+  } else {
+    logMsg.Set("[WARN] MCP9801 read FAILED (check address/wiring)");
+  }
+  LogPub.Publish();
+
+  logMsg.Set("[INFO] LED topics: led_r, led_g, led_b (Float32 0..1)");
+  LogPub.Publish();
+
+  logMsg.Set("[INFO] Fan topic: fan_pwm (Float32 0..1)");
+  LogPub.Publish();
 }
 
 unsigned long lastUpdate = 0;
@@ -83,10 +318,47 @@ void loop() {
     rightRPM = MAX_RPM;
   }
 
-  VESC.setRPM(leftRPM * 1.0, 0);
-  VESC.setRPM(leftRPM * 1.0, 2);
-  VESC.setRPM(rightRPM * 1.0, 3);
-  VESC.setRPM(rightRPM * 1.0, 4);
+  VESC1.setRPM(leftRPM * 1.0, 0);
+  VESC1.setRPM(leftRPM * 1.0, 1);
+  VESC2.setRPM(rightRPM * 1.0, 0);
+  VESC2.setRPM(rightRPM * 1.0, 1);
+
+  
+  // Voltage (A0)
+  float v_adc0 = adcVolts(A0);
+  float v_batt = v_adc0 * (R_TOP + R_BOT) / R_BOT;
+  battVMsg._msg.data = v_batt;
+  BattVPub.Publish();
+
+  // Current (A1)
+  float v_out   = adcVolts(A1);
+  float v_shunt = (v_out - INA_VREF) / INA_GAIN;
+  float i_batt  = v_shunt / R_SHUNT;
+  currAMsg._msg.data = i_batt;
+  CurrPub.Publish();
+
+  // Temperature
+  float tempC;
+  if (ReadMCP9801TempC(tempC)) {
+    tempMsg._msg.data = tempC;
+    TempPub.Publish();
+    float target = FanTargetFromTemp(tempC);
+    UpdateFanFromTarget(target);
+    
+    led_r = 0.0f;
+    led_g = 0.0f;
+    led_b = target;
+    ApplyLedPWM();
+  } else {
+    logMsg.Set("[WARN] MCP9801 read FAILED (still)");
+    LogPub.Publish();
+    led_r = 1.0f;
+    led_g = 0.0f;
+    led_b = 0.0f;
+    ApplyLedPWM();
+
+    UpdateFanFromTarget(1.0f);
+  }
 }
 
 

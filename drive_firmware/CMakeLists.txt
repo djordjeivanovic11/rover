@@ -16,6 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(TEENSY_LIBS
+  Wire
   AccelStepper
   micro_ros_arduino
   NativeEthernet
@@ -65,8 +66,13 @@ file(GLOB TEENSY_CORE_SRC
 # Include libraries
 set(TEENSY_LIB_SRC "")
 foreach(LIB ${TEENSY_LIBS})
-  include_directories(${TEENSY_BASE}/libraries/${LIB}/src)
+  include_directories(
+    ${TEENSY_BASE}/libraries/${LIB}/src
+    ${TEENSY_BASE}/libraries/${LIB}
+  )
   file(GLOB_RECURSE LIB_SRC
+    ${TEENSY_BASE}/libraries/${LIB}/*.c
+    ${TEENSY_BASE}/libraries/${LIB}/*.cpp
     ${TEENSY_BASE}/libraries/${LIB}/src/*.c
     ${TEENSY_BASE}/libraries/${LIB}/src/*.cpp
   )
