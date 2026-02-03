@@ -14,7 +14,7 @@ namespace uROS {
 
     const rmw_qos_profile_t QOS_Teleop = {
         RMW_QOS_POLICY_HISTORY_KEEP_LAST,
-        RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
+        1,
         RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
         RMW_QOS_POLICY_DURABILITY_VOLATILE,
         RMW_QOS_DEADLINE_DEFAULT,
@@ -42,6 +42,7 @@ namespace uROS {
             _msg = msg;
         };
         void Init();
+        void Init(const rmw_qos_profile_t* profile);
         bool Publish();
 
     private:

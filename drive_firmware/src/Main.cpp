@@ -207,6 +207,9 @@ bool update = false;
 IntMsg leftDriveMsg;
 uROS::Subscriber LeftDriveSub("/drive/left_rpm", leftDriveMsg);
 
+FloatMsg leftFrontRpmMsg;
+uROS::Publisher LeftFrontRpmPub("/drive/left_front_rpm", &leftFrontRpmMsg);
+
 IntMsg rightDriveMsg;
 uROS::Subscriber RightDriveSub("/drive/right_rpm", rightDriveMsg);
 
@@ -260,9 +263,11 @@ void setup() {
   ApplyLedPWM();
 
   leftDriveMsg.Init();
+  leftFrontRpmMsg.Init();
   rightDriveMsg.Init();
 
   LeftDriveSub.Init(&uROS::QOS_Teleop);
+  LeftFrontRpmPub.Init(&uROS::QOS_Teleop);
   RightDriveSub.Init(&uROS::QOS_Teleop);
 
   Serial1.begin(115200, SERIAL_8N1);
@@ -318,7 +323,7 @@ void setup() {
 unsigned long lastUpdate = 0;
 
 void loop() {
-  if (rmw_uros_ping_agent(100, 1) != RMW_RET_OK) {
+  if (rmw_uros_ping_agent(100, 10) != RMW_RET_OK) {
     SCB_AIRCR = 0x05FA0004;
   }
 
@@ -341,6 +346,15 @@ void loop() {
   VESC1.setRPM(leftRPM * 1.0, 1);
   VESC2.setRPM(rightRPM * 1.0, 0);
   VESC2.setRPM(rightRPM * 1.0, 1);
+
+  leftFrontRpmMsg._msg.data = 0;
+  // if (VESC1.getVescValues(0)) {
+  //   leftBackRPM = VESC1.data.rpm;
+  // }
+  if (VESC1.getVescValues(1)) {
+    leftFrontRpmMsg._msg.data = VESC1.data.rpm;
+  }
+  LeftFrontRpmPub.Publish();
 
   
   // Voltage (A0)

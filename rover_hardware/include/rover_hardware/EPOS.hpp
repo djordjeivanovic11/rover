@@ -27,7 +27,7 @@ namespace EPOS
 
 class Motor {
 public:
-    Motor(void* deviceHandle, unsigned short nodeId);
+    Motor(void** deviceHandle, unsigned short nodeId);
 
     bool enable();
     bool enableProfilePositionMode();
@@ -41,10 +41,11 @@ public:
     unsigned int lastError() const;
 
 private:
-    void* deviceHandle_;
+    void** deviceHandle_;
     unsigned short nodeId_;
     OperatingMode currentMode_;
     unsigned int errorCode_;
+    bool enabled_;
 };
 }
 

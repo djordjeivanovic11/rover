@@ -54,7 +54,7 @@ hardware_interface::CallbackReturn HybridArmSystemHardware::on_init(const hardwa
         if (DICT_HAS(info_.joints[i].parameters, "epos_node_id")) {
             uint node = uint(hardware_interface::stod(info_.joints[i].parameters["epos_node_id"]));
             RCLCPP_INFO(*logger_, "Joint %s has epos node id %d", info_.joints[i].name.c_str(), node);
-            epos_motors_[i] = new EPOS::Motor(epos_handle_, node);
+            epos_motors_[i] = new EPOS::Motor(&epos_handle_, node);
         }
     }
 
@@ -86,7 +86,7 @@ hardware_interface::CallbackReturn HybridArmSystemHardware::on_configure(const r
 
     unsigned int error = 0;
     epos_handle_ = EPOS::OpenDevice("EPOS4", "MAXON SERIAL V2", "USB", "USB0", &error);
-    if (epos_handle_ && error != 0) {
+    if (epos_handle_ == nullptr || error != 0) {
         RCLCPP_FATAL(*logger_, "Could not open EPOS device: error code %d", error);
         return hardware_interface::CallbackReturn::ERROR;
     }
@@ -117,7 +117,7 @@ hardware_interface::CallbackReturn HybridArmSystemHardware::on_activate(const rc
     for (EPOS::Motor* motor : epos_motors_) {
         if (motor) {
             if (!motor->enable()) {
-                RCLCPP_WARN(*logger_, "Could not initialize motor with node id %d", motor->nodeId());
+                RCLCPP_WARN(*logger_, "Could not enable motor with node id %d due to error %x", motor->nodeId(), motor->lastError());
                 all_success = false;
             }
         }
@@ -164,7 +164,7 @@ hardware_interface::CallbackReturn HybridArmSystemHardware::on_deactivate(const 
     return hardware_interface::CallbackReturn::SUCCESS;
 };
 
-hardware_interface::return_type HybridArmSystemHardware::read(const rclcpp::Time&, const rclcpp::Duration& dt) {
+hardware_interface::return_type HybridArmSystemHardware::read(const rclcpp::Time&, const rclcpp::Duration&) {
     for (uint i = 0; i < epos_motors_.size(); i++) {
         if (epos_motors_[i]) {
             int currentPos;

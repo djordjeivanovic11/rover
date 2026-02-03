@@ -34,6 +34,16 @@ void Publisher::Init() {
     );
 }
 
+void Publisher::Init(const rmw_qos_profile_t* profile) {
+    rclc_publisher_init(
+        &_publisher,
+        &node,
+        _msg->GetTypeSupport(),
+        _name,
+        profile
+    );
+}
+
 bool Publisher::Publish() {
     // _out_msg.data = data;
     rcl_ret_t rc = rcl_publish(&_publisher, _msg->GetRawMsg(), NULL);

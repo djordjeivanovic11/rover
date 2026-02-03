@@ -7,11 +7,11 @@
 #include <cmath>
 
 inline float rads_to_rpm(float ang_vel) {
-    return ang_vel * 60.0 / (2.0 * M_PI);
+    return ang_vel * 60.0 / (2.0 * M_PI) * 43.0;
 }
 
 inline float rpm_to_rads(float rpm) {
-    return rpm * 2.0 * M_PI / 60.0;
+    return rpm * 2.0 * M_PI / 60.0 / 43.0;
 }
 
 namespace rover_hardware
