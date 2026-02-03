@@ -11,7 +11,7 @@ int registered_handles = 0;
 // #include <std_msgs/msg/int32.h>
 
 void Init_MicroROS(const char* node_name, const char* node_namespace) {
-    set_microros_transports();
+    // set_microros_transports();
 
     allocator = rcl_get_default_allocator();
 
@@ -46,6 +46,17 @@ void Subscriber::Init() {
         &node,
         _msg.GetTypeSupport(),
         _name
+    );
+    rclc_executor_add_subscription(&executor, &_subscriber, _msg.GetRawMsg(), _callback, ON_NEW_DATA);
+}
+
+void Subscriber::Init(const rmw_qos_profile_t* profile) {
+    rclc_subscription_init(
+        &_subscriber,
+        &node,
+        _msg.GetTypeSupport(),
+        _name,
+        profile
     );
     rclc_executor_add_subscription(&executor, &_subscriber, _msg.GetRawMsg(), _callback, ON_NEW_DATA);
 }

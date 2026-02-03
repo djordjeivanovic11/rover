@@ -12,6 +12,18 @@
 namespace uROS {
     extern rcl_allocator_t allocator;
 
+    const rmw_qos_profile_t QOS_Teleop = {
+        RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+        RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
+        RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
+        RMW_QOS_POLICY_DURABILITY_VOLATILE,
+        RMW_QOS_DEADLINE_DEFAULT,
+        RMW_QOS_LIFESPAN_DEFAULT,
+        RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+        RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+        false
+    };
+
     void Init_MicroROS(const char* node_name, const char* node_namespace);
     void Spin(int ms);
     
@@ -58,6 +70,7 @@ namespace uROS {
             registered_handles++;
         };
         void Init();
+        void Init(const rmw_qos_profile_t* profile);
 
     private:
         const char* _name;

@@ -16,7 +16,7 @@ public:
     void* GetRawMsg() {
         return &_msg;
     }
-    uint32_t GetValue() {
+    int32_t GetValue() {
         return _msg.data;
     }
 };

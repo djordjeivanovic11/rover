@@ -231,7 +231,11 @@ void setup() {
 
   StartupLedSequence();
 
+  set_microros_transports();
   while (rmw_uros_ping_agent(100, 1) != RMW_RET_OK) {
+    led_r = 0.5;
+    led_g = led_b = 0.0f;
+    ApplyLedPWM();
     float tempC;
     if (ReadMCP9801TempC(tempC)) {
       float target = FanTargetFromTemp(tempC);
@@ -239,16 +243,27 @@ void setup() {
     } else {
       UpdateFanFromTarget(1.0f);
     }
-    delay(500);
+    delay(250);
+    led_r = 0.0;
+    ApplyLedPWM();
+    // delay(500);
   }
 
+  led_r = 0.0;
+  led_g = 0.0;
+  led_b = 0.5;
+  ApplyLedPWM();
+
   uROS::Init_MicroROS(NODE_NAME, NAMESPACE);
+
+  led_r = led_g = led_b = 0.5;
+  ApplyLedPWM();
 
   leftDriveMsg.Init();
   rightDriveMsg.Init();
 
-  LeftDriveSub.Init();
-  RightDriveSub.Init();
+  LeftDriveSub.Init(&uROS::QOS_Teleop);
+  RightDriveSub.Init(&uROS::QOS_Teleop);
 
   Serial1.begin(115200, SERIAL_8N1);
   Serial2.begin(115200, SERIAL_8N1);
@@ -303,10 +318,14 @@ void setup() {
 unsigned long lastUpdate = 0;
 
 void loop() {
+  if (rmw_uros_ping_agent(100, 1) != RMW_RET_OK) {
+    SCB_AIRCR = 0x05FA0004;
+  }
+
   uROS::Spin(0);
 
-  float leftRPM = leftDriveMsg.GetValue();
-  float rightRPM = rightDriveMsg.GetValue();
+  int32_t leftRPM = leftDriveMsg.GetValue();
+  int32_t rightRPM = rightDriveMsg.GetValue();
   if (leftRPM < -MAX_RPM) {
     leftRPM = -MAX_RPM;
   } else if (leftRPM > MAX_RPM) {
