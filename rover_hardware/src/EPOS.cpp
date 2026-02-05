@@ -30,7 +30,7 @@ namespace EPOS {
     }
 
     bool Motor::getPosition(int* outPosition) {
-        if (!enabled_) return false;
+        // if (!enabled_) return false;
         return VCS_GetPositionIs(
             *deviceHandle_,
             nodeId_,

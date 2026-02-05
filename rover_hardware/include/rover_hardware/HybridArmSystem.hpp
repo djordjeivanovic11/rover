@@ -52,6 +52,8 @@ private:
     void* epos_handle_;
     std::vector<EPOS::Motor*> epos_motors_;
     std::vector<double> motor_target_scales_;
+    uint left_diff_idx_;
+    uint right_diff_idx_;
 
     std::vector<double> joint_state_positions_;
     std::vector<double> joint_state_velocities_;

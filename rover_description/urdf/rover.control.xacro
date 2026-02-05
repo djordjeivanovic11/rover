@@ -61,31 +61,41 @@
         <command_interface name="position"/>
         <!-- <command_interface name="velocity"/> -->
         <param name="epos_node_id">1</param>
-        <param name="position_target_scale">100.0</param>
+        <param name="position_target_scale">-2048.0</param>
       </joint>
       <joint name="Arm_Elbow_Tilt">
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <command_interface name="position"/>
         <!-- <command_interface name="velocity"/> -->
+        <param name="epos_node_id">2</param>
+        <param name="position_target_scale">-512.0</param>
       </joint>
       <joint name="Arm_Elbow_Rotate">
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <command_interface name="position"/>
         <!-- <command_interface name="velocity"/> -->
+        <param name="epos_node_id">3</param>
+        <param name="position_target_scale">44032.0</param>
       </joint>
       <joint name="Arm_Wrist_Tilt">
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <command_interface name="position"/>
         <!-- <command_interface name="velocity"/> -->
+        <param name="epos_node_id">4</param>
+        <param name="position_target_scale">512.0</param>
+        <param name="differential_index">0</param>
       </joint>
       <joint name="Arm_Wrist_Rotate">
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <command_interface name="position"/>
         <!-- <command_interface name="velocity"/> -->
+        <param name="epos_node_id">5</param>
+        <param name="position_target_scale">512.0</param>
+        <param name="differential_index">1</param>
       </joint>
     </ros2_control>
 

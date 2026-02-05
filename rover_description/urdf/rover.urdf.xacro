@@ -575,4 +575,16 @@
       <self_collide>true</self_collide>
     </gazebo>
   </xacro:if>
+  <xacro:unless value="$(arg use_gazebo)">
+    <xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro" />
+    <xacro:zed_camera name="Front_Zed" model="zed2i" baseline="0.0"/>
+    <joint name="Front_Zed_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="Front_Zed_camera_link"/>
+      <origin
+        xyz="1 0 0"
+        rpy="0 0 0"
+      />
+    </joint>
+  </xacro:unless>
 </robot>
