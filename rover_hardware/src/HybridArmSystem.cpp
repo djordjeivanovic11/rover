@@ -181,11 +181,11 @@ hardware_interface::return_type HybridArmSystemHardware::read(const rclcpp::Time
         int current1;
         if (epos_motors_[left_diff_idx_]->getPosition(&current0) &&
             epos_motors_[right_diff_idx_]->getPosition(&current1)) {
-            double m0 = double(current0) / motor_target_scales_[left_diff_idx_];
-            double m1 = double(current1) / motor_target_scales_[right_diff_idx_];
+            double m0 = double(current0) / motor_target_scales_[left_diff_idx_] * (2.0 * M_PI);
+            double m1 = double(current1) / motor_target_scales_[right_diff_idx_] * (2.0 * M_PI);
             float j0 = (m0/2.0) - (m1/2.0);
             float j1 = (m0/2.0) + (m1/2.0);
-            RCLCPP_INFO(*logger_, "Converted motor angles %f, %f to joint angles %f, %f", m0, m1, j0, j1);
+            // RCLCPP_INFO(*logger_, "Converted motor angles %f, %f to joint angles %f, %f", m0, m1, j0, j1);
             joint_state_positions_[left_diff_idx_] = j0;
             joint_state_positions_[right_diff_idx_] = j1;
         } else {
@@ -197,7 +197,7 @@ hardware_interface::return_type HybridArmSystemHardware::read(const rclcpp::Time
         if (epos_motors_[i]) {
             int currentPos;
             if (epos_motors_[i]->getPosition(&currentPos)) {
-                double newPos = double(currentPos) / motor_target_scales_[i];
+                double newPos = double(currentPos) / motor_target_scales_[i] * (2.0 * M_PI);
                 if (joint_state_positions_[i] != newPos) {
                     RCLCPP_INFO(*logger_, "Got new raw position of %d from EPOS motor %d", currentPos, epos_motors_[i]->nodeId());
                 }
@@ -217,9 +217,9 @@ hardware_interface::return_type HybridArmSystemHardware::write(const rclcpp::Tim
         float j1 = joint_command_positions_[right_diff_idx_];
         float m0 = j0 + j1;
         float m1 = -j0 + j1;
-        RCLCPP_INFO(*logger_, "Converted joint angle %f, %f to motor angles %f, %f", j0, j1, m0, m1);
-        long scaled_target0 = m0 * motor_target_scales_[left_diff_idx_];
-        long scaled_target1 = m1 * motor_target_scales_[right_diff_idx_];
+        // RCLCPP_INFO(*logger_, "Converted joint angle %f, %f to motor angles %f, %f", j0, j1, m0, m1);
+        long scaled_target0 = m0 * motor_target_scales_[left_diff_idx_] / (2.0 * M_PI);
+        long scaled_target1 = m1 * motor_target_scales_[right_diff_idx_] / (2.0 * M_PI);
         if (!epos_motors_[left_diff_idx_]->setPosition(scaled_target0, true, true)) {
             RCLCPP_WARN(*logger_, "Failed sending target to motor with node id %d", epos_motors_[left_diff_idx_]->nodeId());
             return hardware_interface::return_type::ERROR;
@@ -234,7 +234,7 @@ hardware_interface::return_type HybridArmSystemHardware::write(const rclcpp::Tim
             if (i == left_diff_idx_ || i == right_diff_idx_) continue;
             RCLCPP_INFO(*logger_, "Command on motor %d: %f", i, joint_command_positions_[i]);
             if (epos_motors_[i]) {
-                long scaled_target = joint_command_positions_[i] * motor_target_scales_[i];
+                long scaled_target = joint_command_positions_[i] * motor_target_scales_[i] / (2.0 * M_PI);
                 RCLCPP_INFO(*logger_, "Sending scaled target %ld to EPOS node %d", scaled_target, epos_motors_[i]->nodeId());
                 if (!epos_motors_[i]->setPosition(scaled_target, true, true)) {
                     RCLCPP_WARN(*logger_, "Failed sending target to motor with node id %d", epos_motors_[i]->nodeId());

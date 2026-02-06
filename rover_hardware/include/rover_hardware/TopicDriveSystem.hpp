@@ -41,6 +41,7 @@ private:
     rclcpp::Node::SharedPtr node_;
     rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr left_rpm_publisher_;
     rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr right_rpm_publisher_;
+    rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr test_subscriber_;
     // rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr left_rpm_
 
     std::vector<uint> left_wheels_;

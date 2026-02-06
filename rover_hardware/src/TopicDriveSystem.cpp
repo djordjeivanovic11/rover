@@ -43,8 +43,11 @@ hardware_interface::CallbackReturn TopicDriveSystemHardware::on_init(const hardw
     joint_commands_.resize(info_.joints.size());
 
     node_ = rclcpp::Node::make_shared("topic_drive_system", "drive");
-    left_rpm_publisher_ = node_->create_publisher<std_msgs::msg::Int32>("left_rpm", rclcpp::QoS(1));
-    right_rpm_publisher_ = node_->create_publisher<std_msgs::msg::Int32>("right_rpm", rclcpp::QoS(1));
+    left_rpm_publisher_ = node_->create_publisher<std_msgs::msg::Int32>("left_set_rpm", rclcpp::QoS(1));
+    right_rpm_publisher_ = node_->create_publisher<std_msgs::msg::Int32>("right_set_rpm", rclcpp::QoS(1));
+    test_subscriber_ = node_->create_subscription<std_msgs::msg::Int32>("left_front_rpm", 5, [this](std_msgs::msg::Int32::SharedPtr msg) {
+        RCLCPP_INFO(*this->logger_, "Got left_front_rpm of %d", msg->data);
+    });
 
     return hardware_interface::CallbackReturn::SUCCESS;
 };

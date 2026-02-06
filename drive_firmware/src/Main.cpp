@@ -10,7 +10,8 @@
 #define NODE_NAME "pdb_teensy"
 #define NAMESPACE ""
 
-#define MAX_RPM 15000
+#define MAX_RPM 2500
+#define DRIVE_POLE_PAIRS 12
 
 VescUart VESC1; // Port 1 - left side
 VescUart VESC2; // Port 2 - right side
@@ -204,14 +205,23 @@ static void StartupLedSequence() {
 
 bool update = false;
 
-IntMsg leftDriveMsg;
-uROS::Subscriber LeftDriveSub("/drive/left_rpm", leftDriveMsg);
+IntMsg leftSetDriveMsg;
+uROS::Subscriber LeftDriveSub("/drive/left_set_rpm", leftSetDriveMsg);
 
 FloatMsg leftFrontRpmMsg;
 uROS::Publisher LeftFrontRpmPub("/drive/left_front_rpm", &leftFrontRpmMsg);
 
-IntMsg rightDriveMsg;
-uROS::Subscriber RightDriveSub("/drive/right_rpm", rightDriveMsg);
+FloatMsg leftBackRpmMsg;
+uROS::Publisher LeftBackRpmPub("/drive/left_back_rpm", &leftBackRpmMsg);
+
+IntMsg rightSetDriveMsg;
+uROS::Subscriber RightDriveSub("/drive/right_set_rpm", rightSetDriveMsg);
+
+FloatMsg rightFrontRpmMsg;
+uROS::Publisher RightFrontRpmPub("/drive/left_front_rpm", &rightFrontRpmMsg);
+
+FloatMsg rightBackRpmMsg;
+uROS::Publisher RightBackRpmPub("/drive/left_back_rpm", &rightBackRpmMsg);
 
 void setup() {
 
@@ -262,13 +272,19 @@ void setup() {
   led_r = led_g = led_b = 0.5;
   ApplyLedPWM();
 
-  leftDriveMsg.Init();
+  leftSetDriveMsg.Init();
   leftFrontRpmMsg.Init();
-  rightDriveMsg.Init();
+  leftBackRpmMsg.Init();
+  rightSetDriveMsg.Init();
+  rightFrontRpmMsg.Init();
+  rightBackRpmMsg.Init();
 
   LeftDriveSub.Init(&uROS::QOS_Teleop);
   LeftFrontRpmPub.Init(&uROS::QOS_Teleop);
+  LeftBackRpmPub.Init(&uROS::QOS_Teleop);
   RightDriveSub.Init(&uROS::QOS_Teleop);
+  RightFrontRpmPub.Init(&uROS::QOS_Teleop);
+  RightBackRpmPub.Init(&uROS::QOS_Teleop);
 
   Serial1.begin(115200, SERIAL_8N1);
   Serial2.begin(115200, SERIAL_8N1);
@@ -329,8 +345,8 @@ void loop() {
 
   uROS::Spin(0);
 
-  int32_t leftRPM = leftDriveMsg.GetValue();
-  int32_t rightRPM = rightDriveMsg.GetValue();
+  int32_t leftRPM = leftSetDriveMsg.GetValue();
+  int32_t rightRPM = rightSetDriveMsg.GetValue();
   if (leftRPM < -MAX_RPM) {
     leftRPM = -MAX_RPM;
   } else if (leftRPM > MAX_RPM) {
@@ -342,19 +358,33 @@ void loop() {
     rightRPM = MAX_RPM;
   }
 
-  VESC1.setRPM(leftRPM * 1.0, 0);
-  VESC1.setRPM(leftRPM * 1.0, 1);
-  VESC2.setRPM(rightRPM * 1.0, 0);
-  VESC2.setRPM(rightRPM * 1.0, 1);
+  // 12 pole pairs to convert to ERPM
+  VESC1.setRPM(leftRPM * DRIVE_POLE_PAIRS * 1.0, 0);
+  VESC1.setRPM(leftRPM * DRIVE_POLE_PAIRS * 1.0, 1);
+  VESC2.setRPM(rightRPM * DRIVE_POLE_PAIRS * 1.0, 0);
+  VESC2.setRPM(rightRPM * DRIVE_POLE_PAIRS * 1.0, 1);
 
+  leftBackRpmMsg._msg.data = 0;
+  if (VESC1.getVescValues(0)) {
+    leftBackRpmMsg._msg.data = VESC1.data.rpm / DRIVE_POLE_PAIRS;
+  }
+  LeftBackRpmPub.Publish();
   leftFrontRpmMsg._msg.data = 0;
-  // if (VESC1.getVescValues(0)) {
-  //   leftBackRPM = VESC1.data.rpm;
-  // }
   if (VESC1.getVescValues(1)) {
-    leftFrontRpmMsg._msg.data = VESC1.data.rpm;
+    leftFrontRpmMsg._msg.data = VESC1.data.rpm / DRIVE_POLE_PAIRS;
   }
   LeftFrontRpmPub.Publish();
+
+  rightBackRpmMsg._msg.data = 0;
+  if (VESC2.getVescValues(0)) {
+    rightBackRpmMsg._msg.data = VESC2.data.rpm / DRIVE_POLE_PAIRS;
+  }
+  RightBackRpmPub.Publish();
+  rightFrontRpmMsg._msg.data = 0;
+  if (VESC2.getVescValues(1)) {
+    rightFrontRpmMsg._msg.data = VESC2.data.rpm / DRIVE_POLE_PAIRS;
+  }
+  RightFrontRpmPub.Publish();
 
   
   // Voltage (A0)
