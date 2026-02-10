@@ -562,6 +562,16 @@
       xyz="0 1 0" />
   </joint>
 
+  <!-- <link name="Front_Zed_link"/>
+  <joint name="Front_Zed_link_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="Front_Zed_link"/>
+    <origin
+      xyz="0.55 0 -0.18"
+      rpy="0 0 0"
+    />
+  </joint> -->
+
   <xacro:rover_ros2_control use_gazebo="$(arg use_gazebo)"/>
 
   <xacro:if value="$(arg use_gazebo)">
@@ -581,10 +591,10 @@
       <gnss_origin/>
     </xacro:zed_camera>
     <joint name="Front_Zed_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="Front_Zed_camera_link"/>
+      <parent link="Front_Zed_camera_link"/>
+      <child link="base_link"/>
       <origin
-        xyz="1 0 0"
+        xyz="-0.55 0 0.18"
         rpy="0 0 0"
       />
     </joint>

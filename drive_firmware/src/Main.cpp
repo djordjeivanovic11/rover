@@ -10,8 +10,8 @@
 #define NODE_NAME "pdb_teensy"
 #define NAMESPACE ""
 
-#define MAX_RPM 2500
-#define DRIVE_POLE_PAIRS 12
+#define MAX_RPM 50
+#define RPM_TO_ERPM (11.0 * 42.875)
 
 VescUart VESC1; // Port 1 - left side
 VescUart VESC2; // Port 2 - right side
@@ -208,20 +208,26 @@ bool update = false;
 IntMsg leftSetDriveMsg;
 uROS::Subscriber LeftDriveSub("/drive/left_set_rpm", leftSetDriveMsg);
 
-FloatMsg leftFrontRpmMsg;
-uROS::Publisher LeftFrontRpmPub("/drive/left_front_rpm", &leftFrontRpmMsg);
+FloatMsg leftDriveRpmMsg;
+uROS::Publisher LeftDrivePub("/drive/left_get_rpm", &leftDriveRpmMsg);
 
-FloatMsg leftBackRpmMsg;
-uROS::Publisher LeftBackRpmPub("/drive/left_back_rpm", &leftBackRpmMsg);
+// FloatMsg leftFrontRpmMsg;
+// uROS::Publisher LeftFrontRpmPub("/drive/left_front_rpm", &leftFrontRpmMsg);
+
+// FloatMsg leftBackRpmMsg;
+// uROS::Publisher LeftBackRpmPub("/drive/left_back_rpm", &leftBackRpmMsg);
 
 IntMsg rightSetDriveMsg;
 uROS::Subscriber RightDriveSub("/drive/right_set_rpm", rightSetDriveMsg);
 
-FloatMsg rightFrontRpmMsg;
-uROS::Publisher RightFrontRpmPub("/drive/left_front_rpm", &rightFrontRpmMsg);
+FloatMsg rightDriveRpmMsg;
+uROS::Publisher RightDrivePub("/drive/right_get_rpm", &rightDriveRpmMsg);
 
-FloatMsg rightBackRpmMsg;
-uROS::Publisher RightBackRpmPub("/drive/left_back_rpm", &rightBackRpmMsg);
+// FloatMsg rightFrontRpmMsg;
+// uROS::Publisher RightFrontRpmPub("/drive/right_front_rpm", &rightFrontRpmMsg);
+
+// FloatMsg rightBackRpmMsg;
+// uROS::Publisher RightBackRpmPub("/drive/right_back_rpm", &rightBackRpmMsg);
 
 void setup() {
 
@@ -273,18 +279,22 @@ void setup() {
   ApplyLedPWM();
 
   leftSetDriveMsg.Init();
-  leftFrontRpmMsg.Init();
-  leftBackRpmMsg.Init();
+  leftDriveRpmMsg.Init();
+  // leftFrontRpmMsg.Init();
+  // leftBackRpmMsg.Init();
   rightSetDriveMsg.Init();
-  rightFrontRpmMsg.Init();
-  rightBackRpmMsg.Init();
+  rightDriveRpmMsg.Init();
+  // rightFrontRpmMsg.Init();
+  // rightBackRpmMsg.Init();
 
   LeftDriveSub.Init(&uROS::QOS_Teleop);
-  LeftFrontRpmPub.Init(&uROS::QOS_Teleop);
-  LeftBackRpmPub.Init(&uROS::QOS_Teleop);
+  LeftDrivePub.Init(&uROS::QOS_Teleop);
+  // LeftFrontRpmPub.Init(&uROS::QOS_Teleop);
+  // LeftBackRpmPub.Init(&uROS::QOS_Teleop);
   RightDriveSub.Init(&uROS::QOS_Teleop);
-  RightFrontRpmPub.Init(&uROS::QOS_Teleop);
-  RightBackRpmPub.Init(&uROS::QOS_Teleop);
+  RightDrivePub.Init(&uROS::QOS_Teleop);
+  // RightFrontRpmPub.Init(&uROS::QOS_Teleop);
+  // RightBackRpmPub.Init(&uROS::QOS_Teleop);
 
   Serial1.begin(115200, SERIAL_8N1);
   Serial2.begin(115200, SERIAL_8N1);
@@ -359,32 +369,50 @@ void loop() {
   }
 
   // 12 pole pairs to convert to ERPM
-  VESC1.setRPM(leftRPM * DRIVE_POLE_PAIRS * 1.0, 0);
-  VESC1.setRPM(leftRPM * DRIVE_POLE_PAIRS * 1.0, 1);
-  VESC2.setRPM(rightRPM * DRIVE_POLE_PAIRS * 1.0, 0);
-  VESC2.setRPM(rightRPM * DRIVE_POLE_PAIRS * 1.0, 1);
+  VESC1.setRPM(leftRPM * RPM_TO_ERPM * -1.0, 0);
+  VESC1.setRPM(leftRPM * RPM_TO_ERPM * -1.0, 1);
+  VESC2.setRPM(rightRPM * RPM_TO_ERPM * 1.0, 0);
+  VESC2.setRPM(rightRPM * RPM_TO_ERPM * 1.0, 1);
 
-  leftBackRpmMsg._msg.data = 0;
+  leftDriveRpmMsg._msg.data = 0.0;
   if (VESC1.getVescValues(0)) {
-    leftBackRpmMsg._msg.data = VESC1.data.rpm / DRIVE_POLE_PAIRS;
+    leftDriveRpmMsg._msg.data += VESC1.data.rpm / RPM_TO_ERPM / 2.0 * -1;
   }
-  LeftBackRpmPub.Publish();
-  leftFrontRpmMsg._msg.data = 0;
   if (VESC1.getVescValues(1)) {
-    leftFrontRpmMsg._msg.data = VESC1.data.rpm / DRIVE_POLE_PAIRS;
+    leftDriveRpmMsg._msg.data += VESC1.data.rpm / RPM_TO_ERPM / 2.0 * -1;
   }
-  LeftFrontRpmPub.Publish();
+  LeftDrivePub.Publish();
 
-  rightBackRpmMsg._msg.data = 0;
+  rightDriveRpmMsg._msg.data = 0.0;
   if (VESC2.getVescValues(0)) {
-    rightBackRpmMsg._msg.data = VESC2.data.rpm / DRIVE_POLE_PAIRS;
+    rightDriveRpmMsg._msg.data += VESC2.data.rpm / RPM_TO_ERPM / 2.0;
   }
-  RightBackRpmPub.Publish();
-  rightFrontRpmMsg._msg.data = 0;
   if (VESC2.getVescValues(1)) {
-    rightFrontRpmMsg._msg.data = VESC2.data.rpm / DRIVE_POLE_PAIRS;
+    rightDriveRpmMsg._msg.data += VESC2.data.rpm / RPM_TO_ERPM / 2.0;
   }
-  RightFrontRpmPub.Publish();
+  RightDrivePub.Publish();
+
+  // leftBackRpmMsg._msg.data = 0.0;
+  // if (VESC1.getVescValues(0)) {
+  //   leftBackRpmMsg._msg.data = VESC1.data.rpm / DRIVE_POLE_PAIRS;
+  // }
+  // LeftBackRpmPub.Publish();
+  // leftFrontRpmMsg._msg.data = 0.0;
+  // if (VESC1.getVescValues(1)) {
+  //   leftFrontRpmMsg._msg.data = VESC1.data.rpm / DRIVE_POLE_PAIRS;
+  // }
+  // LeftFrontRpmPub.Publish();
+
+  // rightBackRpmMsg._msg.data = 0.0;
+  // if (VESC2.getVescValues(0)) {
+  //   rightBackRpmMsg._msg.data = VESC2.data.rpm / DRIVE_POLE_PAIRS;
+  // }
+  // RightBackRpmPub.Publish();
+  // rightFrontRpmMsg._msg.data = 0.0;
+  // if (VESC2.getVescValues(1)) {
+  //   rightFrontRpmMsg._msg.data = VESC2.data.rpm / DRIVE_POLE_PAIRS;
+  // }
+  // RightFrontRpmPub.Publish();
 
   
   // Voltage (A0)

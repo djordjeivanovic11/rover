@@ -27,8 +27,8 @@ rover_drive_controller:
     use_stamped_vel: false
 
     publish_rate: 50.0
-    odom_frame_id: odom
-    base_frame_id: base_link
+    # odom_frame_id: odom
+    # base_frame_id: base_link
 
     position_feedback: false
     # pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
