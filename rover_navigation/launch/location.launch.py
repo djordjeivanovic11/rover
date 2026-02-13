@@ -1,4 +1,6 @@
 from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
 
 from launch_ros.actions import Node
@@ -53,7 +55,8 @@ def generate_launch_description():
                 "localization.yaml",
             ]), {'use_sim_time': False}],
         remappings=[
-            ('imu/data', '/Front_Zed/zed_node/imu/data')
+            ('imu/data', '/Front_Zed/zed_node/imu/data'),
+            ('gps/fix', '/gps/fix')
         ]
     )
 
@@ -70,9 +73,46 @@ def generate_launch_description():
             ]), {'use_sim_time': False}]
     )
 
+    async_slam_toolbox_node = Node(
+        package='slam_toolbox',
+        executable='async_slam_toolbox_node',
+        name='slam_toolbox',
+        output='screen',
+        parameters=[
+            PathJoinSubstitution([
+                FindPackageShare("rover_navigation"),
+                "config",
+                "navigation.yaml",
+            ]),
+            {'use_sim_time': False}]
+    )
+
+    nav2 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare("nav2_bringup"),
+                "launch",
+                "bringup_launch.py"
+            ])
+        ),
+        launch_arguments={
+            "use_sim_time": "false",
+            "slam": "False",
+            "map": "",
+            "use_map_server": "False",
+            "params_file": PathJoinSubstitution([
+                FindPackageShare("rover_navigation"),
+                "config",
+                "navigation.yaml",
+            ]),
+        }.items(),
+    )
+
     return LaunchDescription([
-        gnss_driver,
+        # gnss_driver,
         ekf_local_node,
         navsat_transform_node,
         ekf_global_node,
+        # async_slam_toolbox_node
+        nav2
     ])
