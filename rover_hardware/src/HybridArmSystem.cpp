@@ -211,7 +211,8 @@ hardware_interface::return_type HybridArmSystemHardware::read(const rclcpp::Time
     return hardware_interface::return_type::OK;
 };
 
-hardware_interface::return_type HybridArmSystemHardware::write(const rclcpp::Time&, const rclcpp::Duration&) {
+hardware_interface::return_type HybridArmSystemHardware::write(const rclcpp::Time&, const rclcpp::Duration& dt) {
+    RCLCPP_INFO(*logger_, "Write after %f ms", dt.seconds() * 1000);
     {
         float j0 = joint_command_positions_[left_diff_idx_];
         float j1 = joint_command_positions_[right_diff_idx_];

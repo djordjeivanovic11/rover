@@ -370,7 +370,7 @@ void loop() {
 
   // 12 pole pairs to convert to ERPM
   VESC1.setRPM(leftRPM * RPM_TO_ERPM * -1.0, 0);
-  VESC1.setRPM(leftRPM * RPM_TO_ERPM * -1.0, 1);
+  VESC1.setRPM(leftRPM * RPM_TO_ERPM * 1.0, 1);
   VESC2.setRPM(rightRPM * RPM_TO_ERPM * 1.0, 0);
   VESC2.setRPM(rightRPM * RPM_TO_ERPM * 1.0, 1);
 
@@ -379,7 +379,7 @@ void loop() {
     leftDriveRpmMsg._msg.data += VESC1.data.rpm / RPM_TO_ERPM / 2.0 * -1;
   }
   if (VESC1.getVescValues(1)) {
-    leftDriveRpmMsg._msg.data += VESC1.data.rpm / RPM_TO_ERPM / 2.0 * -1;
+    leftDriveRpmMsg._msg.data += VESC1.data.rpm / RPM_TO_ERPM / 2.0 * 1;
   }
   LeftDrivePub.Publish();
 

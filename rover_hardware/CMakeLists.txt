@@ -13,6 +13,7 @@ find_package(rclcpp_lifecycle REQUIRED)
 
 add_library(rover_hardware SHARED
   src/TopicDriveSystem.cpp
+  src/StepperSystem.cpp
   src/HybridArmSystem.cpp
   src/EPOS.cpp
 )

@@ -1,5 +1,5 @@
-#ifndef HURC_ROVER_HARDWARE_TOPIC_DRIVE_SYSTEM_HPP_
-#define HURC_ROVER_HARDWARE_TOPIC_DRIVE_SYSTEM_HPP_
+#ifndef HURC_ROVER_HARDWARE_STEPPER_SYSTEM_HPP_
+#define HURC_ROVER_HARDWARE_STEPPER_SYSTEM_HPP_
 
 #include <vector>
 
@@ -16,10 +16,10 @@
 
 namespace rover_hardware
 {
-class TopicDriveSystemHardware : public hardware_interface::SystemInterface
+class StepperSystemHardware : public hardware_interface::SystemInterface
 {
 public:
-    RCLCPP_SHARED_PTR_DEFINITIONS(TopicDriveSystemHardware)
+    RCLCPP_SHARED_PTR_DEFINITIONS(StepperSystemHardware)
 
     hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
@@ -40,17 +40,14 @@ public:
 private:
     std::shared_ptr<rclcpp::Logger> logger_;
     rclcpp::Node::SharedPtr node_;
-    rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr left_rpm_publisher_;
-    rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr right_rpm_publisher_;
-    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr left_rpm_subscriber_;
-    rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr right_rpm_subscriber_;
+    std::vector<rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr> target_publishers_;
+    std::vector<rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr> current_subscriptions_;
 
-    std::vector<uint> left_wheels_;
-    std::vector<uint> right_wheels_;
+    std::vector<double> tick_resolutions_;
 
     std::vector<double> joint_positions_;
     std::vector<double> joint_velocities_;
-    std::vector<double> joint_commands_; // velocities
+    std::vector<double> joint_commands_; // positions
 };
 }
 

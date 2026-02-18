@@ -45,9 +45,20 @@ hardware_interface::CallbackReturn TopicDriveSystemHardware::on_init(const hardw
     node_ = rclcpp::Node::make_shared("topic_drive_system", "drive");
     left_rpm_publisher_ = node_->create_publisher<std_msgs::msg::Int32>("left_set_rpm", rclcpp::QoS(1));
     right_rpm_publisher_ = node_->create_publisher<std_msgs::msg::Int32>("right_set_rpm", rclcpp::QoS(1));
-    test_subscriber_ = node_->create_subscription<std_msgs::msg::Int32>("left_front_rpm", 5, [this](std_msgs::msg::Int32::SharedPtr msg) {
-        RCLCPP_INFO(*this->logger_, "Got left_front_rpm of %d", msg->data);
-    });
+    left_rpm_subscriber_ = node_->create_subscription<std_msgs::msg::Float32>("left_get_rpm", rclcpp::QoS(1).best_effort().durability_volatile(),
+        [this](std_msgs::msg::Float32::SharedPtr msg) {
+            RCLCPP_INFO(*this->logger_, "Got left rpm of %f", msg->data);
+            for (uint i : left_wheels_) {
+                joint_velocities_[i] = rpm_to_rads(msg->data);
+            }
+        });
+    right_rpm_subscriber_ = node_->create_subscription<std_msgs::msg::Float32>("right_get_rpm", rclcpp::QoS(1).best_effort().durability_volatile(),
+        [this](std_msgs::msg::Float32::SharedPtr msg) {
+            RCLCPP_INFO(*this->logger_, "Got right rpm of %f", msg->data);
+            for (uint i : right_wheels_) {
+                joint_velocities_[i] = rpm_to_rads(msg->data);
+            }
+        });
 
     return hardware_interface::CallbackReturn::SUCCESS;
 };
@@ -87,8 +98,9 @@ hardware_interface::CallbackReturn TopicDriveSystemHardware::on_deactivate(const
 };
 
 hardware_interface::return_type TopicDriveSystemHardware::read(const rclcpp::Time&, const rclcpp::Duration& dt) {
+    rclcpp::spin_some(node_);
     for (uint i = 0; i < joint_positions_.size(); i++) {
-        joint_velocities_[i] = joint_commands_[i];
+        // joint_velocities_[i] = joint_commands_[i];
         joint_positions_[i] += joint_velocities_[i] * dt.seconds();
     }
     return hardware_interface::return_type::OK;
