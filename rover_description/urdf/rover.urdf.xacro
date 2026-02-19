@@ -33,7 +33,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Chassis.STL" />
+          filename="package://rover_description/meshes/fine/Chassis.STL" />
       </geometry>
       <material
         name="">
@@ -47,7 +47,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Chassis.STL" />
+          filename="package://rover_description/meshes/coarse/Chassis.STL" />
       </geometry>
     </collision>
   </link>
@@ -72,7 +72,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/FL_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/FL_Wheel.STL" />
       </geometry>
       <material
         name="">
@@ -86,7 +86,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/FL_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/FL_Wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -123,7 +123,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/FR_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/FR_Wheel.STL" />
       </geometry>
       <material
         name="">
@@ -137,7 +137,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/FR_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/FR_Wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -174,7 +174,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/BL_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/BL_Wheel.STL" />
       </geometry>
       <material
         name="">
@@ -188,7 +188,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/BL_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/BL_Wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -225,7 +225,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/BR_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/BR_Wheel.STL" />
       </geometry>
       <material
         name="">
@@ -239,7 +239,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/BR_Wheel.STL" />
+          filename="package://rover_description/meshes/coarse/BR_Wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -276,7 +276,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Base.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Base.STL" />
       </geometry>
       <material
         name="">
@@ -290,7 +290,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Base.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Base.STL" />
       </geometry>
     </collision>
   </link>
@@ -327,7 +327,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_1.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_1.STL" />
       </geometry>
       <material
         name="">
@@ -341,7 +341,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_1.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_1.STL" />
       </geometry>
     </collision>
   </link>
@@ -378,7 +378,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_2.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_2.STL" />
       </geometry>
       <material
         name="">
@@ -392,7 +392,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_2.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_2.STL" />
       </geometry>
     </collision>
   </link>
@@ -429,7 +429,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_3.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_3.STL" />
       </geometry>
       <material
         name="">
@@ -443,7 +443,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_3.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_3.STL" />
       </geometry>
     </collision>
   </link>
@@ -480,7 +480,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_4.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_4.STL" />
       </geometry>
       <material
         name="">
@@ -494,7 +494,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Stage_4.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Stage_4.STL" />
       </geometry>
     </collision>
   </link>
@@ -531,7 +531,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Gripper.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Gripper.STL" />
       </geometry>
       <material
         name="">
@@ -545,7 +545,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rover_description/meshes/Arm_Gripper.STL" />
+          filename="package://rover_description/meshes/coarse/Arm_Gripper.STL" />
       </geometry>
     </collision>
   </link>

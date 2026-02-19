@@ -115,7 +115,7 @@
         <command_interface name="position"/>
         <!-- <command_interface name="velocity"/> -->
         <param name="topic_name">base_rotate</param>
-        <param name="tick_resolution">1000.0</param>
+        <param name="tick_resolution">-160000.0</param>
       </joint>
     </ros2_control>
 
