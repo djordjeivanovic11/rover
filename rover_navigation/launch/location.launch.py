@@ -13,8 +13,8 @@ def generate_launch_description():
         name='gnss_driver',
         output='screen',
         parameters=[{
-            'device': '/dev/ttyACM0',
-            'frame_id': 'gps_link',
+            'device': '/dev/gps',
+            'frame_id': 'base_link',
             'baudrate': 38400,
             'rate': 1.0,
             'nav_rate': 1,
@@ -73,46 +73,9 @@ def generate_launch_description():
             ]), {'use_sim_time': False}]
     )
 
-    async_slam_toolbox_node = Node(
-        package='slam_toolbox',
-        executable='async_slam_toolbox_node',
-        name='slam_toolbox',
-        output='screen',
-        parameters=[
-            PathJoinSubstitution([
-                FindPackageShare("rover_navigation"),
-                "config",
-                "navigation.yaml",
-            ]),
-            {'use_sim_time': False}]
-    )
-
-    nav2 = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            PathJoinSubstitution([
-                FindPackageShare("nav2_bringup"),
-                "launch",
-                "bringup_launch.py"
-            ])
-        ),
-        launch_arguments={
-            "use_sim_time": "false",
-            "slam": "False",
-            "map": "",
-            "use_map_server": "False",
-            "params_file": PathJoinSubstitution([
-                FindPackageShare("rover_navigation"),
-                "config",
-                "navigation.yaml",
-            ]),
-        }.items(),
-    )
-
     return LaunchDescription([
-        # gnss_driver,
+        gnss_driver,
         ekf_local_node,
         navsat_transform_node,
         ekf_global_node,
-        # async_slam_toolbox_node
-        nav2
     ])
