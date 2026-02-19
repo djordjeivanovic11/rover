@@ -19,7 +19,7 @@ def generate_launch_description():
         name="controller_server",
         output="screen",
         parameters=[nav2_params],
-        remappings=[('cmd_vel', '/cmd_vel_nav')]
+        remappings=[('cmd_vel', '/cmd_vel')]
     )
 
     planner_server = Node(
@@ -46,6 +46,15 @@ def generate_launch_description():
         parameters=[nav2_params]
     )
 
+    velocity_smoother = Node(
+        package="nav2_velocity_smoother",
+        executable="velocity_smoother_node",
+        name="velocity_smoother",
+        output="screen",
+        parameters=[nav2_params],
+        remappings=[('cmd_vel_smoothed', '/rover_drive_controller/cmd_vel_unstamped')]
+    )
+
     lifecycle_manager = Node(
         package="nav2_lifecycle_manager",
         executable="lifecycle_manager",
@@ -58,17 +67,10 @@ def generate_launch_description():
                 "planner_server",
                 "controller_server",
                 "bt_navigator",
-                "behavior_server"
+                "behavior_server",
+                "velocity_smoother"
             ]
         }],
-    )
-
-    velocity_smoother = Node(
-        package="nav2_velocity_smoother",
-        executable="velocity_smoother_node",
-        name="velocity_smoother",
-        output="screen",
-        parameters=[nav2_params]
     )
 
     return LaunchDescription([
@@ -76,6 +78,6 @@ def generate_launch_description():
         planner_server,
         bt_navigator,
         behavior_server,
-        lifecycle_manager,
-        velocity_smoother
+        velocity_smoother,
+        lifecycle_manager
     ])
