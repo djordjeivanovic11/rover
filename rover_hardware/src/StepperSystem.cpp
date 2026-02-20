@@ -26,7 +26,7 @@ hardware_interface::CallbackReturn StepperSystemHardware::on_init(const hardware
     logger_ = std::make_shared<rclcpp::Logger>(rclcpp::get_logger("StepperSystem"));
     RCLCPP_INFO(*logger_, "Starting custom HURC hardware plugin!");
 
-    node_ = rclcpp::Node::make_shared("/arm/stepper_system");
+    node_ = rclcpp::Node::make_shared("stepper_system");
 
     for (uint i = 0; i < info_.joints.size(); i++) {
         auto joint = info_.joints[i];

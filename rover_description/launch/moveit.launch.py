@@ -10,7 +10,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
     move_group = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([FindPackageShare("moveitconfig"), '/launch/move_group.launch.py'])
+        PythonLaunchDescriptionSource([FindPackageShare("rover_moveit_config"), '/launch/move_group.launch.py'])
     )
 
     return LaunchDescription([
