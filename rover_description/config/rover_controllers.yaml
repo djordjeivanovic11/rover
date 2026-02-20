@@ -64,6 +64,11 @@ rover_drive_controller:
 
 rover_arm_controller:
   ros__parameters:
+    state_publish_rate: 25
+
+    constraints:
+      goal_time: 0.5
+
     joints:
       - Arm_Base_Rotate
       - Arm_Shoulder

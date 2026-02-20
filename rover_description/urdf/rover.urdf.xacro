@@ -305,6 +305,11 @@
       link="Arm_Base" />
     <axis
       xyz="0 1 0" />
+    <limit
+      lower="-2.3562"
+      upper="2.3562"
+      velocity="0.25"
+      />
   </joint>
   <link name="Arm_Stage_1">
     <inertial>
@@ -349,13 +354,18 @@
     type="continuous">
     <origin
       xyz="0 -0.010001 0"
-      rpy="0.7854 0 0" />
+      rpy="0 0 0" />
     <parent
       link="Arm_Base" />
     <child
       link="Arm_Stage_1" />
     <axis
       xyz="1 0 0" />
+    <limit
+      lower="-1.5708"
+      upper="1.0472"
+      velocity="0.25"
+      />
   </joint>
   <link name="Arm_Stage_2">
     <inertial>
@@ -400,13 +410,18 @@
     type="continuous">
     <origin
       xyz="0 0.52949 0"
-      rpy="-1.5708 0 -3.1416" />
+      rpy="0 3.1416 0" />
     <parent
       link="Arm_Stage_1" />
     <child
       link="Arm_Stage_2" />
     <axis
       xyz="1 0 0" />
+    <limit
+      lower="-2.3562"
+      upper="2.3562"
+      velocity="0.5"
+      /> <!-- really vel should be 1.2 -->
   </joint>
   <link name="Arm_Stage_3">
     <inertial>
@@ -458,6 +473,11 @@
       link="Arm_Stage_3" />
     <axis
       xyz="0 1 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      velocity="0.5"
+      /> <!-- really vel should be 1.2 -->
   </joint>
   <link name="Arm_Stage_4">
     <inertial>
@@ -502,13 +522,18 @@
     type="continuous">
     <origin
       xyz="0 0.12103 0"
-      rpy="-0.7854 0 0" />
+      rpy="0 0 0" />
     <parent
       link="Arm_Stage_3" />
     <child
       link="Arm_Stage_4" />
     <axis
       xyz="1 0 0" />
+    <limit
+      lower="-1.5708"
+      upper="1.5708"
+      velocity="0.5"
+      /> <!-- really vel should be 1.2 -->
   </joint>
   <link name="Arm_Gripper">
     <inertial>
@@ -560,6 +585,11 @@
       link="Arm_Gripper" />
     <axis
       xyz="0 1 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      velocity="0.5"
+      /> <!-- really vel should be 1.2 -->
   </joint>
 
   <xacro:rover_ros2_control use_gazebo="$(arg use_gazebo)"/>

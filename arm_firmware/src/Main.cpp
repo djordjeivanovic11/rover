@@ -14,10 +14,10 @@ AccelStepper azimuthStepper(AccelStepper::DRIVER, 9, 10);
 AccelStepper gripperStepper(AccelStepper::DRIVER, 11, 12);
 
 IntMsg azimuthSubMsg;
-uROS::Subscriber AzimuthSub("/arm/set_azimuth", azimuthSubMsg);
+uROS::Subscriber AzimuthSub("/arm/set_base_rotate", azimuthSubMsg);
 
 IntMsg azimuthPubMsg;
-uROS::Publisher AzimuthPub("/arm/get_azimuth", &azimuthPubMsg);
+uROS::Publisher AzimuthPub("/arm/get_base_rotate", &azimuthPubMsg);
 
 IntMsg gripperSubMsg;
 uROS::Subscriber GripperSub("/arm/set_gripper", gripperSubMsg);
@@ -56,7 +56,7 @@ void setup() {
   // logMsg.Set("[INFO] uROS initialized");
   // LogPub.Publish();
 
-  azimuthStepper.setMaxSpeed(5000);
+  azimuthStepper.setMaxSpeed(10000);
   azimuthStepper.setMinPulseWidth(5);
   steppers.addStepper(azimuthStepper);
 
