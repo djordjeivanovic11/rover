@@ -48,7 +48,7 @@ def generate_launch_description():
 
     velocity_smoother = Node(
         package="nav2_velocity_smoother",
-        executable="velocity_smoother_node",
+        executable="velocity_smoother",
         name="velocity_smoother",
         output="screen",
         parameters=[nav2_params],
