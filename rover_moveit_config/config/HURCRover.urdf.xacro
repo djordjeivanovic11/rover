@@ -6,9 +6,9 @@
     <xacro:include filename="$(find rover_description)/urdf/rover.urdf.xacro" />
 
     <!-- Import control_xacro -->
-    <xacro:include filename="HURCRover.ros2_control.xacro" />
+    <!-- <xacro:include filename="HURCRover.ros2_control.xacro" /> -->
 
 
-    <xacro:HURCRover_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+    <!-- <xacro:HURCRover_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/> -->
 
 </robot>

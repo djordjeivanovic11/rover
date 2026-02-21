@@ -3,14 +3,18 @@ controller_manager:
   ros__parameters:
     update_rate: 100  # Hz
 
-    arm_controller:
+    rover_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    rover_gripper_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-arm_controller:
+rover_arm_controller:
   ros__parameters:
     joints:
       - Arm_Base_Rotate
@@ -18,6 +22,14 @@ arm_controller:
       - Arm_Elbow_Tilt
       - Arm_Elbow_Rotate
       - Arm_Wrist_Tilt
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+rover_gripper_controller:
+  ros__parameters:
+    joints:
       - Arm_Wrist_Rotate
     command_interfaces:
       - position
